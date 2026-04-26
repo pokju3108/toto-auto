@@ -8,7 +8,7 @@ from google.oauth2.service_account import Credentials
 from playwright.sync_api import sync_playwright
  
 SHEET_ID = "1_nLxcE_ZpAB0GZ5UXFFkQO9rZqD8_K4aQeOqCbihXcA"
-SHEET_NAME = "Sheet1"
+SHEET_NAME = "시트1"
 BETMAN_URL = "https://www.betman.co.kr/main/mainPage/game/gmTotoSMGmBuyView.do?gmId=G101"
  
 def get_google_sheet():
