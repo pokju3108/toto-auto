@@ -1,4 +1,4 @@
-yamlname: crawl
+name: crawl
 
 on:
   schedule:
