@@ -1,0 +1,1826 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>승무패 조합 계산기</title>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7806332340003120" crossorigin="anonymous"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f2f4f7;min-height:100vh;padding:8px}
+.w{max-width:760px;margin:0 auto;padding-bottom:2rem}
+.topbar{background:#063B5D;color:#fff;padding:12px 16px;border-radius:12px;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center}
+.topbar h2{margin:0;font-size:15px;font-weight:600}
+.sub{font-size:11px;color:#9FE1CB;margin-top:3px}
+.tabs{display:flex;gap:8px;margin-bottom:12px}
+.tab{flex:1;padding:10px 8px;border:1.5px solid #ccc;border-radius:8px;background:#f8f8f8;color:#888;font-size:13px;cursor:pointer;text-align:center;font-weight:500}
+.tab.on{background:#063B5D;color:#fff;border-color:#063B5D}
+.panel{display:none}.panel.on{display:block}
+.sec{background:#fff;border:1px solid #e0e0e0;border-radius:12px;padding:12px 10px;margin-bottom:10px}
+.stitle{font-size:14px;font-weight:600;color:#1a1a1a;margin:0 0 10px;display:flex;align-items:center;gap:8px}
+.bdg{font-size:10px;padding:2px 7px;border-radius:10px;font-weight:600;background:#5DCAA5;color:#04342C}
+.explain{font-size:12px;color:#666;background:#f8f8f8;border-radius:8px;padding:8px 12px;margin-bottom:10px;line-height:1.7}
+.strat-row{display:flex;gap:8px;margin-bottom:8px}
+.stbtn{flex:1;padding:9px 4px;border:2px solid #ccc;border-radius:8px;background:#f8f8f8;color:#888;font-size:11px;cursor:pointer;text-align:center;line-height:1.5;transition:all .15s;position:relative;user-select:none}
+.stbtn .sl{font-size:13px;font-weight:700;display:block}
+.stbtn .sd{font-size:10px;font-weight:400;display:block;margin-top:2px;opacity:.85}
+.stbtn .sr{font-size:10px;display:block;margin-top:3px;font-weight:600}
+.stbtn .chk{display:none;position:absolute;top:4px;right:6px;font-size:13px;font-weight:700}
+.stbtn.onH{border-color:#27500A;background:#EAF3DE;color:#27500A}.stbtn.onH .chk{display:block}
+.stbtn.onM{border-color:#7A4400;background:#FFF3E0;color:#7A4400}.stbtn.onM .chk{display:block}
+.stbtn.onL{border-color:#791F1F;background:#FCEBEB;color:#791F1F}.stbtn.onL .chk{display:block}
+.alloc-bar{font-size:12px;color:#444;background:#f0f4f8;border-radius:6px;padding:7px 12px;margin-bottom:10px;display:none;line-height:1.7}
+.at{display:inline-block;font-size:11px;font-weight:600;padding:2px 7px;border-radius:8px;margin:0 2px}
+.atH{background:#EAF3DE;color:#27500A}
+.atM{background:#FFF3E0;color:#7A4400}
+.atL{background:#FCEBEB;color:#791F1F}
+.drop-row{display:flex;align-items:center;gap:10px;margin-bottom:10px;flex-wrap:wrap}
+.drop-row label{font-size:13px;color:#555;font-weight:500;white-space:nowrap}
+.asel{padding:8px 12px;border:1.5px solid #ccc;border-radius:8px;background:#fff;color:#333;font-size:13px;cursor:pointer;flex:1;min-width:160px}
+.asel:focus{outline:none;border-color:#028A8A}
+.sbadge{background:#028A8A;color:#fff;font-size:12px;font-weight:500;padding:5px 10px;border-radius:6px;white-space:nowrap;display:none}
+.prow{display:flex;align-items:center;gap:8px;margin-bottom:10px;flex-wrap:wrap}
+.pinp{width:80px;padding:7px 10px;border:1.5px solid #ccc;border-radius:8px;font-size:13px}
+.genbtn{width:100%;background:#028A8A;color:#fff;border:none;border-radius:8px;padding:11px;font-size:13px;font-weight:600;cursor:pointer;margin-bottom:8px;display:flex;align-items:center;justify-content:center;gap:8px}
+.genbtn:hover{background:#0F6E56}
+.gcnt{font-size:11px;background:rgba(255,255,255,.25);padding:2px 8px;border-radius:10px}
+.gtbl{width:100%;border-collapse:collapse;font-size:12px;margin-top:4px}
+.gtbl th{background:#063B5D;color:#9FE1CB;padding:7px 8px;text-align:center;font-weight:500;font-size:11px}
+.gtbl th:first-child{text-align:left}
+.gtbl td{padding:7px 8px;border-bottom:1px solid #f0f0f0;vertical-align:middle}
+.gtbl tr:nth-child(even) td{background:#fafafa}
+.mpb{display:inline-flex;align-items:center;justify-content:center;border:2px solid #ccc;border-radius:6px;padding:7px 6px;font-size:10px;font-weight:800;cursor:pointer;background:#f0f0f0;color:#aaa;min-width:50px;transition:all .12s;white-space:nowrap}
+.mpb:hover{background:#ddd;color:#555;border-color:#999}
+.mpb.W{background:#1B7A1B!important;border-color:#1B7A1B!important;color:#fff!important}
+.mpb.result-W{background:#EAF3DE!important;border-color:#1B7A1B!important;border-width:2px!important;color:#1B7A1B!important;font-weight:800!important;padding:7px 6px!important;min-width:50px!important}
+.mpb.result-D{background:#E6F1FB!important;border-color:#0A3D8F!important;border-width:2px!important;color:#0A3D8F!important;font-weight:800!important;padding:7px 6px!important;min-width:50px!important}
+.mpb.result-L{background:#FCEBEB!important;border-color:#C0180E!important;border-width:2px!important;color:#C0180E!important;font-weight:800!important;padding:7px 6px!important;min-width:50px!important}
+/* 선택+정답 동시 */
+.mpb.locked-manual{outline:3px solid #028A8A!important;outline-offset:2px!important}
+.mpb.W.locked-manual{background:#1B7A1B!important;border-color:#028A8A!important;border-width:3px!important;color:#fff!important}
+.mpb.D.locked-manual{background:#0A3D8F!important;border-color:#028A8A!important;border-width:3px!important;color:#fff!important}
+.mpb.L.locked-manual{background:#C0180E!important;border-color:#028A8A!important;border-width:3px!important;color:#fff!important}
+.mpb.W.result-W{background:#1B7A1B!important;border-color:#fff!important;border-width:2px!important;color:#fff!important;box-shadow:0 0 0 2px #1B7A1B!important}
+.mpb.D.result-D{background:#0A3D8F!important;border-color:#fff!important;border-width:2px!important;color:#fff!important;box-shadow:0 0 0 2px #0A3D8F!important}
+.mpb.L.result-L{background:#C0180E!important;border-color:#fff!important;border-width:2px!important;color:#fff!important;box-shadow:0 0 0 2px #C0180E!important}
+.mpb.W.locked{outline:3px solid #1B7A1B;outline-offset:2px}
+.mpb.D.locked{outline:3px solid #0A3D8F;outline-offset:2px}
+.mpb.L.locked{outline:3px solid #C0180E;outline-offset:2px}
+.mpb.D{background:#0A3D8F!important;border-color:#0A3D8F!important;color:#fff!important}
+.mpb.L{background:#C0180E!important;border-color:#C0180E!important;color:#fff!important}
+.combo-row{display:flex;align-items:center;justify-content:space-between;background:#f0f4f8;border-radius:8px;padding:9px 14px;margin:8px 0;font-size:13px;color:#555}
+.cval{font-size:16px;font-weight:600;color:#1a1a1a}
+.camt{font-size:16px;font-weight:700;color:#028A8A}
+.camt.over{color:#C0180E}
+.mets{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:10px 0}
+.met{background:#f8f8f8;border-radius:8px;padding:9px;text-align:center}
+.mlab{font-size:10px;color:#888;margin-bottom:3px}
+.mv{font-size:14px;font-weight:600;color:#1a1a1a}
+.mv.g{color:#1B7A1B}.mv.a{color:#C0180E}.mv.b{color:#0C447C}
+.acts{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+.savebtn{flex:1;background:#063B5D;color:#fff;border:none;border-radius:8px;padding:10px;font-size:13px;font-weight:600;cursor:pointer;min-width:120px}
+.savebtn:hover{background:#028A8A}
+.viewbtn{background:#f0f4f8;color:#063B5D;border:1.5px solid #063B5D;border-radius:8px;padding:10px 14px;font-size:13px;font-weight:600;cursor:pointer}
+.viewbtn:hover{background:#E6F1FB}
+.rstbtn{background:#f0f0f0;color:#444;border:1px solid #ccc;border-radius:8px;padding:10px 14px;font-size:13px;cursor:pointer}
+.ahint{font-size:11px;border-radius:6px;padding:8px 12px;margin-bottom:8px;border:1px solid;display:none;line-height:1.8}
+.cprev{background:#f8f8f8;border:1px solid #e0e0e0;border-radius:8px;padding:10px 12px;margin-top:10px;display:none}
+.cprev-title{font-size:12px;font-weight:600;color:#063B5D;margin-bottom:8px}
+.citem{background:#fff;border:1px solid #e8e8e8;border-radius:6px;padding:7px 10px;margin-bottom:5px}
+.cnum{font-size:10px;font-weight:600;color:#0C447C;background:#E6F1FB;padding:1px 6px;border-radius:8px;margin-right:5px}
+.ctstr{font-size:10px;font-weight:600;padding:1px 6px;border-radius:8px;margin-right:4px}
+.ctH{background:#EAF3DE;color:#27500A}
+.ctM{background:#FFF3E0;color:#7A4400}
+.ctL{background:#FCEBEB;color:#791F1F}
+.ct2{background:#FAEEDA;color:#633806}
+.cpks{font-family:monospace;color:#333;word-break:break-all;font-size:11px}
+.cmeta{margin-top:4px;display:flex;gap:10px;flex-wrap:wrap;font-size:11px;color:#888}
+.sttag{font-size:10px;padding:2px 6px;border-radius:6px;font-weight:500}
+.send{background:#EAF3DE;color:#27500A}.slive{background:#FAEEDA;color:#633806}.spre{background:#f0f0f0;color:#888}
+.sresW{background:#1B7A1B;color:#fff;font-weight:600}
+.sresD{background:#0A3D8F;color:#fff;font-weight:600}
+.sresL{background:#C0180E;color:#fff;font-weight:600}
+.sc{font-size:12px;color:#888;text-align:right;margin-bottom:6px}
+.edit-guide{background:#FFF8E1;border:1px solid #FFD54F;border-radius:8px;padding:10px 14px;font-size:12px;color:#5D4037;line-height:1.8}
+/* ── 젠토토 스타일 한 줄 조합 목록 ── */
+.combo-line{display:flex;align-items:center;background:#fff;border:1px solid #e4e8ed;border-radius:8px;padding:5px 4px;margin:4px 0;gap:2px;cursor:default;min-width:0}
+.combo-line:hover{background:#f5f8fc}
+.cl-idx{flex-shrink:0;font-size:10px;font-weight:700;color:#888;min-width:22px;text-align:right}
+.cl-picks{display:flex;gap:1px;flex:1;min-width:0;overflow:hidden}
+.cl-pick{display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;border-radius:3px;font-size:8px;font-weight:800;flex-shrink:0}
+.cl-pick.W{background:#1B7A1B;color:#fff}
+.cl-pick.D{background:#888;color:#fff}
+.cl-pick.L{background:#C0180E;color:#fff}
+.cl-pick.q{background:#e0e0e0;color:#999}
+.cl-surv{font-size:10px;font-weight:600;color:#028A8A;white-space:nowrap;width:46px;text-align:right;flex-shrink:0}
+.cl-strat{font-size:9px;padding:1px 4px;border-radius:8px;font-weight:600;white-space:nowrap;flex-shrink:0}
+.cl-strat.H{background:#EAF3DE;color:#27500A}
+.cl-strat.M{background:#FFF3E0;color:#7A4400}
+.cl-strat.L{background:#FCEBEB;color:#791F1F}
+.cl-strat.MN{background:#E6F1FB;color:#0C447C}
+/* ── 팀 정보 / 포메이션 페이지 ── */
+.nav-tabs{display:flex;gap:0;border-bottom:2px solid #e0e0e0;margin-bottom:14px}
+.nav-tab{padding:9px 14px;font-size:13px;font-weight:600;color:#888;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;background:none;border-top:none;border-left:none;border-right:none}
+.nav-tab.on{color:#063B5D;border-bottom-color:#063B5D}
+.match-card{background:#fff;border:1px solid #e0e0e0;border-radius:12px;margin-bottom:10px;overflow:hidden}
+.match-header{background:#063B5D;color:#fff;padding:8px 14px;display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600}
+.match-no{background:rgba(255,255,255,.2);border-radius:6px;padding:2px 8px;font-size:11px}
+.match-lge{font-size:11px;color:#9FE1CB;margin-left:auto}
+.team-row{display:flex;gap:0}
+.team-col{flex:1;padding:10px 12px;border-right:1px solid #f0f0f0}
+.team-col:last-child{border-right:none}
+.team-name{font-size:13px;font-weight:700;color:#1a1a1a;margin-bottom:8px}
+.team-name .home-badge{font-size:9px;background:#063B5D;color:#fff;padding:1px 5px;border-radius:4px;margin-left:4px}
+.team-name .away-badge{font-size:9px;background:#888;color:#fff;padding:1px 5px;border-radius:4px;margin-left:4px}
+.stat-row{display:flex;align-items:center;gap:6px;margin-bottom:5px}
+.stat-label{font-size:10px;color:#888;width:28px;flex-shrink:0}
+.stat-bar{flex:1;height:6px;background:#eee;border-radius:3px;overflow:hidden}
+.stat-fill{height:100%;border-radius:3px;transition:width .3s}
+.stat-fill.atk{background:#E53935}
+.stat-fill.def{background:#1565C0}
+.stat-fill.pos{background:#2E7D32}
+.stat-fill.ovr{background:#F57F17}
+.stat-val{font-size:10px;font-weight:700;color:#333;width:24px;text-align:right}
+/* ── 포메이션 테이블 ── */
+.form-table{width:100%;border-collapse:collapse;font-size:11px;margin-top:6px}
+.form-table th{background:#063B5D;color:#9FE1CB;padding:6px 8px;text-align:center;font-size:10px;font-weight:500}
+.form-table td{padding:5px 8px;border-bottom:1px solid #f0f0f0;text-align:center;vertical-align:middle}
+.form-table tr:nth-child(even) td{background:#fafafa}
+.pos-badge{display:inline-block;font-size:9px;font-weight:700;padding:1px 5px;border-radius:4px}
+.pos-GK{background:#F57F17;color:#fff}
+.pos-DF{background:#1565C0;color:#fff}
+.pos-MF{background:#2E7D32;color:#fff}
+.pos-FW{background:#E53935;color:#fff}
+.vote-bar-w{display:inline-block;height:8px;background:#1B7A1B;border-radius:2px;vertical-align:middle}
+.vote-bar-d{display:inline-block;height:8px;background:#888;border-radius:2px;vertical-align:middle}
+.vote-bar-l{display:inline-block;height:8px;background:#C0180E;border-radius:2px;vertical-align:middle}
+.pov{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.5);z-index:1000;align-items:flex-start;justify-content:center;padding:20px}
+.pov.open{display:flex}
+.pop{background:#fff;border-radius:16px;width:100%;max-width:700px;max-height:88vh;display:flex;flex-direction:column;overflow:hidden;margin-top:20px}
+.ph{background:#063B5D;color:#fff;padding:14px 18px;display:flex;justify-content:space-between;align-items:center;flex-shrink:0}
+.ph h3{margin:0;font-size:15px;font-weight:600}
+.pc{background:none;border:none;color:#fff;font-size:24px;cursor:pointer;line-height:1}
+.pb{overflow-y:auto;padding:14px 16px;flex:1}
+.pf{padding:12px 16px;border-top:1px solid #eee;display:flex;justify-content:space-between;align-items:center;background:#f8f8f8;flex-shrink:0;flex-wrap:wrap;gap:8px}
+.sg{background:#fff;border:1px solid #e0e0e0;border-radius:10px;margin-bottom:10px;overflow:hidden}
+.sgh{padding:10px 14px;background:#f8f8f8;display:flex;justify-content:space-between;align-items:center;cursor:pointer}
+.sgh:hover{background:#f0f0f0}
+.sgi{font-size:13px;font-weight:600;color:#1a1a1a}
+.sgm{font-size:11px;color:#888;margin-top:2px}
+.sgr{display:flex;align-items:center;gap:8px}
+.sgarr{font-size:14px;color:#888;transition:transform .2s}
+.sgarr.open{transform:rotate(180deg)}
+.sgb{display:none;padding:10px 14px}
+.sgb.open{display:block}
+.ci{background:#fff;border:1px solid #e8e8e8;border-radius:8px;padding:9px 12px;margin-bottom:5px}
+.cpk{font-size:11px;color:#555;font-family:monospace;margin-bottom:4px;word-break:break-all;line-height:1.6}
+.cm{display:flex;gap:10px;flex-wrap:wrap;font-size:11px;color:#888}
+.ctag{font-size:10px;padding:2px 7px;border-radius:10px;font-weight:500}
+.cH{background:#EAF3DE;color:#27500A}
+.cM{background:#FFF3E0;color:#7A4400}
+.cL{background:#FCEBEB;color:#791F1F}
+.c2{background:#FAEEDA;color:#633806}
+.cCMP{background:#E6F1FB;color:#0C447C}
+.delg{background:#FCEBEB;color:#791F1F;border:1px solid #C0180E;border-radius:6px;padding:4px 10px;font-size:11px;font-weight:600;cursor:pointer}
+.delg:hover{background:#C0180E;color:#fff}
+.btrack{height:7px;background:#e8e8e8;border-radius:3px;overflow:hidden}
+.bfill{height:100%;background:#028A8A;border-radius:3px;transition:width .3s}
+.bfill.over{background:#C0180E}
+.empty{text-align:center;padding:20px;color:#aaa;font-size:13px;border:1px dashed #ddd;border-radius:8px}
+.cpk-detail{font-size:10px;font-family:monospace;color:#555;margin-bottom:4px;line-height:1.8;word-break:break-all;display:flex;flex-wrap:wrap;gap:1px;align-items:center}
+.pk-item{display:inline-flex;flex-direction:column;align-items:center;font-size:10px;min-width:14px}
+.pk-o{font-size:9px;color:#1B7A1B;font-weight:700;line-height:1}
+.pk-x{font-size:9px;color:#C0180E;font-weight:700;line-height:1}
+.pk-sep{color:#ccc;font-size:10px;align-self:flex-end;margin-bottom:2px}
+.result-badge{display:inline-block;font-size:11px;font-weight:700;padding:2px 8px;border-radius:10px;margin-bottom:4px}
+.rb-1{background:#FFD700;color:#5D4000}
+.rb-2{background:#C0C0C0;color:#333}
+.rb-3{background:#CD7F32;color:#fff}
+.rb-4{background:#E6F1FB;color:#0C447C}
+.result-score{font-size:11px;color:#555;margin-bottom:4px}
+.nb{background:#C0180E;color:#fff;font-size:10px;font-weight:700;padding:1px 6px;border-radius:10px;margin-left:6px}
+.clrb{background:#FCEBEB;color:#791F1F;border:1px solid #C0180E;border-radius:6px;padding:5px 12px;font-size:12px;font-weight:600;cursor:pointer}
+.clrb:hover{background:#C0180E;color:#fff}
+.cidx{background:#E6F1FB;color:#0C447C;font-size:10px;padding:2px 6px;border-radius:8px;font-weight:500}
+.tbox{background:#E6F1FB;border:1px solid #378ADD;border-radius:8px;padding:10px 14px;margin-top:8px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px;align-items:center}
+.warn-box{background:#FFF3E0;border:1px solid #FF8C00;border-radius:6px;padding:7px 12px;font-size:11px;color:#7A4400;margin-bottom:8px;display:none;line-height:1.7}
+@media(max-width:600px){
+  body{padding:5px}
+  .w{padding-bottom:1rem}
+  .topbar{padding:8px 10px;border-radius:10px;margin-bottom:7px}
+  .topbar h2{font-size:13px}
+  .sub{font-size:10px}
+  .sec{padding:8px 7px;border-radius:10px;margin-bottom:8px}
+  .tabs{gap:4px;margin-bottom:7px}
+  .tab{padding:7px 4px;font-size:11px}
+  /* 메트릭 카드 3개 한줄 */
+  .mets{grid-template-columns:repeat(3,1fr);gap:4px;margin:6px 0}
+  .met{padding:5px 3px;border-radius:6px}
+  .mlab{font-size:8px;margin-bottom:2px}
+  .mv{font-size:11px}
+  /* 전략 버튼 */
+  .strat-row{gap:3px}
+  .stbtn{padding:5px 2px;border-radius:6px}
+  .stbtn .sl{font-size:10px}
+  .stbtn .sd,.stbtn .sr{font-size:8px;margin-top:1px}
+  /* 팝업 */
+  .pop{margin-top:0;max-height:100vh;border-radius:0}
+  /* 액션 버튼 */
+  .acts{gap:5px}
+  .savebtn{font-size:11px;padding:8px 6px}
+  .viewbtn{font-size:11px;padding:8px 6px}
+  .rstbtn{font-size:11px;padding:8px 6px}
+  /* 조합 미리보기 */
+  .cpks{font-size:9px;word-break:break-all;line-height:1.5}
+  .citem{padding:4px 6px}
+  .cprev-title{font-size:11px}
+  /* 조합 행 */
+  .combo-row{padding:6px 8px;margin:5px 0}
+  .cval{font-size:13px}
+  .camt{font-size:13px}
+  /* 테이블 - 스크롤 없이 전체 표시 */
+  .gtbl-wrap{overflow:visible}
+  .gtbl{font-size:9px;width:100%}
+  .gtbl th{padding:5px 1px;font-size:8px;white-space:nowrap}
+  .gtbl td{padding:6px 1px}
+  /* 승무패 버튼 */
+  .mpb{min-width:38px !important;font-size:8px !important;padding:7px 2px !important;border-width:2px !important;border-radius:4px !important;font-weight:800 !important}
+  /* 상태 태그 */
+  .sttag,.sresW,.sresD,.sresL,.send,.slive,.spre{font-size:8px !important;padding:2px 3px !important;border-radius:3px !important;font-weight:700}
+  /* 기타 */
+  .explain{font-size:10px;padding:5px 7px;line-height:1.6}
+  .alloc-bar{font-size:10px;padding:5px 8px}
+  .ahint{font-size:10px;padding:6px 8px}
+  .drop-row{gap:5px;margin-bottom:7px}
+  .asel{font-size:11px;padding:6px 7px}
+  .sbadge{font-size:10px;padding:4px 7px}
+  .genbtn{font-size:12px;padding:9px}
+  .sc{font-size:10px}
+  .stitle{font-size:13px;margin-bottom:7px}
+  .bdg{font-size:9px;padding:1px 5px}
+  .alloc-bar .at{font-size:9px;padding:1px 5px}
+}
+</style>
+</head>
+<body>
+<div id="loadingOverlay" style="position:fixed;top:0;left:0;width:100%;height:100%;background:#063B5D;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999">
+  <div style="color:#fff;font-size:22px;font-weight:700;margin-bottom:12px">⚽ RUN TOTO</div>
+  <div style="color:#9FE1CB;font-size:13px;margin-bottom:24px">승무패 조합 계산기</div>
+  <div style="width:40px;height:40px;border:3px solid rgba(255,255,255,0.2);border-top-color:#9FE1CB;border-radius:50%;animation:spinLd 0.8s linear infinite"></div>
+  <div style="color:rgba(255,255,255,0.6);font-size:11px;margin-top:16px">데이터 로딩 중...</div>
+</div>
+<style>@keyframes spinLd{to{transform:rotate(360deg)}}</style>
+<div class="w" id="mainContent" style="display:none">
+<div class="topbar">
+  <div>
+    <h2>승무패 조합 계산기</h2>
+    <div class="sub" id="roundInfo">로딩중...</div>
+  </div>
+  <button onclick="openPop()" style="background:rgba(255,255,255,.15);color:#fff;border:1.5px solid rgba(255,255,255,.5);border-radius:8px;padding:6px 12px;font-size:12px;font-weight:600;cursor:pointer">
+    저장 조합 보기 <span class="nb" id="savedBadge">0</span>
+  </button>
+</div>
+<div id="roundMetaBar" style="display:flex;justify-content:space-around;background:#f0f4f8;border-radius:8px;padding:8px 10px;margin-bottom:8px;font-size:11px;color:#444;text-align:center">
+  <div><div style="color:#888;font-size:10px">발매기간</div><div id="rmPeriod" style="font-weight:600">-</div></div>
+  <div style="border-left:1px solid #ddd;padding-left:10px"><div style="color:#888;font-size:10px">총 투표수</div><div id="rmVotes" style="font-weight:600">-</div></div>
+  <div style="border-left:1px solid #ddd;padding-left:10px"><div style="color:#888;font-size:10px">1등 예상 적중금</div><div id="rmPrize" style="font-weight:700;color:#C62828">-</div></div>
+</div>
+<div class="tabs">
+  <div class="tab on" id="t0" onclick="sw(0)">① 조합수형</div>
+  <div class="tab" id="t1" onclick="sw(1)">② 투표율형</div>
+  <div class="tab" id="t2" onclick="sw(2)">⚽ 팀정보</div>
+</div>
+
+<!-- 패널 0 -->
+<div id="p0" class="panel on">
+<div class="sec">
+  <div class="stitle"><span class="bdg">AI ①</span> 조합수(금액) 선택형</div>
+  <div class="explain">
+    전략은 <strong>복수 선택 가능</strong> — 조합이 전략 수에 맞게 균등 배분됩니다.<br>
+    각 조합의 <strong>전체 예상 생존 인원</strong>을 기준으로 전략 범위 내에서 생성합니다.<br>
+    <span style="color:#27500A;font-weight:600">■ 높음</span> 조합 예상 생존 10명↑ &nbsp;
+    <span style="color:#7A4400;font-weight:600">■ 중간</span> 4~10명 &nbsp;
+    <span style="color:#791F1F;font-weight:600">■ 낮음</span> 3명↓
+  </div>
+  <div style="font-size:12px;color:#555;font-weight:500;margin-bottom:6px">배당 전략 선택 (복수 가능)</div>
+  <div class="strat-row" id="sr0">
+    <button class="stbtn onH" id="sb0H" onclick="togS('H')"><span class="chk">✓</span><span class="sl">높은 투표율</span><span class="sd">안정형 · 낮은 배당</span><span class="sr">예상 생존 10명↑</span></button>
+    <button class="stbtn" id="sb0M" onclick="togS('M')"><span class="chk">✓</span><span class="sl">중간 투표율</span><span class="sd">균형형 · 중간 배당</span><span class="sr">예상 생존 4~10명</span></button>
+    <button class="stbtn" id="sb0L" onclick="togS('L')"><span class="chk">✓</span><span class="sl">낮은 투표율</span><span class="sd">도전형 · 높은 배당</span><span class="sr">예상 생존 3명↓</span></button>
+  </div>
+  <!-- 테이블 먼저 -->
+  <div class="gtbl-wrap"><table class="gtbl"><thead><tr>
+    <th style="width:1%;white-space:nowrap;text-align:center">홈 vs 원정</th><th style="text-align:center">리그</th>
+    <th style="color:#97C459;padding-left:4px;padding-right:4px">▲ 승</th><th style="color:#85B7EB;padding-left:4px;padding-right:4px">● 무</th><th style="color:#F09595;padding-left:4px;padding-right:4px">▼ 패</th><th style="padding-left:3px;padding-right:3px">결과</th>
+  </tr></thead><tbody id="tb0"></tbody></table></div>
+  <!-- 조합배분 + 금액선택 + AI버튼 -->
+  <div class="alloc-bar" id="abar0"></div>
+  <div class="drop-row">
+    <label>금액 선택</label>
+    <select class="asel" id="asel0" onchange="setSA0(+this.value)"><option value="0">-- 금액을 선택하세요 --</option></select>
+    <span class="sbadge" id="sbg0"></span>
+  </div>
+  <button class="genbtn" onclick="genAI0()">AI 자동 선택 적용 <span class="gcnt" id="gc0">0회</span></button>
+  <!-- 생성결과 힌트 -->
+  <div class="ahint" id="ah0"></div>
+  <div class="warn-box" id="wb0"></div>
+  <!-- 현재 조합 수 -->
+  <div class="combo-row">
+    <span>현재 조합 수</span>
+    <div><span class="cval" id="cv0">0</span> 조합 = <span class="camt" id="ca0">0원</span></div>
+  </div>
+  <div class="sc" id="sc0">0개 조합 생성됨</div>
+  <!-- 메트릭 카드 -->
+  <div class="mets">
+    <div class="met"><div class="mlab">총 조합 수</div><div class="mv" id="mp0">-</div></div>
+    <div class="met"><div class="mlab">필요 금액</div><div class="mv" id="ms0">-</div></div>
+    <div class="met"><div class="mlab">예상 생존 총합</div><div class="mv g" id="mr0">-</div></div>
+  </div>
+  <!-- 저장 버튼 -->
+  <div class="acts">
+    <button class="savebtn" onclick="saveTab(0)">+ 조합 저장</button>
+    <button class="viewbtn" onclick="openPop()">저장 목록 보기</button>
+    <button class="rstbtn" onclick="resetTab(0)">초기화</button>
+  </div>
+  <!-- 조합 목록 -->
+  <div class="cprev" id="cp0">
+    <div class="cprev-title" style="display:flex;justify-content:space-between;align-items:center">
+      <span>📋 현재 조합 목록 <span style="font-size:10px;color:#888;font-weight:400">(자동 갱신/초기화 시 변경됨)</span></span>
+      <button onclick="clearPrev0()" style="background:#FCEBEB;color:#791F1F;border:1px solid #C0180E;border-radius:5px;padding:3px 10px;font-size:11px;font-weight:600;cursor:pointer">전체 삭제</button>
+    </div>
+    <div id="cp0b"></div>
+  </div>
+</div>
+</div>
+<div id="p1" class="panel">
+<div class="sec">
+  <div class="stitle"><span class="bdg">AI ②</span> 투표율 + 금액형</div>
+  <div class="explain">
+    버튼을 직접 클릭해 수동으로 경기를 선택(🔒 고정)할 수 있습니다.<br>
+    생존 인원 기준(명) 입력 후 AI 자동 선택 시 수동 고정 경기 제외하고 자동 배정.<br>
+    <span style="font-size:11px;color:#888">예) 100명 → 각 경기에서 예상 생존 100명에 가장 가까운 항목 선택</span>
+  </div>
+  <div class="gtbl-wrap"><table class="gtbl"><thead><tr>
+    <th style="width:1%;white-space:nowrap;text-align:center">홈 vs 원정</th>
+    <th style="text-align:center">리그</th>
+    <th style="color:#97C459;padding-left:4px;padding-right:4px">▲ 승</th>
+    <th style="color:#85B7EB;padding-left:4px;padding-right:4px">● 무</th>
+    <th style="color:#F09595;padding-left:4px;padding-right:4px">▼ 패</th>
+    <th style="padding-left:3px;padding-right:3px">결과</th>
+  </tr></thead><tbody id="tb1"></tbody></table></div>
+  <div class="prow" style="margin-top:10px">
+    <label style="font-size:13px;color:#555;font-weight:500">생존 인원 기준</label>
+    <input class="pinp" type="number" id="pi" min="1" max="9999999" value="100" step="1" style="width:100px">
+    <span style="font-size:13px;color:#888">명 기준으로 자동 선택</span>
+  </div>
+  <div class="drop-row">
+    <label>금액 선택</label>
+    <select class="asel" id="asel1" onchange="setSA1(+this.value)"><option value="0">-- 금액을 선택하세요 --</option></select>
+    <span class="sbadge" id="sbg1"></span>
+  </div>
+  <button class="genbtn" onclick="genAI1()">AI 자동 선택 적용 <span class="gcnt" id="gc1">0회</span></button>
+  <div class="ahint" id="ah1"></div>
+  <div class="warn-box" id="wb1"></div>
+  <div class="combo-row">
+    <span>현재 조합 수</span>
+    <div><span class="cval" id="cv1">0</span> 조합 = <span class="camt" id="ca1">0원</span></div>
+  </div>
+  <div class="sc" id="sc1">0 / 14 경기 선택됨</div>
+  <div class="mets">
+    <div class="met"><div class="mlab">총 조합 수</div><div class="mv" id="mp1">-</div></div>
+    <div class="met"><div class="mlab">필요 금액</div><div class="mv" id="ms1">-</div></div>
+    <div class="met"><div class="mlab">예상 생존 총합</div><div class="mv g" id="mr1">-</div></div>
+  </div>
+  <div class="acts">
+    <button class="savebtn" onclick="saveTab(1)">+ 조합 저장</button>
+    <button class="viewbtn" onclick="openPop()">저장 목록 보기</button>
+    <button class="rstbtn" onclick="resetTab(1)">초기화</button>
+  </div>
+  <div class="cprev" id="cp1">
+    <div class="cprev-title" style="display:flex;justify-content:space-between;align-items:center">
+      <span>📋 현재 조합 목록 <span style="font-size:10px;color:#888;font-weight:400">(저장 전 미리보기)</span></span>
+      <button onclick="clearPrev1()" style="background:#FCEBEB;color:#791F1F;border:1px solid #C0180E;border-radius:5px;padding:3px 10px;font-size:11px;font-weight:600;cursor:pointer">전체 삭제</button>
+    </div>
+    <div id="cp1b"></div>
+  </div>
+</div>
+
+<!-- 패널 2: 팀정보 -->
+<div id="p2" class="panel" style="display:none">
+<div style="padding:4px">
+<div class="nav-tabs">
+  <button class="nav-tab on" id="navTeam" onclick="showInfo('team')">⚽ 팀 정보</button>
+  <button class="nav-tab" id="navForm" onclick="showInfo('form')">📋 포메이션</button>
+</div>
+<div id="infoTeam"></div>
+<div id="infoForm" style="display:none"></div>
+</div>
+</div>
+
+<!-- 패널 2: 팀정보 -->
+<div id="p2" class="panel" style="display:none">
+<div style="margin-top:4px">
+<div class="nav-tabs">
+  <button class="nav-tab on" id="navTeam" onclick="showInfo('team')">⚽ 팀 정보</button>
+  <button class="nav-tab" id="navForm" onclick="showInfo('form')">📋 포메이션</button>
+</div>
+<div id="infoTeam"></div>
+<div id="infoForm" style="display:none"></div>
+</div>
+</div>
+</div>
+
+
+</div>
+
+<!-- 팝업 -->
+<div class="pov" id="pov" onclick="closePovOut(event)">
+  <div class="pop">
+    <div class="ph"><h3>저장된 조합 목록</h3><button class="pc" onclick="closePop()">×</button></div>
+    <div class="pb" id="popb"><div class="empty">저장된 조합이 없습니다.</div></div>
+    <div class="pf">
+      <div>
+        <div id="poptot" style="font-size:13px;color:#0C447C;font-weight:600">0원 / 100,000원</div>
+        <div class="btrack" style="width:160px;margin-top:4px"><div class="bfill" id="popbf" style="width:0%"></div></div>
+      </div>
+      <div style="display:flex;gap:8px">
+        <button class="clrb" onclick="clearAll()">전체 삭제</button>
+        <button class="viewbtn" onclick="closePop()" style="padding:5px 14px;font-size:12px">닫기</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<script>
+const roundLabel = '2026년 24회차 · 14경기 · 수동 / AI 자동생성';
+const roundMeta = {
+  period: '26.04.23(목) 08:00 ~ 26.04.25(토) 22:30',
+  totalVotes: '606,668',
+  prize1st: '695,171,250'
+};
+const GS = [
+  {no:1,  home:'마인츠05',   away:'바이에른',   lge:'분데스',   w:19.10, d:18.70, l:62.20, st:'예정', result:''},
+  {no:2,  home:'볼프스부',   away:'뮌헨글라',   lge:'분데스',   w:47.70, d:30.40, l:21.90, st:'예정', result:''},
+  {no:3,  home:'아우크스',   away:'프랑크푸',   lge:'분데스',   w:27.40, d:44.00, l:28.70, st:'예정', result:''},
+  {no:4,  home:'하이덴하',   away:'장크트파',   lge:'분데스',   w:41.50, d:28.20, l:30.30, st:'예정', result:''},
+  {no:5,  home:'쾰른',       away:'레버쿠젠',   lge:'분데스',   w:11.00, d:19.50, l:69.60, st:'예정', result:''},
+  {no:6,  home:'헤타페',     away:'바르셀로',   lge:'라리가',   w:9.00,  d:17.10, l:73.80, st:'예정', result:''},
+  {no:7,  home:'발렌시아',   away:'지로나',     lge:'라리가',   w:40.50, d:37.40, l:22.10, st:'예정', result:''},
+  {no:8,  home:'함부르크',   away:'호펜하임',   lge:'분데스',   w:13.00, d:21.30, l:65.60, st:'예정', result:''},
+  {no:9,  home:'AT마드',     away:'빌바오',     lge:'라리가',   w:64.90, d:20.20, l:14.90, st:'예정', result:''},
+  {no:10, home:'라요',       away:'소시에다',   lge:'라리가',   w:24.40, d:41.20, l:34.40, st:'예정', result:''},
+  {no:11, home:'오비에도',   away:'엘체',       lge:'라리가',   w:34.20, d:37.20, l:28.60, st:'예정', result:''},
+  {no:12, home:'도르트문',   away:'프라이부',   lge:'분데스',   w:83.30, d:9.70,  l:7.00,  st:'예정', result:''},
+  {no:13, home:'오사수나',   away:'세비야',     lge:'라리가',   w:51.20, d:33.00, l:15.80, st:'예정', result:''},
+  {no:14, home:'비야레알',   away:'RC셀타',     lge:'라리가',   w:71.20, d:18.00, l:10.80, st:'예정', result:''},
+];
+const TEAM_STATS = [
+  { home:{name:'마인츠05', atk:62, def:58, pos:50, ovr:60}, away:{name:'바이에른', atk:90, def:82, pos:72, ovr:87} },
+  { home:{name:'볼프스부르크', atk:65, def:60, pos:53, ovr:63}, away:{name:'뮌헨글라드바흐', atk:60, def:58, pos:50, ovr:59} },
+  { home:{name:'아우크스부르크', atk:57, def:60, pos:47, ovr:58}, away:{name:'프랑크푸르트', atk:70, def:62, pos:54, ovr:67} },
+  { home:{name:'하이덴하임', atk:63, def:64, pos:52, ovr:63}, away:{name:'장크트파울리', atk:55, def:60, pos:49, ovr:57} },
+  { home:{name:'쾰른', atk:54, def:52, pos:46, ovr:52}, away:{name:'레버쿠젠', atk:85, def:78, pos:68, ovr:83} },
+  { home:{name:'헤타페', atk:52, def:64, pos:44, ovr:56}, away:{name:'바르셀로나', atk:88, def:80, pos:70, ovr:86} },
+  { home:{name:'발렌시아', atk:58, def:54, pos:48, ovr:56}, away:{name:'지로나', atk:63, def:62, pos:53, ovr:62} },
+  { home:{name:'함부르크', atk:56, def:54, pos:48, ovr:55}, away:{name:'호펜하임', atk:72, def:64, pos:56, ovr:68} },
+  { home:{name:'AT마드리드', atk:80, def:82, pos:60, ovr:82}, away:{name:'빌바오', atk:64, def:70, pos:55, ovr:67} },
+  { home:{name:'라요 발레카노', atk:58, def:57, pos:46, ovr:57}, away:{name:'소시에다드', atk:66, def:64, pos:54, ovr:65} },
+  { home:{name:'오비에도', atk:60, def:62, pos:50, ovr:61}, away:{name:'엘체', atk:57, def:58, pos:47, ovr:57} },
+  { home:{name:'도르트문트', atk:82, def:70, pos:60, ovr:79}, away:{name:'프라이부르크', atk:64, def:68, pos:53, ovr:65} },
+  { home:{name:'오사수나', atk:62, def:66, pos:50, ovr:63}, away:{name:'세비야', atk:68, def:63, pos:54, ovr:65} },
+  { home:{name:'비야레알', atk:72, def:66, pos:57, ovr:70}, away:{name:'RC셀타', atk:59, def:56, pos:49, ovr:58} },
+];
+ 
+const _xhyxr91 = [
+  { match:'마인츠05 vs 바이에른',
+    home:{ formation:'4-2-3-1', players:[
+      {pos:'GK',name:'바에케 로빈'},
+      {pos:'DF',name:'우르스'},       {pos:'DF',name:'후보'},       {pos:'DF',name:'마이에르'},   {pos:'DF',name:'에드밀손'},
+      {pos:'MF',name:'로이스 L'},     {pos:'MF',name:'잔토프'},
+      {pos:'MF',name:'코브'},         {pos:'MF',name:'바움가르트너'},{pos:'MF',name:'오카포르'},
+      {pos:'FW',name:'부르잔'},
+    ]},
+    away:{ formation:'4-2-3-1', players:[
+      {pos:'GK',name:'노이어'},
+      {pos:'DF',name:'키미히'},        {pos:'DF',name:'업메카노'},    {pos:'DF',name:'다이어'},    {pos:'DF',name:'알폰소 D'},
+      {pos:'MF',name:'파예르미스트'}, {pos:'MF',name:'레온 G'},
+      {pos:'MF',name:'뮬러'},          {pos:'MF',name:'무시알라'},   {pos:'MF',name:'사네'},
+      {pos:'FW',name:'케인'},
+    ]}
+  },
+  { match:'볼프스부르크 vs 뮌헨글라드바흐',
+    home:{ formation:'4-3-3', players:[
+      {pos:'GK',name:'그라빗시'},
+      {pos:'DF',name:'피셔'},          {pos:'DF',name:'토마스 M'},    {pos:'DF',name:'람모'},      {pos:'DF',name:'겔하르트'},
+      {pos:'MF',name:'아놀드'},        {pos:'MF',name:'카마보'},      {pos:'MF',name:'뮐러 L'},
+      {pos:'FW',name:'뵈뒤'},          {pos:'FW',name:'윈드'},        {pos:'FW',name:'비머르'},
+    ]},
+    away:{ formation:'4-4-2', players:[
+      {pos:'GK',name:'니콜라스'},
+      {pos:'DF',name:'라인하르트'},    {pos:'DF',name:'엘베디'},      {pos:'DF',name:'프리드리히'},{pos:'DF',name:'네츠'},
+      {pos:'MF',name:'코네'},          {pos:'MF',name:'플레아'},      {pos:'MF',name:'뇌하우스'},  {pos:'MF',name:'호프만 J'},
+      {pos:'FW',name:'티람 M'},        {pos:'FW',name:'보르겐'},
+    ]}
+  },
+  { match:'아우크스부르크 vs 프랑크푸르트',
+    home:{ formation:'4-3-3', players:[
+      {pos:'GK',name:'고리아지'},
+      {pos:'DF',name:'라방드'},        {pos:'DF',name:'우두오카이'},  {pos:'DF',name:'스트라우스'},{pos:'DF',name:'닐손'},
+      {pos:'MF',name:'도브비크'},      {pos:'MF',name:'마토'},        {pos:'MF',name:'이드'},
+      {pos:'FW',name:'데메레'},        {pos:'FW',name:'젱고'},        {pos:'FW',name:'베르그만'},
+    ]},
+    away:{ formation:'3-4-3', players:[
+      {pos:'GK',name:'트라프'},
+      {pos:'DF',name:'토루트'},        {pos:'DF',name:'타우트'},      {pos:'DF',name:'코흐 K'},
+      {pos:'MF',name:'레인바흐'},      {pos:'MF',name:'스코트'},      {pos:'MF',name:'에글로프슈타인'},{pos:'MF',name:'부타'},
+      {pos:'FW',name:'무아니'},        {pos:'FW',name:'마르무쉬'},    {pos:'FW',name:'기라시'},
+    ]}
+  },
+  { match:'하이덴하임 vs 장크트파울리',
+    home:{ formation:'4-2-3-1', players:[
+      {pos:'GK',name:'뮬러 K'},
+      {pos:'DF',name:'트루메르'},      {pos:'DF',name:'라우 P'},      {pos:'DF',name:'피트너'},    {pos:'DF',name:'마슐로프'},
+      {pos:'MF',name:'케르버'},        {pos:'MF',name:'비스칸트'},
+      {pos:'MF',name:'마라버'},        {pos:'MF',name:'살러'},        {pos:'MF',name:'코스기노트'},
+      {pos:'FW',name:'뮬러 T'},
+    ]},
+    away:{ formation:'4-3-3', players:[
+      {pos:'GK',name:'라이도'},
+      {pos:'DF',name:'아비아'},         {pos:'DF',name:'본 외크센'},  {pos:'DF',name:'미탈'},      {pos:'DF',name:'소레이크'},
+      {pos:'MF',name:'아르프'},         {pos:'MF',name:'이글레시아스'},{pos:'MF',name:'헤르만'},
+      {pos:'FW',name:'오나나'},         {pos:'FW',name:'스미스 라스'},{pos:'FW',name:'신타이'},
+    ]}
+  },
+  { match:'쾰른 vs 레버쿠젠',
+    home:{ formation:'4-4-2', players:[
+      {pos:'GK',name:'슈왤베'},
+      {pos:'DF',name:'흐나트'},         {pos:'DF',name:'베커 F'},     {pos:'DF',name:'클레멘스'},  {pos:'DF',name:'디에츠'},
+      {pos:'MF',name:'쾨니히'},         {pos:'MF',name:'티에청'},     {pos:'MF',name:'에거스타인'},{pos:'MF',name:'제텔'},
+      {pos:'FW',name:'마이어 M'},       {pos:'FW',name:'파나이스'},
+    ]},
+    away:{ formation:'3-4-3', players:[
+      {pos:'GK',name:'흐라데키'},
+      {pos:'DF',name:'타'},             {pos:'DF',name:'틸 J'},       {pos:'DF',name:'호그'}  ,
+      {pos:'MF',name:'프림퐁'},         {pos:'MF',name:'안드리치'},   {pos:'MF',name:'그라니트'},  {pos:'MF',name:'하인츠'},
+      {pos:'FW',name:'알론조 A'},       {pos:'FW',name:'보니펙키'},   {pos:'FW',name:'이르미노'},
+    ]}
+  },
+  { match:'헤타페 vs 바르셀로나',
+    home:{ formation:'4-4-2', players:[
+      {pos:'GK',name:'소리아 D'},
+      {pos:'DF',name:'필립 L'},         {pos:'DF',name:'두아르테'},   {pos:'DF',name:'비스타'},    {pos:'DF',name:'알바'},
+      {pos:'MF',name:'모야'},           {pos:'MF',name:'에네스 U'},   {pos:'MF',name:'로드리게스'},{pos:'MF',name:'빌라'},
+      {pos:'FW',name:'막시'},           {pos:'FW',name:'마요랄'},
+    ]},
+    away:{ formation:'4-3-3', players:[
+      {pos:'GK',name:'이냐키 P'},
+      {pos:'DF',name:'쿤데'},           {pos:'DF',name:'이니고 M'},   {pos:'DF',name:'에릭 G'},    {pos:'DF',name:'발데'},
+      {pos:'MF',name:'페드리'},         {pos:'MF',name:'카사도'},     {pos:'MF',name:'가비'},
+      {pos:'FW',name:'야말'},           {pos:'FW',name:'레반도프스키'},{pos:'FW',name:'라피냐'},
+    ]}
+  },
+  { match:'발렌시아 vs 지로나',
+    home:{ formation:'4-4-2', players:[
+      {pos:'GK',name:'마마르다슈빌리'},
+      {pos:'DF',name:'히메네스'},        {pos:'DF',name:'파울리스타'}, {pos:'DF',name:'다브라모'},  {pos:'DF',name:'가야'},
+      {pos:'MF',name:'자카리아'},        {pos:'MF',name:'로페스 H'},  {pos:'MF',name:'페레스'},    {pos:'MF',name:'게데스'},
+      {pos:'FW',name:'카우스타'},        {pos:'FW',name:'디아코비'},
+    ]},
+    away:{ formation:'4-3-3', players:[
+      {pos:'GK',name:'가세'},
+      {pos:'DF',name:'프란켁'},          {pos:'DF',name:'다비드 로페스'},{pos:'DF',name:'산체스 O'},{pos:'DF',name:'미겔'},
+      {pos:'MF',name:'솔레르 M'},        {pos:'MF',name:'요르단'},    {pos:'MF',name:'로마노'},
+      {pos:'FW',name:'도우글라스 L'},    {pos:'FW',name:'스투아니'},  {pos:'FW',name:'차발라'},
+    ]}
+  },
+  { match:'함부르크 vs 호펜하임',
+    home:{ formation:'4-3-3', players:[
+      {pos:'GK',name:'하이슬러'},
+      {pos:'DF',name:'체이즈'},         {pos:'DF',name:'뮬러 M'},     {pos:'DF',name:'하세베'},    {pos:'DF',name:'야블론스키'},
+      {pos:'MF',name:'만야니'},         {pos:'MF',name:'오나나M'},    {pos:'MF',name:'베이커'},
+      {pos:'FW',name:'하이슬러B'},      {pos:'FW',name:'귄터'},       {pos:'FW',name:'자가두'},
+    ]},
+    away:{ formation:'4-2-3-1', players:[
+      {pos:'GK',name:'발레'},
+      {pos:'DF',name:'비켄마이어'},      {pos:'DF',name:'베커 B'},     {pos:'DF',name:'뵈르너'},    {pos:'DF',name:'유타스'},
+      {pos:'MF',name:'그리리쉬'},       {pos:'MF',name:'펠코'},
+      {pos:'MF',name:'도스트'},         {pos:'MF',name:'라우트'},     {pos:'MF',name:'니쿠'},
+      {pos:'FW',name:'빌스마이어'},
+    ]}
+  },
+  { match:'AT마드리드 vs 빌바오',
+    home:{ formation:'4-4-2', players:[
+      {pos:'GK',name:'오블락'},
+      {pos:'DF',name:'몰리나'},          {pos:'DF',name:'힌캐피에'},   {pos:'DF',name:'헤르모소'},  {pos:'DF',name:'레마르'},
+      {pos:'MF',name:'로드리 D'},        {pos:'MF',name:'코케'},       {pos:'MF',name:'살라빅스'}, {pos:'MF',name:'드파울'},
+      {pos:'FW',name:'코레아'},          {pos:'FW',name:'그리즈만'},
+    ]},
+    away:{ formation:'4-2-3-1', players:[
+      {pos:'GK',name:'아가이레사발라'},
+      {pos:'DF',name:'산멜레스'},        {pos:'DF',name:'파레데스'},   {pos:'DF',name:'다니'},      {pos:'DF',name:'유리'},
+      {pos:'MF',name:'드마르코스'},      {pos:'MF',name:'베산쿠르트'},
+      {pos:'MF',name:'빌랄리브레'},     {pos:'MF',name:'오이한'},     {pos:'MF',name:'베리오'},
+      {pos:'FW',name:'니코 윌리암스'},
+    ]}
+  },
+  { match:'라요 발레카노 vs 소시에다드',
+    home:{ formation:'4-3-3', players:[
+      {pos:'GK',name:'드미트로비치'},
+      {pos:'DF',name:'후에르카스'},      {pos:'DF',name:'가르시아'},   {pos:'DF',name:'아이사'},    {pos:'DF',name:'포조'},
+      {pos:'MF',name:'파티노'},          {pos:'MF',name:'캄펠로'},     {pos:'MF',name:'레켈메'},
+      {pos:'FW',name:'트레호'},          {pos:'FW',name:'라울 데 토마스'},{pos:'FW',name:'반타쿠샤'},
+    ]},
+    away:{ formation:'4-3-3', players:[
+      {pos:'GK',name:'레미로'},
+      {pos:'DF',name:'고로사벨'},        {pos:'DF',name:'수벨디아'},   {pos:'DF',name:'파체코'},    {pos:'DF',name:'트라오레'},
+      {pos:'MF',name:'술레'},            {pos:'MF',name:'졸릭'},       {pos:'MF',name:'바레네체아'},
+      {pos:'FW',name:'오이아르사발'},    {pos:'FW',name:'쿠보'},       {pos:'FW',name:'안도'},
+    ]}
+  },
+  { match:'오비에도 vs 엘체',
+    home:{ formation:'4-4-2', players:[
+      {pos:'GK',name:'발레스테로스'},
+      {pos:'DF',name:'부에노'},          {pos:'DF',name:'카르모나'},   {pos:'DF',name:'바수아르테'},{pos:'DF',name:'밀라'},
+      {pos:'MF',name:'산티 에레로'},    {pos:'MF',name:'가레세스'},   {pos:'MF',name:'지미 F'},    {pos:'MF',name:'콘세사'},
+      {pos:'FW',name:'바렐라'},          {pos:'FW',name:'이그나시오'},
+    ]},
+    away:{ formation:'4-3-3', players:[
+      {pos:'GK',name:'구티에레스'},
+      {pos:'DF',name:'밍고리안스'},      {pos:'DF',name:'폰세'},       {pos:'DF',name:'프레이레'},  {pos:'DF',name:'피에르루이지'},
+      {pos:'MF',name:'발렌시아 B'},     {pos:'MF',name:'파피타'},     {pos:'MF',name:'호드리고'},
+      {pos:'FW',name:'카예탄'},          {pos:'FW',name:'보야'},       {pos:'FW',name:'로베르트'},
+    ]}
+  },
+  { match:'도르트문트 vs 프라이부르크',
+    home:{ formation:'4-2-3-1', players:[
+      {pos:'GK',name:'코벨'},
+      {pos:'DF',name:'라이나'},          {pos:'DF',name:'후멜스'},     {pos:'DF',name:'슐로터벡'}, {pos:'DF',name:'마틴'},
+      {pos:'MF',name:'칸'},              {pos:'MF',name:'자이 J'},
+      {pos:'MF',name:'그로스크로이츠'},{pos:'MF',name:'렌스'},        {pos:'MF',name:'아던'},
+      {pos:'FW',name:'풀리식'},
+    ]},
+    away:{ formation:'4-2-3-1', players:[
+      {pos:'GK',name:'플렉켄'},
+      {pos:'DF',name:'퀸티야'},          {pos:'DF',name:'거터'},       {pos:'DF',name:'슐레흐터'}, {pos:'DF',name:'라이스'},
+      {pos:'MF',name:'에그슈타인'},      {pos:'MF',name:'바우만'},
+      {pos:'MF',name:'리들'},            {pos:'MF',name:'도안 I'},     {pos:'MF',name:'호믈'},
+      {pos:'FW',name:'그레고리치'},
+    ]}
+  },
+  { match:'오사수나 vs 세비야',
+    home:{ formation:'4-2-3-1', players:[
+      {pos:'GK',name:'에레레라'},
+      {pos:'DF',name:'에제르'},          {pos:'DF',name:'다비드 G'},   {pos:'DF',name:'우나이 G'},  {pos:'DF',name:'크루스'},
+      {pos:'MF',name:'루빈'},            {pos:'MF',name:'토레스 T'},
+      {pos:'MF',name:'카예타노 L'},     {pos:'MF',name:'브라이스'},   {pos:'MF',name:'몬카요라'},
+      {pos:'FW',name:'아부드'},
+    ]},
+    away:{ formation:'4-3-3', players:[
+      {pos:'GK',name:'힐라리오'},
+      {pos:'DF',name:'나바스 J'},        {pos:'DF',name:'콜로 무아니'},{pos:'DF',name:'로케 메사'},  {pos:'DF',name:'아쿠냐'},
+      {pos:'MF',name:'올리베르 T'},     {pos:'MF',name:'라키티치'},   {pos:'MF',name:'소르리베스'},
+      {pos:'FW',name:'니앙'},            {pos:'FW',name:'페드리C'},    {pos:'FW',name:'이카르디'},
+    ]}
+  },
+  { match:'비야레알 vs RC셀타',
+    home:{ formation:'4-3-3', players:[
+      {pos:'GK',name:'디에고 코스타'},
+      {pos:'DF',name:'팔로미노'},        {pos:'DF',name:'알비올'},     {pos:'DF',name:'베르타냐'},  {pos:'DF',name:'알레한드로 P'},
+      {pos:'MF',name:'코믹'},            {pos:'MF',name:'파레호'},     {pos:'MF',name:'알렉스 B'},
+      {pos:'FW',name:'헤라르트'},        {pos:'FW',name:'잭슨N'},      {pos:'FW',name:'카누'},
+    ]},
+    away:{ formation:'4-2-3-1', players:[
+      {pos:'GK',name:'루이 실바'},
+      {pos:'DF',name:'마누엘 F'},        {pos:'DF',name:'아구에로'},   {pos:'DF',name:'누녜스 J'},  {pos:'DF',name:'마르코스 A'},
+      {pos:'MF',name:'이아고 A'},        {pos:'MF',name:'타피아'},
+      {pos:'MF',name:'사베드라'},       {pos:'MF',name:'벨트란'},     {pos:'MF',name:'미나'},
+      {pos:'FW',name:'아스파스'},
+    ]}
+  },
+];
+document.getElementById('roundInfo').textContent = roundLabel;
+if(typeof roundMeta !== 'undefined'){
+  document.getElementById('rmPeriod').textContent = roundMeta.period;
+  document.getElementById('rmVotes').textContent = roundMeta.totalVotes + '명';
+  document.getElementById('rmPrize').textContent = roundMeta.prize1st + '원';
+}
+const _xzcze32=100000, TV=606668;
+let _xyiyy12=[];
+let _xzoij40=[];
+const _xwbgr47=[0,0], genCnt=[0,0];
+const _xxoxu12=new Set(['H']);
+let _xqdax87=[], groupIdCnt=0;
+const _xskgo39 = GS.map(()=>new Set());
+const _xvwic94 = GS.map(()=>new Set());
+ 
+const _xakbi63 = {
+  H: _xnpvc61 => _xnpvc61 >= 10,
+  M: _xnpvc61 => _xnpvc61 >= 4 && _xnpvc61 < 10,
+  L: _xnpvc61 => _xnpvc61 < 4,
+};
+function _xolvq75(){
+  const _xnpvc61=new Set();
+  for(let _xngyu58=0;_xngyu58<=6;_xngyu58++) for(let _xwila26=0;_xwila26<=4;_xwila26++){
+    const _xlboy22=Math.pow(2,_xngyu58)*Math.pow(3,_xwila26);
+    if(_xlboy22>=1&&_xlboy22<=100) _xnpvc61.add(_xlboy22);
+  }
+  return [..._xnpvc61].sort((_xngyu58,_xwila26)=>_xngyu58-_xwila26);
+}
+const _xdfww32=_xolvq75();
+function sw(_xwcbr17){
+  [0,1,2].forEach(_xykyh11=>{
+    const _xubqv35=document.getElementById('t'+_xykyh11);
+    const _xmuvm34=document.getElementById('p'+_xykyh11);
+    if(_xubqv35) _xubqv35.className='tab'+(_xykyh11===_xwcbr17?' on':'');
+    if(_xmuvm34){
+      if(_xykyh11===_xwcbr17){_xmuvm34.className='panel on';_xmuvm34.style.display='block';}
+      else{_xmuvm34.className='panel';_xmuvm34.style.display='none';}
+    }
+  });
+  if(_xwcbr17===2){renderTeams();renderFormations();}
+}
+function togS(_xnpvc61){
+  if(_xxoxu12.has(_xnpvc61)){if(_xxoxu12.size===1) return;_xxoxu12.delete(_xnpvc61);}
+  else _xxoxu12.add(_xnpvc61);
+  _xqfiu18();_xlipu66();
+}
+function _xqfiu18(){
+  ['H','M','L'].forEach(_xnpvc61=>{
+    const _xcjht19=document.getElementById('sb0'+_xnpvc61);
+    if(!_xcjht19) return;
+    _xcjht19.classList.remove('onH','onM','onL');
+    if(_xxoxu12.has(_xnpvc61)) _xcjht19.classList.add('on'+_xnpvc61);
+  });
+}
+function _xlipu66(){
+  const _xcjht19=document.getElementById('abar0');
+  const _xlvnc67=_xwbgr47[0];
+  const _xprxc41=[..._xxoxu12];
+  if(!_xlvnc67){_xcjht19.style.display='none';return;}
+  _xcjht19.style.display='block';
+  const _xcggy33=_xztld81(_xlvnc67,_xprxc41);
+  const _xulrg58={H:'높음',M:'중간',L:'낮음',MANUAL:'수동'};
+  const _xsfed90={H:'atH',M:'atM',L:'atL'};
+  _xcjht19.innerHTML='<strong>조합 배분:</strong> '+_xcggy33.map(_xngyu58=>`<span class="at ${_xsfed90[_xngyu58._xnpvc61]}">${_xulrg58[_xngyu58._xnpvc61]} ${_xngyu58.n}조합</span>`).join(' + ')+` = 총 ${_xlvnc67}조합`;
+}
+function _xztld81(_xlvnc67,_xprxc41){
+  const _xxzns16=_xprxc41.length;
+  const _xpjvd88=Math.floor(_xlvnc67/_xxzns16);
+  let _xazfp69=_xlvnc67-_xpjvd88*_xxzns16;
+  const _xtqmv30=_xvabu37([..._xprxc41]);
+  return _xprxc41.map(_xnpvc61=>({_xnpvc61,n:_xpjvd88+(_xtqmv30.indexOf(_xnpvc61)<_xazfp69?1:0)})).filter(_xngyu58=>_xngyu58.n>0);
+}
+function _xmjiu31(_xialc46,_xxzns16){
+  const _xfiex44=GS[_xialc46];if(!_xfiex44) return 0;
+  return _xxzns16==='w'?_xfiex44.w/100:_xxzns16==='d'?_xfiex44.d/100:_xxzns16==='l'?_xfiex44.l/100:0;
+}
+function _xxxvp91(keys){
+  let _xmuvm34=1;keys.forEach((_xxzns16,_xialc46)=>{_xmuvm34*=_xmjiu31(_xialc46,_xxzns16);});return _xmuvm34;
+}
+ 
+function _xfhgd12(strat, maxTry=500, fixedKeys=null){
+  const _xlguh59=_xakbi63[strat];
+  let _xgmbk11=null, bestDist=Infinity;
+  for(let _xwcbr17=0;_xwcbr17<maxTry;_xwcbr17++){
+    const keys=GS.map((_xfiex44,_xialc46)=>{
+      if(fixedKeys&&fixedKeys[_xialc46]!==null) return fixedKeys[_xialc46];
+      const _xmyws45=[{_xxzns16:'w',_xlboy22:_xfiex44.w},{_xxzns16:'d',_xlboy22:_xfiex44.d},{_xxzns16:'l',_xlboy22:_xfiex44.l}];
+      return _xmyws45[Math.floor(Math.random()*3)]._xxzns16;
+    });
+    const _xguwc63=_xxxvp91(keys);
+    const _xxkvn16=TV*_xguwc63;
+    if(_xlguh59(_xxkvn16)){
+      return {strat,keys,_xguwc63,_xxkvn16};
+    }
+    const _xdvwa98=strat==='H'?20:strat==='M'?7:1.5;
+    const _xhymf19=Math.abs(_xxkvn16-_xdvwa98);
+    if(_xhymf19<bestDist){bestDist=_xhymf19;_xgmbk11={strat,keys,_xguwc63,_xxkvn16};}
+  }
+  return _xgmbk11;
+}
+ 
+function _xflfg47(_xcggy33, fixedKeys=null){
+  const result=[];
+  let _xykxu48=0;
+  _xcggy33.forEach(({_xnpvc61,n})=>{
+    for(let _xykyh11=0;_xykyh11<n;_xykyh11++){
+      const _xocck56=_xfhgd12(_xnpvc61, 500, fixedKeys);
+      if(_xocck56&&!_xakbi63[_xnpvc61](_xocck56._xxkvn16)) _xykxu48++;
+      if(_xocck56) result.push(_xocck56);
+    }
+  });
+  return {combos:result, _xboyu52:_xykxu48};
+}
+function manualPick0(_xialc46, _xxzns16){
+  const _xnpvc61 = _xskgo39[_xialc46];
+  if(_xyiyy12.length > 0 && !_xyiyy12[0].partial){
+    if(_xnpvc61.has(_xxzns16)){
+      _xnpvc61.delete(_xxzns16);
+    } else {
+      _xnpvc61.add(_xxzns16);
+    }
+    if(_xnpvc61.size>0){
+      const _xfycj77=[];
+      _xyiyy12.forEach(_xocck56=>{
+        _xnpvc61.forEach(sk=>{
+          const _xarrj41=[..._xocck56.keys];
+          _xarrj41[_xialc46]=sk;
+          const _xguwc63=_xxxvp91(_xarrj41);
+          _xfycj77.push({..._xocck56,keys:_xarrj41,_xguwc63,_xxkvn16:TV*_xguwc63});
+        });
+      });
+      const _xordl82=new Set();
+      _xyiyy12=_xfycj77.filter(_xocck56=>{
+        const _xzpsn62=_xocck56.keys.join('');
+        if(_xordl82.has(_xzpsn62)) return false;
+        _xordl82.add(_xzpsn62); return true;
+      });
+    }
+    _xgdel31();
+  } else {
+    if(_xnpvc61.has(_xxzns16)) _xnpvc61.delete(_xxzns16);
+    else _xnpvc61.add(_xxzns16);
+    _xgdel31();
+    _xezhz40();
+  }
+  rdrTbl0();
+  _xjyec96();
+}
+function _xaalj22(){
+  return _xskgo39.reduce((_xmuvm34,_xnpvc61)=>_xmuvm34*(_xnpvc61.size||1),1);
+}
+function _xbnkv40(){
+  return _xskgo39.filter(_xnpvc61=>_xnpvc61.size>0).length;
+}
+function _xgdel31(){
+  const _xcwgl93 = _xaalj22();
+  const _xeadf78 = document.getElementById('asel0');
+  Array.from(_xeadf78.options).forEach(_xyeya69=>{
+    const _xlboy22 = +_xyeya69.value;
+    if(_xlboy22===0) return;
+    const _xrosj80 = (_xlboy22 >= _xcwgl93 && _xlboy22 % _xcwgl93 === 0);
+    _xyeya69.disabled = !_xrosj80;
+    _xyeya69.style.color = _xrosj80 ? '' : '#bbb';
+    _xyeya69.style.background = _xrosj80 ? '' : '#f5f5f5';
+    _xyeya69.title = _xrosj80 ? '' : (_xlboy22 < _xcwgl93 ? `수동 조합(${_xcwgl93}개)보다 작습니다` : `수동 조합(${_xcwgl93}개)의 배수가 아닙니다`);
+  });
+  if(_xeadf78.value && (+_xeadf78.value < _xcwgl93 || +_xeadf78.value % _xcwgl93 !== 0)){
+    _xeadf78.value = '0';
+    setSA0(0);
+  }
+}
+function _xezhz40(){
+  const _xjluv77 = _xbnkv40();
+  if(_xjluv77 === 0){ _xyiyy12=[]; return; }
+  let rows=[{keys:[], _xguwc63:1, partial: _xjluv77 < GS.length}];
+  for(let _xialc46=0; _xialc46<GS.length; _xialc46++){
+    const _xnpvc61 = _xskgo39[_xialc46];
+    if(_xnpvc61.size === 0){
+      rows = rows.map(_xzvsh51=>({..._xzvsh51, keys:[..._xzvsh51.keys,'?']}));
+    } else {
+      const _xxhli31=[];
+      for(const _xzvsh51 of rows){
+        for(const _xxzns16 of _xnpvc61){
+          const _xyedp32 = _xmjiu31(_xialc46,_xxzns16);
+          _xxhli31.push({keys:[..._xzvsh51.keys,_xxzns16], _xguwc63:_xzvsh51._xguwc63*_xyedp32, _xxkvn16:TV*_xzvsh51._xguwc63*_xyedp32, partial:_xzvsh51.partial, strat:'MANUAL'});
+        }
+      }
+      rows=_xxhli31;
+    }
+  }
+  _xyiyy12 = rows;
+}
+function genAI0(){
+  const _xlvnc67=_xwbgr47[0];
+  if(!_xlvnc67){alert('먼저 금액을 선택해 주세요.');return;}
+  const _xprxc41=[..._xxoxu12];
+  const _xsnrj89=_xaalj22();
+  if(_xlvnc67%_xsnrj89!==0){
+    alert(`선택한 금액(${_xlvnc67}조합)은 수동 조합 수(${_xsnrj89}개)의 배수가 아닙니다.`);
+    return;
+  }
+  genCnt[0]++;
+  document.getElementById('gc0').textContent=genCnt[0]+'회';
+  const _xbsvs60=GS.map((_,_xialc46)=>_xskgo39[_xialc46].size>0);
+  const _xfgrd80=[];
+  GS.forEach((_,_xialc46)=>{if(!_xbsvs60[_xialc46]) _xfgrd80.push(_xialc46);});
+  const _xdorq88=_xlvnc67/_xsnrj89; // AI가 자유 경기에서 만들어야 할 조합 수
+  function _xedtp90(n){
+    const _xiqgs71=[];
+    while(n%3===0){_xiqgs71.push(3);n/=3;}
+    while(n%2===0){_xiqgs71.push(2);n/=2;}
+    if(n!==1) return null; // 2,3으로만 분해 불가
+    return _xiqgs71;
+  }
+  const _xiqgs71=_xedtp90(_xdorq88);
+  if(!_xiqgs71||_xiqgs71.length>_xfgrd80.length){
+    alert('자유 경기 수가 부족하여 조합을 생성할 수 없습니다.');
+    return;
+  }
+  const _xfguu45=_xztld81(_xdorq88,_xprxc41);
+  const _xulrg58={H:'높음',M:'중간',L:'낮음'};
+  let _xdngx49=null, bestFallback=Infinity;
+  for(let _xubnc14=0;_xubnc14<200;_xubnc14++){
+    const _xnxgv73=_xvabu37([..._xfgrd80]);
+    const _xmkru34={}; // _xialc46 → Set of keys
+    for(let _xmugs86=0;_xmugs86<_xiqgs71.length;_xmugs86++){
+      const _xialc46=_xnxgv73[_xmugs86];
+      const _xfiex44=GS[_xialc46];
+      const _xfqqg19=_xiqgs71[_xmugs86]; // 2 또는 3
+      const _xnjff48=['w','d','l'];
+      if(_xfqqg19===3){
+        _xmkru34[_xialc46]=new Set(_xnjff48);
+      } else {
+        const _xuced95=_xvabu37([..._xnjff48]);
+        _xmkru34[_xialc46]=new Set(_xuced95.slice(0,2));
+      }
+    }
+    for(let _xmugs86=_xiqgs71.length;_xmugs86<_xnxgv73.length;_xmugs86++){
+      const _xialc46=_xnxgv73[_xmugs86];
+      const _xnjff48=['w','d','l'];
+      _xmkru34[_xialc46]=new Set([_xnjff48[Math.floor(Math.random()*3)]]);
+    }
+    let _xtczk69=[{keys:new Array(GS.length).fill(null),_xguwc63:1}];
+    for(const _xialc46 of _xfgrd80){
+      const _xxhli31=[];
+      for(const _xzvsh51 of _xtczk69){
+        for(const _xxzns16 of _xmkru34[_xialc46]){
+          const _xarrj41=[..._xzvsh51.keys];
+          _xarrj41[_xialc46]=_xxzns16;
+          const _xyedp32=_xmjiu31(_xialc46,_xxzns16);
+          _xxhli31.push({keys:_xarrj41, _xguwc63:_xzvsh51._xguwc63*_xyedp32});
+        }
+      }
+      _xtczk69=_xxhli31;
+    }
+    let _xqpvs35=1;
+    for(let _xialc46=0;_xialc46<GS.length;_xialc46++){
+      if(_xbsvs60[_xialc46]){
+        _xqpvs35*=_xmjiu31(_xialc46,[..._xskgo39[_xialc46]][0]);
+      }
+    }
+    let _xboyu52=0;
+    const _xllfp83=[];
+    _xfguu45.forEach(({_xnpvc61,n})=>{for(let _xykyh11=0;_xykyh11<n;_xykyh11++) _xllfp83.push(_xnpvc61);});
+    _xtczk69.forEach(_xyedp32=>{_xyedp32._xxkvn16=TV*_xqpvs35*_xyedp32._xguwc63;});
+    _xtczk69.sort((_xngyu58,_xwila26)=>_xwila26._xxkvn16-_xngyu58._xxkvn16); // 높은 생존 → H 우선
+    _xllfp83.sort((_xngyu58,_xwila26)=>{const _xxdll90={H:0,M:1,L:2};return _xxdll90[_xngyu58]-_xxdll90[_xwila26];});
+    for(let _xykyh11=0;_xykyh11<_xtczk69.length;_xykyh11++){
+      _xtczk69[_xykyh11].strat=_xllfp83[_xykyh11]||_xprxc41[0];
+      if(!_xakbi63[_xtczk69[_xykyh11].strat](_xtczk69[_xykyh11]._xxkvn16)) _xboyu52++;
+    }
+    if(_xboyu52<bestFallback){
+      bestFallback=_xboyu52;
+      _xdngx49={_xmkru34, _xtczk69};
+      if(_xboyu52===0) break;
+    }
+  }
+  let _xfayn44=[{keys:new Array(GS.length).fill(null)}];
+  for(let _xialc46=0;_xialc46<GS.length;_xialc46++){
+    if(!_xbsvs60[_xialc46]) continue;
+    const _xxhli31=[];
+    for(const _xzvsh51 of _xfayn44){
+      for(const _xxzns16 of _xskgo39[_xialc46]){
+        const _xarrj41=[..._xzvsh51.keys];
+        _xarrj41[_xialc46]=_xxzns16;
+        _xxhli31.push({keys:_xarrj41});
+      }
+    }
+    _xfayn44=_xxhli31;
+  }
+  const _xrvct29=[];
+  for(const _xtvjj38 of _xfayn44){
+    for(const _xzuse93 of _xdngx49._xtczk69){
+      const keys=[..._xtvjj38.keys];
+      _xfgrd80.forEach(_xialc46=>{keys[_xialc46]=_xzuse93.keys[_xialc46];});
+      const _xguwc63=_xxxvp91(keys);
+      const _xxkvn16=TV*_xguwc63;
+      const _xvean76=_xakbi63.H(_xxkvn16)?'H':_xakbi63.M(_xxkvn16)?'M':'L';
+      _xrvct29.push({keys,_xguwc63,_xxkvn16,strat:_xvean76,requestedStrat:_xzuse93.strat});
+    }
+  }
+  _xyiyy12=_xrvct29;
+  let _xqpyz58=0;
+  const _xfbde28={H:0,M:0,L:0};
+  _xrvct29.forEach(c=>{
+    _xfbde28[c.strat]++;
+    if(c.strat!==c.requestedStrat) _xqpyz58++;
+  });
+  const _xszbf37=_xztld81(_xdorq88,_xprxc41).map(_xngyu58=>`${_xulrg58[_xngyu58._xnpvc61]} ${_xngyu58.n}조합`).join(' + ');
+  const _xnbrp72=_xbsvs60.filter(Boolean).length>0?
+    ` · 수동 고정 ${_xbsvs60.filter(Boolean).length}경기 포함`:'';
+  const _xugjt83=_xiqgs71.length>0?` · AI 복수 ${_xiqgs71.length}경기`:'';
+  const _xeawd14=document.getElementById('ah0');
+  _xeawd14.style.cssText='display:block;background:#E1F5EE;border:1px solid #5DCAA5;border-radius:6px;padding:8px 12px;margin-bottom:8px;color:#085041;font-size:11px;line-height:1.7';
+  _xeawd14.innerHTML=`<strong>${genCnt[0]}번째 생성</strong> · ${_xszbf37} = 총 <strong>${_xrvct29.length}개 조합 = ${_xiakb39(_xrvct29.length*1000)}</strong>${_xnbrp72}${_xugjt83}`;
+  const _xmpvo52=document.getElementById('wb0');
+  if(_xqpyz58>0){
+    const _xxmrx17=Object.entries(_xfbde28).filter(([,_xlboy22])=>_xlboy22>0).map(([_xxzns16,_xlboy22])=>`${_xulrg58[_xxzns16]} ${_xlboy22}개`).join(' / ');
+    _xmpvo52.style.display='block';
+    _xmpvo52.innerHTML=`⚠️ <strong>${_xqpyz58}개 조합</strong>이 선택한 전략 범위를 벗어났습니다.<br>실제 분포: ${_xxmrx17}<br><span style="font-size:10px;color:#999">다시 생성하면 다른 결과가 나올 수 있습니다.</span>`;
+  } else {
+    _xmpvo52.style.display='none';
+  }
+  rdrTbl0();
+  _xjyec96();
+}
+function rdrTbl0(){
+  const _xtqxl77=_xyiyy12.length>0?_xyiyy12[0].keys:null;
+  document.getElementById('tb0').innerHTML=GS.map((_xfiex44,_xialc46)=>{
+    const _xbtvx16 = _xskgo39[_xialc46];
+    const _xdwwu99 = _xbtvx16.size===0 && _xyiyy12.length>0
+      ? new Set(_xyiyy12.map(_xocck56=>_xocck56.keys[_xialc46]).filter(_xxzns16=>_xxzns16&&_xxzns16!=='?'))
+      : null;
+    const _xzdgh38 = _xbtvx16.size>0 ? null : (_xtqxl77?_xtqxl77[_xialc46]:null);
+    const _xmvwq94=(_xxzns16,_xlboy22)=>{
+      const _xapms27=_xfiex44.result===_xxzns16&&_xfiex44.st==='종료';
+      const _xmgua66 = _xbtvx16.size>0 ? _xbtvx16.has(_xxzns16) :
+                         _xdwwu99 ? _xdwwu99.has(_xxzns16) :
+                         _xzdgh38===_xxzns16;
+      let _xxstu62='mpb';
+      if(_xmgua66) _xxstu62+=' '+_xxzns16.toUpperCase();
+      if(_xbtvx16.size>0&&_xbtvx16.has(_xxzns16)) _xxstu62+=' locked-manual';
+      if(_xapms27) _xxstu62+=' result-'+_xxzns16.toUpperCase();
+      return`<button class="${_xxstu62}" onclick="manualPick0(${_xialc46},'${_xxzns16}')" title="${_xbtvx16.size>0&&_xbtvx16.has(_xxzns16)?'🔒 수동 고정 (재클릭시 해제)':''}">${_xlboy22.toFixed(1)}%</button>`;
+    };
+    return`<tr>
+      <td style="font-size:12px;color:#1a1a1a;font-weight:600;white-space:nowrap;text-align:center">${_xfiex44.no}. ${_xfiex44.home} <span style="color:#bbb;font-weight:400;font-size:11px">vs</span> ${_xfiex44.away}</td>
+      <td style="font-size:11px;color:#888;text-align:_xdvwa98;white-space:nowrap;padding-left:2px;padding-right:14px">${_xfiex44.lge}</td>
+      <td style="text-align:_xdvwa98;padding-left:4px;padding-right:4px">${_xmvwq94('w',_xfiex44.w)}</td>
+      <td style="text-align:_xdvwa98;padding-left:4px;padding-right:4px">${_xmvwq94('d',_xfiex44.d)}</td>
+      <td style="text-align:_xdvwa98;padding-left:4px;padding-right:4px">${_xmvwq94('l',_xfiex44.l)}</td>
+      <td style="text-align:_xdvwa98;padding:5px 3px">${stag(_xfiex44.st, _xfiex44.result)}</td>
+    </tr>`;
+  }).join('');
+  _xoljt96();
+}
+function _xoljt96(){
+  const _xlvnc67=_xyiyy12.length;
+  const _xmlmr37=_xlvnc67*1000;
+  const _xjluv77=GS.filter((_,_xialc46)=>_xskgo39[_xialc46]&&_xskgo39[_xialc46].size>0).length;
+  const _xnnya70 = _xyiyy12.length>0 && _xyiyy12[0].partial ? `${_xjluv77}/${GS.length}경기 선택 중` : (_xlvnc67>0?`${_xlvnc67}개 조합 생성됨`:'0개 조합 생성됨');
+  document.getElementById('sc0').textContent = _xyiyy12.length===0 && _xjluv77===0 ? '0개 조합 생성됨' : _xnnya70;
+  document.getElementById('cv0').textContent=_xlvnc67.toLocaleString();
+  const _xetri19=document.getElementById('ca0');
+  _xetri19.textContent=_xiakb39(_xmlmr37);
+  _xetri19.className='camt'+(_xmlmr37>_xzcze32?' over':'');
+  if(!_xlvnc67){['mp0','ms0','mr0'].forEach(id=>document.getElementById(id).textContent='-');return;}
+  document.getElementById('mp0').textContent=_xlvnc67+'개';
+  document.getElementById('ms0').textContent=_xiakb39(_xmlmr37);
+  const _xrrlb81=_xyiyy12.reduce((_xnpvc61,c)=>_xnpvc61+c._xxkvn16,0);
+  document.getElementById('mr0').textContent=fmtSurvTotal(_xrrlb81);
+}
+ 
+function rdrTbl1(){
+  const _xtqxl77=_xzoij40.length>0?_xzoij40[0].keys:null;
+  document.getElementById('tb1').innerHTML=GS.map((_xfiex44,_xialc46)=>{
+    const _xmjhi67=_xvwic94[_xialc46];
+    const _xdwwu99 = _xmjhi67.size===0 && _xzoij40.length>0
+      ? new Set(_xzoij40.map(_xocck56=>_xocck56.keys[_xialc46]).filter(_xxzns16=>_xxzns16&&_xxzns16!=='?'))
+      : null;
+    const _xzdgh38=_xmjhi67.size>0?null:(_xtqxl77?_xtqxl77[_xialc46]:null);
+    const _xmvwq94=(_xxzns16,_xlboy22)=>{
+      const _xapms27=_xfiex44.result===_xxzns16&&_xfiex44.st==='종료';
+      const _xmgua66=_xmjhi67.size>0?_xmjhi67.has(_xxzns16):
+                       _xdwwu99?_xdwwu99.has(_xxzns16):
+                       _xzdgh38===_xxzns16;
+      let _xxstu62='mpb';
+      if(_xmgua66) _xxstu62+=' '+_xxzns16.toUpperCase();
+      if(_xapms27) _xxstu62+=' result-'+_xxzns16.toUpperCase();
+      if(_xmjhi67.size>0&&_xmjhi67.has(_xxzns16)) _xxstu62+=' locked-manual';
+      const _xvlfw47=_xmjhi67.size>0&&_xmjhi67.has(_xxzns16)?'🔒 수동 고정 (재클릭시 해제)':'';
+      return`<button class="${_xxstu62}" onclick="manualPick1(${_xialc46},'${_xxzns16}')" title="${_xvlfw47}">${_xlboy22.toFixed(1)}%</button>`;
+    };
+    return`<tr>
+      <td style="font-size:12px;color:#1a1a1a;font-weight:600;white-space:nowrap;text-align:center">${_xfiex44.no}. ${_xfiex44.home} <span style="color:#bbb;font-weight:400;font-size:11px">vs</span> ${_xfiex44.away}</td>
+      <td style="font-size:11px;color:#888;text-align:_xdvwa98;white-space:nowrap;padding-left:2px;padding-right:14px">${_xfiex44.lge}</td>
+      <td style="text-align:_xdvwa98;padding-left:4px;padding-right:4px">${_xmvwq94('w',_xfiex44.w)}</td>
+      <td style="text-align:_xdvwa98;padding-left:4px;padding-right:4px">${_xmvwq94('d',_xfiex44.d)}</td>
+      <td style="text-align:_xdvwa98;padding-left:4px;padding-right:4px">${_xmvwq94('l',_xfiex44.l)}</td>
+      <td style="text-align:_xdvwa98;padding:5px 3px">${stag(_xfiex44.st, _xfiex44.result)}</td>
+    </tr>`;
+  }).join('');
+  _xqbme14();
+}
+function tp1(_xialc46,_xxzns16){
+  manualPick1(_xialc46,_xxzns16);
+}
+function _xqbme14(){
+  const _xlvnc67=_xzoij40.length;
+  const _xmlmr37=_xlvnc67*1000;
+  const _xkulo96=_xmlmr37>_xzcze32;
+  const _xrlvo51=GS.filter((_,_xialc46)=>_xvwic94[_xialc46].size>0).length;
+  const _xugob33=_xzoij40.length>0&&_xzoij40[0]&&_xzoij40[0].partial?`${_xrlvo51}/${GS.length}경기 선택 중`:(_xlvnc67>0?`${_xlvnc67}개 조합 생성됨`:'0 / 14 경기 선택됨');
+  document.getElementById('sc1').textContent=_xugob33;
+  document.getElementById('cv1').textContent=_xlvnc67.toLocaleString();
+  const _xetri19=document.getElementById('ca1');
+  _xetri19.textContent=_xiakb39(_xmlmr37);
+  _xetri19.className='camt'+(_xkulo96?' over':'');
+  if(!_xlvnc67){['mp1','ms1','mr1'].forEach(id=>document.getElementById(id).textContent='-');return;}
+  document.getElementById('mp1').textContent=_xlvnc67+'개';
+  document.getElementById('ms1').textContent=_xkulo96?'한도 초과':_xiakb39(_xmlmr37);
+  const _xrrlb81=_xzoij40.reduce((_xnpvc61,c)=>_xnpvc61+c._xxkvn16,0);
+  document.getElementById('mr1').textContent=fmtSurv(_xrrlb81);
+}
+function manualPick1(_xialc46,_xxzns16){
+  const _xnpvc61 = _xvwic94[_xialc46];
+  if(_xnpvc61.has(_xxzns16)) _xnpvc61.delete(_xxzns16);
+  else          _xnpvc61.add(_xxzns16);
+  _xxgfs12();
+  _xayqv97();
+  rdrTbl1();
+  _xqswj29();
+}
+function _xayqv97(){
+  const _xjluv77=GS.filter((_,_xialc46)=>_xvwic94[_xialc46].size>0).length;
+  if(_xjluv77===0){_xzoij40=[];return;}
+  let rows=[{keys:[],_xguwc63:1,partial:_xjluv77<GS.length}];
+  for(let _xialc46=0;_xialc46<GS.length;_xialc46++){
+    const _xnpvc61=_xvwic94[_xialc46];
+    if(_xnpvc61.size===0){
+      rows=rows.map(_xzvsh51=>({..._xzvsh51,keys:[..._xzvsh51.keys,'?']}));
+    } else {
+      const _xxhli31=[];
+      for(const _xzvsh51 of rows)
+        for(const _xxzns16 of _xnpvc61){
+          const _xyedp32=_xmjiu31(_xialc46,_xxzns16);
+          _xxhli31.push({keys:[..._xzvsh51.keys,_xxzns16],_xguwc63:_xzvsh51._xguwc63*_xyedp32,_xxkvn16:TV*_xzvsh51._xguwc63*_xyedp32,partial:_xzvsh51.partial});
+        }
+      rows=_xxhli31;
+    }
+  }
+  _xzoij40=rows;
+}
+function genAI1(){
+  const _xlvnc67=_xwbgr47[1];
+  if(!_xlvnc67){alert('먼저 금액을 선택해 주세요.');return;}
+  const _xuwdp67=parseFloat(document.getElementById('pi').value);
+  if(isNaN(_xuwdp67)||_xuwdp67<=0){alert('생존 인원 기준을 입력해 주세요.');return;}
+  genCnt[1]++;
+  document.getElementById('gc1').textContent=genCnt[1]+'회';
+  const _xbsvs60=GS.map((_,_xialc46)=>_xvwic94[_xialc46].size>0);
+  const _xfgrd80=[];
+  GS.forEach((_,_xialc46)=>{if(!_xbsvs60[_xialc46]) _xfgrd80.push(_xialc46);});
+  const _xsnrj89=_xvwic94.reduce((_xmuvm34,_xnpvc61)=>_xmuvm34*(_xnpvc61.size||1),1);
+  const _xdorq88=_xlvnc67/_xsnrj89;
+  function _xedtp90(n){
+    const _xiqgs71=[];
+    while(n%3===0){_xiqgs71.push(3);n/=3;}
+    while(n%2===0){_xiqgs71.push(2);n/=2;}
+    if(n!==1) return null;
+    return _xiqgs71;
+  }
+  const _xiqgs71=_xedtp90(_xdorq88);
+  if(!_xiqgs71||_xiqgs71.length>_xfgrd80.length){
+    alert('자유 경기 수가 부족하여 조합을 생성할 수 없습니다.');
+    return;
+  }
+  const _xgdya85 = Math.log(_xuwdp67 / TV);
+  const _xcprq14 = _xgdya85 / GS.length;
+  function _xsmlt88(_xialc46){
+    const _xfiex44=GS[_xialc46];
+    const _xmyws45=[{_xxzns16:'w',_xlboy22:_xfiex44.w},{_xxzns16:'d',_xlboy22:_xfiex44.d},{_xxzns16:'l',_xlboy22:_xfiex44.l}];
+    _xmyws45.sort((_xngyu58,_xwila26)=>Math.abs(Math.log(_xngyu58._xlboy22/100)-_xcprq14)-Math.abs(Math.log(_xwila26._xlboy22/100)-_xcprq14));
+    return _xmyws45;
+  }
+  let _xdngx49=null, bestDiff=Infinity;
+  for(let _xubnc14=0;_xubnc14<200;_xubnc14++){
+    const _xnxgv73=_xvabu37([..._xfgrd80]);
+    const _xmkru34={};
+    for(let _xmugs86=0;_xmugs86<_xiqgs71.length;_xmugs86++){
+      const _xialc46=_xnxgv73[_xmugs86];
+      const _xfqqg19=_xiqgs71[_xmugs86];
+      const _xtcqf45=_xsmlt88(_xialc46);
+      if(_xfqqg19===3){
+        _xmkru34[_xialc46]=new Set(_xtcqf45.map(o=>o._xxzns16));
+      } else {
+        const _xitxb40=_xvabu37([..._xtcqf45]).slice(0,2);
+        _xmkru34[_xialc46]=new Set(_xitxb40.map(o=>o._xxzns16));
+      }
+    }
+    for(let _xmugs86=_xiqgs71.length;_xmugs86<_xnxgv73.length;_xmugs86++){
+      const _xialc46=_xnxgv73[_xmugs86];
+      const _xfiex44=GS[_xialc46];
+      const _xmyws45=[{_xxzns16:'w',_xlboy22:_xfiex44.w},{_xxzns16:'d',_xlboy22:_xfiex44.d},{_xxzns16:'l',_xlboy22:_xfiex44.l}];
+      const _xvyjj21=_xmyws45.map(o=>1/(Math.abs(Math.log(o._xlboy22/100)-_xcprq14)+0.01));
+      const _xweqa70=_xvyjj21.reduce((_xnpvc61,w)=>_xnpvc61+w,0);
+      let _xyedp32=Math.random()*_xweqa70, cum=0;
+      let _xonvn55=_xmyws45[_xmyws45.length-1]._xxzns16;
+      for(let _xykyh11=0;_xykyh11<_xmyws45.length;_xykyh11++){cum+=_xvyjj21[_xykyh11];if(_xyedp32<=cum){_xonvn55=_xmyws45[_xykyh11]._xxzns16;break;}}
+      _xmkru34[_xialc46]=new Set([_xonvn55]);
+    }
+    let _xtczk69=[{keys:new Array(GS.length).fill(null),_xguwc63:1}];
+    for(const _xialc46 of _xfgrd80){
+      const _xxhli31=[];
+      for(const _xzvsh51 of _xtczk69){
+        for(const _xxzns16 of _xmkru34[_xialc46]){
+          const _xarrj41=[..._xzvsh51.keys];
+          _xarrj41[_xialc46]=_xxzns16;
+          const _xyedp32=_xmjiu31(_xialc46,_xxzns16);
+          _xxhli31.push({keys:_xarrj41,_xguwc63:_xzvsh51._xguwc63*_xyedp32});
+        }
+      }
+      _xtczk69=_xxhli31;
+    }
+    let _xqpvs35=1;
+    for(let _xialc46=0;_xialc46<GS.length;_xialc46++){
+      if(_xbsvs60[_xialc46]) _xqpvs35*=_xmjiu31(_xialc46,[..._xvwic94[_xialc46]][0]);
+    }
+    const _xhkbm51=_xtczk69.reduce((_xnpvc61,_xyedp32)=>_xnpvc61+TV*_xqpvs35*_xyedp32._xguwc63,0)/_xtczk69.length;
+    const _xkgmb95=Math.abs(_xhkbm51-_xuwdp67);
+    if(_xkgmb95<bestDiff){
+      bestDiff=_xkgmb95;
+      _xdngx49={_xmkru34,_xtczk69};
+      if(_xkgmb95<_xuwdp67*0.1) break; // 10% 이내면 충분
+    }
+  }
+  let _xfayn44=[{keys:new Array(GS.length).fill(null)}];
+  for(let _xialc46=0;_xialc46<GS.length;_xialc46++){
+    if(!_xbsvs60[_xialc46]) continue;
+    const _xxhli31=[];
+    for(const _xzvsh51 of _xfayn44){
+      for(const _xxzns16 of _xvwic94[_xialc46]){
+        const _xarrj41=[..._xzvsh51.keys];
+        _xarrj41[_xialc46]=_xxzns16;
+        _xxhli31.push({keys:_xarrj41});
+      }
+    }
+    _xfayn44=_xxhli31;
+  }
+  _xzoij40=[];
+  for(const _xtvjj38 of _xfayn44){
+    for(const _xzuse93 of _xdngx49._xtczk69){
+      const keys=[..._xtvjj38.keys];
+      _xfgrd80.forEach(_xialc46=>{keys[_xialc46]=_xzuse93.keys[_xialc46];});
+      const _xguwc63=_xxxvp91(keys);
+      _xzoij40.push({keys,_xguwc63,_xxkvn16:TV*_xguwc63});
+    }
+  }
+  const _xenda21 = _xzoij40.length>1
+    ? `${fmtSurv(Math.min(..._xzoij40.map(c=>c._xxkvn16)))} ~ ${fmtSurv(Math.max(..._xzoij40.map(c=>c._xxkvn16)))}`
+    : fmtSurv(_xzoij40[0]?._xxkvn16||0);
+  const _xnbrp72=_xbsvs60.filter(Boolean).length>0?` · 수동 고정 ${_xbsvs60.filter(Boolean).length}경기`:'';
+  const _xugjt83=_xiqgs71.length>0?` · AI 복수 ${_xiqgs71.length}경기`:'';
+  const _xeawd14=document.getElementById('ah1');
+  _xeawd14.style.cssText='display:block;background:#E1F5EE;border:1px solid #5DCAA5;border-radius:6px;padding:8px 12px;margin-bottom:8px;color:#085041;font-size:11px;line-height:1.8';
+  _xeawd14.innerHTML=`<strong>${genCnt[1]}번째 생성</strong> · 목표 생존: <strong>${_xuwdp67.toLocaleString()}명</strong> · <strong>${_xzoij40.length}개 조합 = ${_xiakb39(_xzoij40.length*1000)}</strong>${_xnbrp72}${_xugjt83}<br>생성 조합 예상 생존 범위: <strong>${_xenda21}</strong>`;
+  const _xnwbj60=document.getElementById('wb1');
+  const _xpdfx74=_xzoij40.filter(c=>c._xxkvn16<_xuwdp67);
+  if(_xpdfx74.length>0){
+    const _xgefw58=Math.min(..._xzoij40.map(c=>c._xxkvn16));
+    const _xpxlx64=Math.max(..._xzoij40.map(c=>c._xxkvn16));
+    const _xhkbm51=_xzoij40.reduce((_xnpvc61,c)=>_xnpvc61+c._xxkvn16,0)/_xzoij40.length;
+    _xnwbj60.style.display='block';
+    _xnwbj60.innerHTML=`⚠️ <strong>${_xpdfx74.length}개 조합</strong>이 목표 생존(${_xuwdp67.toLocaleString()}명)보다 낮습니다.<br>실제 범위: ${fmtSurv(_xgefw58)} ~ ${fmtSurv(_xpxlx64)} · 평균: ${fmtSurv(_xhkbm51)}<br><span style="font-size:10px;color:#999">다시 생성하면 다른 결과가 나올 수 있습니다.</span>`;
+  } else {
+    _xnwbj60.style.display='none';
+  }
+  rdrTbl1();
+  _xqswj29();
+}
+ 
+function renderComboLine(c, _xykyh11){
+  const _xmiwo55={w:'W',d:'D',l:'L','?':'q'};
+  const _xrvhy92={w:'승',d:'무',l:'패','?':'?'};
+  const _xcutk76={H:'H',M:'M',L:'L',MANUAL:'MN'};
+  const _xbfie52={H:'높음',M:'중간',L:'낮음',MANUAL:'수동'};
+  const _xqfux47 = c.keys.map((_xxzns16,_xialc46)=>{
+    const _xxstu62='cl-pick '+(_xmiwo55[_xxzns16]||'q');
+    return`<span class="${_xxstu62}" title="${GS[_xialc46]?GS[_xialc46].no+'.'+GS[_xialc46].home:''}${_xialc46+1}">${_xialc46+1}</span>`;
+  }).join('');
+  const _xtkzy68 = _xvuvr44(c.keys.map(_xxzns16=>_xrvhy92[_xxzns16]).join('-'));
+  const _xrtiw16 = _xtkzy68?_xchfp37(_xtkzy68._xrrem82,_xtkzy68._xweqa70):'';
+  const _xdugp55 = _xrtiw16?`<span class="result-_xxpxs45 ${_xrtiw16.includes('1등')?'rb-1':_xrtiw16.includes('2등')?'rb-2':_xrtiw16.includes('3등')?'rb-3':'rb-4'}" style="margin-right:4px">${_xrtiw16}</span>`:'';
+  const _xnzfc50 = c.strat?(_xcutk76[c.strat]||'MN'):'MN';
+  const _xipis82 = c.strat?(_xbfie52[c.strat]||'수동'):'수동';
+  return`<div class="combo-line">
+    <span class="cl-idx">${_xykyh11+1}</span>
+    <div class="cl-picks">${_xqfux47}</div>
+    ${_xdugp55}
+    <span class="cl-strat ${_xnzfc50}">${_xipis82}</span>
+    <span class="cl-surv">${fmtSurv(c._xxkvn16)}</span>
+  </div>`;
+}
+function _xjyec96(){
+  const _xcjht19=document.getElementById('cp0');
+  const _xnmig66=document.getElementById('cp0b');
+  if(!_xyiyy12.length){_xcjht19.style.display='none';return;}
+  _xcjht19.style.display='block';
+  _xnmig66.innerHTML=_xyiyy12.map((c,_xykyh11)=>renderComboLine(c,_xykyh11)).join('');
+}
+function _xqswj29(){
+  const _xcjht19=document.getElementById('cp1');
+  const _xnmig66=document.getElementById('cp1b');
+  if(!_xzoij40.length){_xcjht19.style.display='none';return;}
+  _xcjht19.style.display='block';
+  _xnmig66.innerHTML=_xzoij40.map((c,_xykyh11)=>renderComboLine(c,_xykyh11)).join('');
+}
+ 
+function showInfo(tab){
+  document.getElementById('navTeam').className='nav-tab'+(tab==='team'?' on':'');
+  document.getElementById('navForm').className='nav-tab'+(tab==='form'?' on':'');
+  document.getElementById('infoTeam').style.display=tab==='team'?'block':'none';
+  document.getElementById('infoForm').style.display=tab==='form'?'block':'none';
+}
+function _xfkry22(val,_xxstu62){
+  return`<div class="stat-bar"><div class="stat-fill ${_xxstu62}" style="width:${val}%"></div></div>`;
+}
+function renderTeams(){
+  const _xcjht19=document.getElementById('infoTeam');
+  if(!_xcjht19) return;
+  _xcjht19.innerHTML=GS.map((_xfiex44,_xykyh11)=>{
+    const _xrrlb81=TEAM_STATS[_xykyh11]||{home:{name:_xfiex44.home,atk:50,def:50,pos:50,ovr:50,rec:[]},away:{name:_xfiex44.away,atk:50,def:50,pos:50,ovr:50,rec:[]},tip:''};
+    const _xxpyx53=(_xwcbr17,isHome)=>{
+      const _xxpxs45=isHome?'<span class="home-badge">홈</span>':'<span class="away-badge">원정</span>';
+      return`<div class="team-col">
+        <div class="team-name">${_xwcbr17.name}${_xxpxs45}</div>
+        <div class="stat-row"><span class="stat-label">공격</span>${_xfkry22(_xwcbr17.atk,'atk')}<span class="stat-val">${_xwcbr17.atk}</span></div>
+        <div class="stat-row"><span class="stat-label">수비</span>${_xfkry22(_xwcbr17.def,'def')}<span class="stat-val">${_xwcbr17.def}</span></div>
+        <div class="stat-row"><span class="stat-label">점유</span>${_xfkry22(_xwcbr17.pos,'pos')}<span class="stat-val">${_xwcbr17.pos}</span></div>
+        <div class="stat-row"><span class="stat-label">종합</span>${_xfkry22(_xwcbr17.ovr,'ovr')}<span class="stat-val" style="font-size:11px;font-weight:800;color:#F57F17">${_xwcbr17.ovr}</span></div>
+      </div>`;
+    };
+    return`<div class="match-card">
+      <div class="match-header">
+        <span class="match-no">${_xfiex44.no}</span>
+        ${_xfiex44.home} <span style="color:#9FE1CB;margin:0 6px;font-size:11px">vs</span> ${_xfiex44.away}
+        <span class="match-lge">${_xfiex44.lge}</span>
+      </div>
+      <div style="padding:8px 12px 4px;display:flex;gap:4px;font-size:11px;color:#555;align-items:center">
+        <span style="font-weight:600;color:#1B7A1B">승 ${_xfiex44.w}%</span>
+        <span class="vote-bar-w" style="width:${_xfiex44.w*0.7}px"></span>
+        <span style="color:#888;margin:0 4px">무 ${_xfiex44.d}%</span>
+        <span class="vote-bar-d" style="width:${_xfiex44.d*0.7}px"></span>
+        <span style="color:#C0180E;margin-left:4px">패 ${_xfiex44.l}%</span>
+        <span class="vote-bar-l" style="width:${_xfiex44.l*0.7}px"></span>
+      </div>
+      <div class="team-row">${_xxpyx53(_xrrlb81.home,true)}${_xxpyx53(_xrrlb81.away,false)}</div>
+    </div>`;
+  }).join('');
+}
+function renderFormations(){
+  const _xcjht19=document.getElementById('infoForm');
+  _xcjht19.innerHTML=GS.map((_xfiex44,_xykyh11)=>{
+    const _xfdkw27=_xhyxr91[_xykyh11];
+    if(!_xfdkw27) return '';
+    const _xumlh24={GK:0,DF:1,MF:2,FW:3};
+    const _xttvz98=(side, label)=>{
+      const _xtcqf45=[...side.players].sort((_xngyu58,_xwila26)=>(_xumlh24[_xngyu58.pos]||0)-(_xumlh24[_xwila26.pos]||0));
+      const rows=_xtcqf45.map(_xmuvm34=>`<tr>
+        <td><span class="pos-_xxpxs45 pos-${_xmuvm34.pos}">${_xmuvm34.pos}</span></td>
+        <td style="text-align:left;font-weight:500">${_xmuvm34.name}</td>
+      </tr>`).join('');
+      return`<div style="flex:1;min-width:0">
+        <div style="font-size:12px;font-weight:700;color:#1a1a1a;margin-bottom:4px">${label} <span style="font-size:10px;color:#888;font-weight:400">${side.formation}</span></div>
+        <table class="form-table">
+          <thead><tr><th style="width:40px">포지션</th><th style="text-align:left">선수명</th></tr></thead>
+          <tbody>${rows}</tbody>
+        </table>
+      </div>`;
+    };
+    return`<div class="match-card">
+      <div class="match-header">
+        <span class="match-no">${_xfiex44.no}</span>
+        ${_xfiex44.home} <span style="color:#9FE1CB;margin:0 6px;font-size:11px">vs</span> ${_xfiex44.away}
+        <span class="match-lge">${_xfiex44.lge}</span>
+      </div>
+      <div style="display:flex;gap:10px;padding:10px 12px">
+        ${_xttvz98(_xfdkw27.home,'홈: '+_xfiex44.home)}
+        <div style="width:1px;background:#e0e0e0;flex-shrink:0"></div>
+        ${_xttvz98(_xfdkw27.away,'원정: '+_xfiex44.away)}
+      </div>
+    </div>`;
+  }).join('');
+}
+function resetTab(tab){
+  if(tab===0){
+    _xyiyy12=[];genCnt[0]=0;GS.forEach((_,_xialc46)=>{_xskgo39[_xialc46]=new Set();});
+    document.getElementById('gc0').textContent='0회';
+    document.getElementById('ah0').style.display='none';
+    _xgdel31();
+    document.getElementById('wb0').style.display='none';
+    document.getElementById('cp0').style.display='none';
+    rdrTbl0();
+  } else {
+    _xzoij40=[];GS.forEach((_,_xialc46)=>{_xvwic94[_xialc46]=new Set();});genCnt[1]=0;
+    _xxgfs12();
+    document.getElementById('gc1').textContent='0회';
+    document.getElementById('ah1').style.display='none';
+    document.getElementById('wb1').style.display='none';
+    document.getElementById('cp1').style.display='none';
+    rdrTbl1();
+  }
+}
+ 
+function saveTab(tab){
+  const _xhgzq10={w:'승',d:'무',l:'패'};
+  let _xajyz95=[];let _xdgbo40='';let _xgexg86='';
+  const _xajsk54=new Date();
+  const _xrrlb81=`${_xajsk54.getMonth()+1}/${_xajsk54.getDate()} ${String(_xajsk54.getHours()).padStart(2,'0')}:${String(_xajsk54.getMinutes()).padStart(2,'0')}`;
+  if(tab===0){
+    if(!_xyiyy12.length){alert('먼저 AI 자동 선택을 적용해 주세요.');return;}
+    const _xmlmr37=_xyiyy12.length*1000;
+    const _xulrg58={H:'AI①높음',M:'AI①중간',L:'AI①낮음',MANUAL:'수동선택'};
+    const _xtrjf34={H:'cH',M:'cM',L:'cL',MANUAL:'c2'};
+    _xajyz95=_xyiyy12.map((c,_xykyh11)=>({num:_xykyh11+1,pickStr:c.keys.map(_xxzns16=>_xhgzq10[_xxzns16]).join('-'),_xatpg17:c._xguwc63*100,_xxkvn16:c._xxkvn16,label:_xulrg58[c.strat],_xxstu62:_xtrjf34[c.strat]}));
+    const _xprxc41=[..._xxoxu12];
+    _xdgbo40=_xprxc41.length>1?'AI①복합':_xulrg58[_xprxc41[0]]||'AI①높음';
+    _xgexg86=_xprxc41.length>1?'cCMP':_xtrjf34[_xprxc41[0]]||'cH';
+  } else {
+    const _xzkot19=_xdhir86();
+    if(!_xzkot19.length){alert('14경기를 모두 선택해 주세요.');return;}
+    const _xmlmr37=_xzkot19.length*1000;
+    _xajyz95=_xzkot19.map((c,_xykyh11)=>({num:_xykyh11+1,pickStr:c.keys.map(_xxzns16=>_xhgzq10[_xxzns16]).join('-'),_xatpg17:c._xguwc63*100,_xxkvn16:TV*c._xguwc63,label:'AI②투표율',_xxstu62:'c2'}));
+    _xdgbo40='AI②투표율';_xgexg86='c2';
+  }
+  groupIdCnt++;
+  _xqdax87.push({id:groupIdCnt,time:_xrrlb81,label:_xdgbo40,_xxstu62:_xgexg86,combos:_xajyz95,open:false});
+  _xzdmj33();
+  _xveft52();
+  alert(_xajyz95.length+'개 조합('+_xiakb39(_xajyz95.length*1000)+') 저장 완료!');
+}
+ 
+function openPop(){_xzdmj33();document.getElementById('pov').classList.add('open');}
+function closePop(){document.getElementById('pov').classList.remove('open');}
+function closePovOut(e){if(e.target===document.getElementById('pov'))closePop();}
+function clearAll(){if(!_xqdax87.length){alert('저장된 조합이 없습니다.');return;}if(!confirm('모든 조합을 삭제하시겠습니까?'))return;_xqdax87=[];_xzdmj33();_xveft52();}
+function delGroup(id){_xqdax87=_xqdax87.filter(_xfiex44=>_xfiex44.id!==id);_xzdmj33();_xveft52();}
+function togGroup(id){const _xfiex44=_xqdax87.find(_xfiex44=>_xfiex44.id===id);if(_xfiex44)_xfiex44.open=!_xfiex44.open;_xzdmj33();}
+function _xzdmj33(){
+  const _xciml92=_xqdax87.reduce((_xnpvc61,_xfiex44)=>_xnpvc61+_xfiex44.combos.length,0);
+  const _xweqa70=_xciml92*1000;
+  document.getElementById('savedBadge').textContent=_xqdax87.length;
+  document.getElementById('poptot').textContent=_xweqa70.toLocaleString()+'원 / 100,000원';
+  const _xatpg17=Math.min(100,_xweqa70/_xzcze32*100);
+  document.getElementById('popbf').style.width=_xatpg17+'%';
+  document.getElementById('popbf').className='bfill'+(_xatpg17>=100?' over':'');
+  const _xnmig66=document.getElementById('popb');
+  if(!_xqdax87.length){_xnmig66.innerHTML='<div class="empty">저장된 조합이 없습니다.</div>';return;}
+  const _xxznq34=_xqdax87.reduce((_xnpvc61,_xfiex44)=>_xnpvc61+_xfiex44.combos.reduce((ss,c)=>ss+c._xxkvn16,0),0);
+  _xnmig66.innerHTML=_xqdax87.map(_xfiex44=>`
+    <div class="sg">
+      <div class="sgh" onclick="togGroup(${_xfiex44.id})">
+        <div>
+          <div class="sgi"><span class="ctag ${_xfiex44._xxstu62}" style="margin-right:6px">${_xfiex44.label}</span>${_xfiex44.combos.length}개 조합 · ${(_xfiex44.combos.length*1000).toLocaleString()}원</div>
+          <div class="sgm">저장: ${_xfiex44.time}</div>
+        </div>
+        <div class="sgr">
+          <button class="delg" onclick="event.stopPropagation();delGroup(${_xfiex44.id})">삭제</button>
+          <span class="sgarr${_xfiex44.open?' open':''}">▼</span>
+        </div>
+      </div>
+      <div class="sgb${_xfiex44.open?' open':''}">
+        ${_xfiex44.combos.map(c=>`
+          <div class="ci">
+            <div style="display:flex;align-items:_xdvwa98;gap:5px;margin-bottom:4px">
+              <span class="cidx">${c.num}조합</span>
+              <span class="ctag ${c._xxstu62}">${c.label}</span>
+            </div>
+            ${(()=>{
+              const _xtkzy68=_xvuvr44(c.pickStr);
+              const _xrtiw16=_xtkzy68?_xchfp37(_xtkzy68._xrrem82,_xtkzy68._xweqa70):'';
+              const _xqpfp39=_xtkzy68&&_xtkzy68._xweqa70>0?`결과: ${_xtkzy68._xrrem82}/${_xtkzy68._xyatb34}`:'';
+              return (_xrtiw16?`<span class="result-_xxpxs45 ${_xrtiw16.includes('1등')?'rb-1':_xrtiw16.includes('2등')?'rb-2':_xrtiw16.includes('3등')?'rb-3':'rb-4'}">${_xrtiw16}</span>`:'')
+                +(_xqpfp39?`<div class="result-score">${_xqpfp39}</div>`:'')
+                +_xqzfv85(c.pickStr);
+            })()}
+            <div class="cm">
+              <span>투표율 곱: <strong style="color:#0C447C">${_xoygb82(c._xatpg17)}</strong></span>
+              <span>예상 생존: <strong style="color:#028A8A">${fmtSurv(c._xxkvn16)}</strong></span>
+              <span style="color:#aaa">1,000원</span>
+            </div>
+          </div>`).join('')}
+      </div>
+    </div>`).join('')+`
+    <div class="tbox">
+      <span style="font-size:13px;color:#0C447C;font-weight:600">전체 ${_xciml92}조합 합산</span>
+      <span style="font-size:13px;color:#0C447C">총 예상 생존 <strong>${fmtSurv(_xxznq34)}</strong> · ${_xweqa70.toLocaleString()}원</span>
+    </div>`;
+}
+function _xiakb39(n){return n.toLocaleString()+'원';}
+function _xoygb82(_xlboy22){
+  if(!_xlboy22||_xlboy22<=0||isNaN(_xlboy22)) return '0.0000%';
+  if(_xlboy22<0.001) return _xlboy22.toFixed(6)+'%';
+  if(_xlboy22<0.1)   return _xlboy22.toFixed(4)+'%';
+  if(_xlboy22<1)     return _xlboy22.toFixed(4)+'%';
+  return _xlboy22.toFixed(2)+'%';
+}
+function fmtSurv(_xlboy22){
+  if(!_xlboy22||_xlboy22<=0||isNaN(_xlboy22)) return '0.0명';
+  if(_xlboy22<0.1) return _xlboy22.toFixed(1)+'명';
+  return _xlboy22.toFixed(1)+'명';
+}
+function fmtSurvTotal(_xlboy22){
+  if(!_xlboy22||_xlboy22<=0||isNaN(_xlboy22)) return '0.0명';
+  if(_xlboy22<0.1) return _xlboy22.toFixed(4)+'명';
+  return _xlboy22.toFixed(1)+'명';
+}
+function stag(_xnpvc61, result){
+  if(_xnpvc61==='종료'){
+    if(result==='w') return '<span class="sttag sresW">승</span>';
+    if(result==='d') return '<span class="sttag sresD">무</span>';
+    if(result==='l') return '<span class="sttag sresL">패</span>';
+    return '<span class="sttag send">종료</span>';
+  }
+  if(_xnpvc61==='진행중') return '<span class="sttag slive">진행</span>';
+  return '<span class="sttag spre">예정</span>';
+}
+function _xvabu37(arr){for(let _xykyh11=arr.length-1;_xykyh11>0;_xykyh11--){const _xegiu39=Math.floor(Math.random()*(_xykyh11+1));[arr[_xykyh11],arr[_xegiu39]]=[arr[_xegiu39],arr[_xykyh11]];}return arr;}
+function setSA0(_xlboy22){
+  _xwbgr47[0]=_xlboy22;
+  const _xdnay34=document.getElementById('sbg0');
+  if(_xlboy22>0){_xdnay34.style.display='inline-block';_xdnay34.textContent=_xlboy22+'조합 = '+_xiakb39(_xlboy22*1000);}
+  else _xdnay34.style.display='none';
+  _xlipu66();
+}
+function setSA1(_xlboy22){
+  _xwbgr47[1]=_xlboy22;
+  const _xdnay34=document.getElementById('sbg1');
+  if(_xlboy22>0){_xdnay34.style.display='inline-block';_xdnay34.textContent=_xlboy22+'조합 = '+_xiakb39(_xlboy22*1000);}
+  else _xdnay34.style.display='none';
+}
+function _xxgfs12(){
+  const _xcwgl93=_xvwic94.reduce((_xmuvm34,_xnpvc61)=>_xmuvm34*(_xnpvc61.size||1),1);
+  const _xeadf78=document.getElementById('asel1');
+  Array.from(_xeadf78.options).forEach(_xyeya69=>{
+    const _xlboy22=+_xyeya69.value;
+    if(_xlboy22===0) return;
+    const _xrosj80=(_xlboy22>=_xcwgl93&&_xlboy22%_xcwgl93===0);
+    _xyeya69.disabled=!_xrosj80;
+    _xyeya69.style.color=_xrosj80?'':'#bbb';
+    _xyeya69.style.background=_xrosj80?'':'#f5f5f5';
+  });
+  if(_xeadf78.value&&(+_xeadf78.value<_xcwgl93||+_xeadf78.value%_xcwgl93!==0)){_xeadf78.value='0';setSA1(0);}
+}
+function clearPrev1(){
+  _xzoij40=[];
+  GS.forEach((_,_xialc46)=>{_xvwic94[_xialc46]=new Set();});
+  document.getElementById('cp1').style.display='none';
+  rdrTbl1();
+}
+function clearPrev0(){
+  _xyiyy12=[];
+  document.getElementById('cp0').style.display='none';
+  document.getElementById('wb0').style.display='none';
+  _xoljt96();
+}
+ 
+function _xvuvr44(pickStr){
+  const _xhgzq10={'승':'w','무':'d','패':'l'};
+  const _xqfux47=pickStr.split('-');
+  if(_xqfux47.length!==GS.length) return null;
+  const _xbbdk36=GS.some(_xfiex44=>_xfiex44.result);
+  if(!_xbbdk36) return null;
+  let _xrrem82=0,_xyatb34=0,_xweqa70=0;
+  const _xccrw49=_xqfux47.map((_xmuvm34,_xykyh11)=>{
+    const _xfiex44=GS[_xykyh11];
+    if(!_xfiex44.result) return {_xmuvm34,_xyedp32:null,_xrosj80:null};
+    _xweqa70++;
+    const _xrosj80=(_xhgzq10[_xmuvm34]===_xfiex44.result);
+    if(_xrosj80) _xrrem82++; else _xyatb34++;
+    return{_xmuvm34,_xyedp32:_xfiex44.result,_xrosj80};
+  });
+  return{_xrrem82,_xyatb34,_xweqa70,_xccrw49};
+}
+function _xchfp37(_xrrem82,_xweqa70){
+  if(_xweqa70===0) return null;
+  const _xyatb34=_xweqa70-_xrrem82;
+  if(_xyatb34===0) return'🏆 1등 당첨!';
+  if(_xyatb34===1) return'🥈 2등 당첨';
+  if(_xyatb34===2) return'🥉 3등 당첨';
+  if(_xyatb34===3) return'4등 당첨';
+  return null;
+}
+function _xqzfv85(pickStr){
+  const _xhgzq10={'승':'w','무':'d','패':'l'};
+  const _xqfux47=pickStr.split('-');
+  const _xqyrv50=_xvuvr44(pickStr);
+  if(!_xqyrv50) return`<span class="cpk">${pickStr}</span>`;
+  const _xqswb75=_xqfux47.map((_xmuvm34,_xykyh11)=>{
+    const _xykwi49=_xqyrv50._xccrw49[_xykyh11];
+    if(_xykwi49._xrosj80===null) return`<span class="pk-item">${_xmuvm34}</span>`;
+    const _xnhea62=_xykwi49._xrosj80
+      ?`<span class="pk-o">O</span>`
+      :`<span class="pk-x">X</span>`;
+    return`<span class="pk-item">${_xnhea62}${_xmuvm34}</span>`;
+  }).join('<span class="pk-sep">-</span>');
+  return`<div class="cpk-detail">${_xqswb75}</div>`;
+}
+ 
+const _xeten25 = 'toto_savedGroups';
+const _xzzox44 = 'toto_round';
+function _xveft52(){
+  try {
+    localStorage.setItem(_xeten25, JSON.stringify(_xqdax87));
+    localStorage.setItem(_xzzox44, roundLabel);
+  } catch(e){ console.warn('localStorage 저장 실패:', e); }
+}
+function _xsjly63(){
+  try {
+    const _xdquv67 = localStorage.getItem(_xzzox44);
+    if(_xdquv67 && _xdquv67 !== roundLabel){
+      localStorage.removeItem(_xeten25);
+      localStorage.setItem(_xzzox44, roundLabel);
+      _xqdax87 = [];
+      groupIdCnt = 0;
+      _xzdmj33();
+      return;
+    }
+    const _xmqeq77 = localStorage.getItem(_xeten25);
+    if(!_xmqeq77) return;
+    const _xqpbt44 = JSON.parse(_xmqeq77);
+    if(Array.isArray(_xqpbt44)){
+      _xqdax87 = _xqpbt44;
+      groupIdCnt  = _xqdax87.reduce((_xcwgl93,_xfiex44)=>Math.max(_xcwgl93,_xfiex44.id),0);
+      _xzdmj33();
+    }
+  } catch(e){ console.warn('localStorage 불러오기 실패:', e); }
+}
+function _xhxbt10(selId){
+  const _xeadf78=document.getElementById(selId);
+  _xdfww32.forEach(n=>{const _xyeya69=document.createElement('option');_xyeya69.value=n;_xyeya69.textContent=n.toLocaleString()+'조합 = '+(n*1000).toLocaleString()+'원';_xeadf78.appendChild(_xyeya69);});
+}
+function _xdhir86(){
+  return _xzoij40.map(c=>({keys:c.keys, _xguwc63:c._xguwc63}));
+}
+_xhxbt10('asel0');_xhxbt10('asel1');
+rdrTbl0();rdrTbl1();_xqfiu18();
+_xsjly63();
+renderTeams();
+renderFormations();
+ 
+const _xlhmw88 = 'toto_session';
+function _xsbkr36(){
+  try {
+    const _xrhrj58 = document.getElementById('t0').classList.contains('on');
+    const _xuoon87 = {
+      activeTab: _xrhrj58 ? 0 : (document.getElementById('t2').classList.contains('on') ? 2 : 1),
+      _xskgo39: _xskgo39.map(_xnpvc61=>[..._xnpvc61]),
+      _xvwic94: _xvwic94.map(_xnpvc61=>[..._xnpvc61]),
+      _xyiyy12: _xyiyy12,
+      _xzoij40: _xzoij40,
+      selAmt0: _xwbgr47[0],
+      selAmt1: _xwbgr47[1],
+      genCnt0: genCnt[0],
+      genCnt1: genCnt[1],
+      _xxoxu12: [..._xxoxu12],
+      asel0: document.getElementById('asel0').value,
+      asel1: document.getElementById('asel1').value,
+      piVal: document.getElementById('pi')?.value || '10'
+    };
+    sessionStorage.setItem(_xlhmw88, JSON.stringify(_xuoon87));
+  } catch(e){}
+}
+function _xtwra63(){
+  try {
+    const _xmqeq77 = sessionStorage.getItem(_xlhmw88);
+    if(!_xmqeq77) return;
+    const st = JSON.parse(_xmqeq77);
+    if(st._xskgo39) st._xskgo39.forEach((arr,_xialc46)=>{ _xskgo39[_xialc46]=new Set(arr); });
+    if(st._xvwic94) st._xvwic94.forEach((arr,_xialc46)=>{ _xvwic94[_xialc46]=new Set(arr); });
+    if(st._xyiyy12) _xyiyy12 = st._xyiyy12;
+    if(st._xzoij40) _xzoij40 = st._xzoij40;
+    if(st.selAmt0 !== undefined) _xwbgr47[0] = st.selAmt0;
+    if(st.selAmt1 !== undefined) _xwbgr47[1] = st.selAmt1;
+    if(st.genCnt0 !== undefined) genCnt[0] = st.genCnt0;
+    if(st.genCnt1 !== undefined) genCnt[1] = st.genCnt1;
+    if(st._xxoxu12){ _xxoxu12.clear(); st._xxoxu12.forEach(_xnpvc61=>_xxoxu12.add(_xnpvc61)); _xqfiu18(); }
+    if(st.asel0) document.getElementById('asel0').value = st.asel0;
+    if(st.asel1) document.getElementById('asel1').value = st.asel1;
+    if(st.piVal && document.getElementById('pi')) document.getElementById('pi').value = st.piVal;
+    document.getElementById('gc0').textContent = genCnt[0] + '회';
+    document.getElementById('gc1').textContent = genCnt[1] + '회';
+    if(st.activeTab !== undefined){
+      [0,1,2].forEach(_xykyh11=>{
+        const _xubqv35=document.getElementById('t'+_xykyh11);
+        const _xmuvm34=document.getElementById('p'+_xykyh11);
+        if(_xubqv35) _xubqv35.className = 'tab' + (_xykyh11===st.activeTab?' on':'');
+        if(_xmuvm34){
+          if(_xykyh11===st.activeTab){_xmuvm34.className='panel on';_xmuvm34.style.display='block';}
+          else{_xmuvm34.className='panel';_xmuvm34.style.display='none';}
+        }
+      });
+      if(st.activeTab===2){renderTeams();renderFormations();}
+    }
+    rdrTbl0(); rdrTbl1();
+    _xjyec96(); _xqswj29();
+  } catch(e){ console.warn('세션 복원 실패:', e); }
+}
+window.addEventListener('beforeunload', _xsbkr36);
+document.addEventListener('click', function(e){
+  var _xngyu58 = e.target.closest('a');
+  if(_xngyu58 && _xngyu58.href && !_xngyu58.href.includes('#')) _xsbkr36();
+});
+_xtwra63();
+window._rT0 = rdrTbl0;
+window._rT1 = rdrTbl1;
+window._rTm = renderTeams;
+window._rFm = renderFormations;
+</script>
+
+<script>
+function hideLoading(){
+  var ov=document.getElementById('loadingOverlay');
+  var mn=document.getElementById('mainContent');
+  if(ov)ov.style.display='none';
+  if(mn)mn.style.display='block';
+}
+
+// 페이지 로드 시 자동 실행
+document.addEventListener('DOMContentLoaded', function(){
+  loadFromSheet();
+});
+
+// 5초 후 강제 로딩 해제 (안전장치)
+setTimeout(function(){hideLoading();}, 3000);
+
+function loadFromSheet(){
+  fetch('https://docs.google.com/spreadsheets/d/1_nLxcE_ZpAB0GZ5UXFFkQO9rZqD8_K4aQeOqCbihXcA/gviz/tq?tqx=out:json&sheet=%EC%8B%9C%ED%8A%B81')
+    .then(function(r){return r.text();})
+    .then(function(t){
+      try{
+        var s=t.indexOf('setResponse(')+12,e=t.lastIndexOf(')');
+        var d=JSON.parse(t.substring(s,e));
+        var rs=d.table.rows;
+        if(!rs||rs.length<1){hideLoading();return;}
+        var arr=[];
+        for(var i=0;i<rs.length;i++){
+          var c=rs[i].c;
+          if(!c||!c[0]||c[0].v===null||c[0].v===undefined)continue;
+          var n=typeof c[0].v==='number'?Math.round(c[0].v):parseInt(c[0].v);
+          if(isNaN(n)||n<1||n>14)continue;
+          var hStat=null,aStat=null,hFm=null,aFm=null;
+          try{if(c[14]&&c[14].v)hStat=JSON.parse(c[14].v);}catch(ex){}
+          try{if(c[15]&&c[15].v)aStat=JSON.parse(c[15].v);}catch(ex){}
+          try{if(c[16]&&c[16].v)hFm=JSON.parse(c[16].v);}catch(ex){}
+          try{if(c[17]&&c[17].v)aFm=JSON.parse(c[17].v);}catch(ex){}
+          arr.push({no:n,
+            home:c[1]&&c[1].v?c[1].v:'',away:c[2]&&c[2].v?c[2].v:'',
+            lge:c[3]&&c[3].v?c[3].v:'',
+            w:c[4]&&c[4].v!==null?parseFloat(c[4].v):0,
+            d:c[5]&&c[5].v!==null?parseFloat(c[5].v):0,
+            l:c[6]&&c[6].v!==null?parseFloat(c[6].v):0,
+            st:c[7]&&c[7].v?c[7].v:'예정',
+            tip:c[12]&&c[12].v?c[12].v:'',
+            hStat:hStat,aStat:aStat,hFm:hFm,aFm:aFm,
+            result:(function(){
+              var rv=c[11]&&c[11].v?c[11].v:'';
+              if(rv==='승')return 'w';
+              if(rv==='무')return 'd';
+              if(rv==='패')return 'l';
+              return rv;
+            })()});
+        }
+        if(arr.length>0){
+          GS.length=0;
+          for(var j=0;j<arr.length;j++)GS.push(arr[j]);
+          if(typeof TEAM_STATS!=='undefined'){
+            TEAM_STATS.length=0;
+            for(var k=0;k<arr.length;k++){
+              var g=arr[k];
+              var hd=g.hStat||{a:50,d:50,p:50,o:50,rec:['?','?','?','?','?']};
+              var ad=g.aStat||{a:50,d:50,p:50,o:50,rec:['?','?','?','?','?']};
+              TEAM_STATS.push({
+                home:{name:g.home,atk:hd.a||50,def:hd.d||50,pos:hd.p||50,ovr:hd.o||50,rec:hd.rec||['?','?','?','?','?']},
+                away:{name:g.away,atk:ad.a||50,def:ad.d||50,pos:ad.p||50,ovr:ad.o||50,rec:ad.rec||['?','?','?','?','?']},
+                tip:g.tip||''
+              });
+            }
+          }
+          if(typeof FM!=='undefined'){
+            FM.length=0;
+            for(var m=0;m<arr.length;m++){
+              var gg=arr[m];
+              FM.push({h:gg.hFm||{fm:'4-4-2',pl:[]},aw:gg.aFm||{fm:'4-4-2',pl:[]}});
+            }
+          }
+          if(window._rT0)window._rT0();
+          if(window._rT1)window._rT1();
+          if(window._rTm)window._rTm();
+          if(window._rFm)window._rFm();
+          if(rs[0]&&rs[0].c){
+            var tv=rs[0].c[9]&&rs[0].c[9].v?rs[0].c[9].v:null;
+            var p1=rs[0].c[10]&&rs[0].c[10].v?rs[0].c[10].v:null;
+            var sp=rs[0].c[13]&&rs[0].c[13].v?rs[0].c[13].v:null;
+            if(tv){var tvEl=document.getElementById('rmVotes');if(tvEl)tvEl.textContent=parseInt(String(tv).replace(/[^0-9]/g,'')).toLocaleString()+'명';}
+            if(p1){var p1El=document.getElementById('rmPrize');if(p1El)p1El.textContent=parseInt(String(p1).replace(/[^0-9]/g,'')).toLocaleString()+'원';}
+            if(sp){var spEl=document.getElementById('rmPeriod');if(spEl)spEl.textContent=sp;}
+          }
+          var riEl=document.getElementById('roundInfo');
+          if(riEl)riEl.textContent=new Date().getFullYear()+'년 · '+arr.length+'경기 · 자동업데이트';
+          if(typeof calcLiveSurv==='function')calcLiveSurv();
+        }
+      }catch(ex){console.log('시트오류:',ex.message);}
+      hideLoading();
+    })
+    .catch(function(ex){
+      console.log('시트실패:',ex.message);
+      hideLoading();
+    });
+}
+</script>
+</div><!-- /mainContent -->
+</body>
+</html>
