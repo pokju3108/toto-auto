@@ -497,7 +497,7 @@ const TEAM_STATS = [
   { home:{name:'비야레알', atk:72, def:66, pos:57, ovr:70}, away:{name:'RC셀타', atk:59, def:56, pos:49, ovr:58} },
 ];
  
-const _xmkpo90 = [
+const FORMATIONS = [
   { match:'마인츠05 vs 바이에른',
     home:{ formation:'4-2-3-1', players:[
       {pos:'GK',name:'바에케 로빈'},
@@ -710,616 +710,616 @@ if(typeof roundMeta !== 'undefined'){
   document.getElementById('rmVotes').textContent = roundMeta.totalVotes + '명';
   document.getElementById('rmPrize').textContent = roundMeta.prize1st + '원';
 }
-const _xhgdm72=100000, TV=606668;
-let _xtqpk39=[];
-let _xirwo83=[];
-const _xdyzv75=[0,0], genCnt=[0,0];
-const _xafgc72=new Set(['H']);
-let _xrorx21=[], groupIdCnt=0;
-const _xeqir69 = GS.map(()=>new Set());
-const _xsvdt88 = GS.map(()=>new Set());
+const _xzylf38=100000, TV=606668;
+let _xvfwz14=[];
+let _xlpwo67=[];
+const _xnysr78=[0,0], genCnt=[0,0];
+const _xhvdx18=new Set(['H']);
+let _xqtyw53=[], groupIdCnt=0;
+const _xvdge47 = GS.map(()=>new Set());
+const _xycai41 = GS.map(()=>new Set());
  
-const _xensr19 = {
-  H: _xwnwt25 => _xwnwt25 >= 10,
-  M: _xwnwt25 => _xwnwt25 >= 4 && _xwnwt25 < 10,
-  L: _xwnwt25 => _xwnwt25 < 4,
+const _xynih89 = {
+  H: _xurrl59 => _xurrl59 >= 10,
+  M: _xurrl59 => _xurrl59 >= 4 && _xurrl59 < 10,
+  L: _xurrl59 => _xurrl59 < 4,
 };
-function _xluod24(){
-  const _xwnwt25=new Set();
-  for(let _xwmpz57=0;_xwmpz57<=6;_xwmpz57++) for(let _xmdnk38=0;_xmdnk38<=4;_xmdnk38++){
-    const _xfdyk60=Math.pow(2,_xwmpz57)*Math.pow(3,_xmdnk38);
-    if(_xfdyk60>=1&&_xfdyk60<=100) _xwnwt25.add(_xfdyk60);
+function _xjmmr47(){
+  const _xurrl59=new Set();
+  for(let _xsxgt99=0;_xsxgt99<=6;_xsxgt99++) for(let _xdlzv90=0;_xdlzv90<=4;_xdlzv90++){
+    const _xwdlp32=Math.pow(2,_xsxgt99)*Math.pow(3,_xdlzv90);
+    if(_xwdlp32>=1&&_xwdlp32<=100) _xurrl59.add(_xwdlp32);
   }
-  return [..._xwnwt25].sort((_xwmpz57,_xmdnk38)=>_xwmpz57-_xmdnk38);
+  return [..._xurrl59].sort((_xsxgt99,_xdlzv90)=>_xsxgt99-_xdlzv90);
 }
-const _xfavt32=_xluod24();
-function sw(_xrqvo15){
-  [0,1,2].forEach(_xkmuv76=>{
-    const _xcjup82=document.getElementById('t'+_xkmuv76);
-    const _xvhhi37=document.getElementById('p'+_xkmuv76);
-    if(_xcjup82) _xcjup82.className='tab'+(_xkmuv76===_xrqvo15?' on':'');
-    if(_xvhhi37){
-      if(_xkmuv76===_xrqvo15){_xvhhi37.className='panel on';_xvhhi37.style.display='block';}
-      else{_xvhhi37.className='panel';_xvhhi37.style.display='none';}
+const _xkyky83=_xjmmr47();
+function sw(_xzdrg21){
+  [0,1,2].forEach(_xwldk38=>{
+    const _xccbq50=document.getElementById('t'+_xwldk38);
+    const _xakmb90=document.getElementById('p'+_xwldk38);
+    if(_xccbq50) _xccbq50.className='tab'+(_xwldk38===_xzdrg21?' on':'');
+    if(_xakmb90){
+      if(_xwldk38===_xzdrg21){_xakmb90.className='panel on';_xakmb90.style.display='block';}
+      else{_xakmb90.className='panel';_xakmb90.style.display='none';}
     }
   });
-  if(_xrqvo15===2){renderTeams();renderFormations();}
+  if(_xzdrg21===2){renderTeams();renderFormations();}
 }
-function togS(_xwnwt25){
-  if(_xafgc72.has(_xwnwt25)){if(_xafgc72.size===1) return;_xafgc72.delete(_xwnwt25);}
-  else _xafgc72.add(_xwnwt25);
-  _xcjec87();_xzbaz79();
+function togS(_xurrl59){
+  if(_xhvdx18.has(_xurrl59)){if(_xhvdx18.size===1) return;_xhvdx18.delete(_xurrl59);}
+  else _xhvdx18.add(_xurrl59);
+  _xlwpk83();_xhdcd96();
 }
-function _xcjec87(){
-  ['H','M','L'].forEach(_xwnwt25=>{
-    const _xmgzb54=document.getElementById('sb0'+_xwnwt25);
-    if(!_xmgzb54) return;
-    _xmgzb54.classList.remove('onH','onM','onL');
-    if(_xafgc72.has(_xwnwt25)) _xmgzb54.classList.add('on'+_xwnwt25);
+function _xlwpk83(){
+  ['H','M','L'].forEach(_xurrl59=>{
+    const _xbbjt70=document.getElementById('sb0'+_xurrl59);
+    if(!_xbbjt70) return;
+    _xbbjt70.classList.remove('onH','onM','onL');
+    if(_xhvdx18.has(_xurrl59)) _xbbjt70.classList.add('on'+_xurrl59);
   });
 }
-function _xzbaz79(){
-  const _xmgzb54=document.getElementById('abar0');
-  const _xkygq77=_xdyzv75[0];
-  const _xzdkb59=[..._xafgc72];
-  if(!_xkygq77){_xmgzb54.style.display='none';return;}
-  _xmgzb54.style.display='block';
-  const _xrerx25=_xeyry23(_xkygq77,_xzdkb59);
-  const _xrvcz26={H:'높음',M:'중간',L:'낮음',MANUAL:'수동'};
-  const _xgzng15={H:'atH',M:'atM',L:'atL'};
-  _xmgzb54.innerHTML='<strong>조합 배분:</strong> '+_xrerx25.map(_xwmpz57=>`<span class="at ${_xgzng15[_xwmpz57._xwnwt25]}">${_xrvcz26[_xwmpz57._xwnwt25]} ${_xwmpz57.n}조합</span>`).join(' + ')+` = 총 ${_xkygq77}조합`;
+function _xhdcd96(){
+  const _xbbjt70=document.getElementById('abar0');
+  const _xrdkx96=_xnysr78[0];
+  const _xckio34=[..._xhvdx18];
+  if(!_xrdkx96){_xbbjt70.style.display='none';return;}
+  _xbbjt70.style.display='block';
+  const _xuugc91=_xaauv33(_xrdkx96,_xckio34);
+  const _xogjc38={H:'높음',M:'중간',L:'낮음',MANUAL:'수동'};
+  const _xuzjc91={H:'atH',M:'atM',L:'atL'};
+  _xbbjt70.innerHTML='<strong>조합 배분:</strong> '+_xuugc91.map(_xsxgt99=>`<span class="at ${_xuzjc91[_xsxgt99._xurrl59]}">${_xogjc38[_xsxgt99._xurrl59]} ${_xsxgt99.n}조합</span>`).join(' + ')+` = 총 ${_xrdkx96}조합`;
 }
-function _xeyry23(_xkygq77,_xzdkb59){
-  const _xgyrb49=_xzdkb59.length;
-  const _xetqt91=Math.floor(_xkygq77/_xgyrb49);
-  let _xrbig50=_xkygq77-_xetqt91*_xgyrb49;
-  const _xfglp53=_xyagx88([..._xzdkb59]);
-  return _xzdkb59.map(_xwnwt25=>({_xwnwt25,n:_xetqt91+(_xfglp53.indexOf(_xwnwt25)<_xrbig50?1:0)})).filter(_xwmpz57=>_xwmpz57.n>0);
+function _xaauv33(_xrdkx96,_xckio34){
+  const _xmvoh51=_xckio34.length;
+  const _xzosu32=Math.floor(_xrdkx96/_xmvoh51);
+  let _xfmsi10=_xrdkx96-_xzosu32*_xmvoh51;
+  const _xdsrl68=_xtqbx10([..._xckio34]);
+  return _xckio34.map(_xurrl59=>({_xurrl59,n:_xzosu32+(_xdsrl68.indexOf(_xurrl59)<_xfmsi10?1:0)})).filter(_xsxgt99=>_xsxgt99.n>0);
 }
-function _xbjbg19(_xbfng78,_xgyrb49){
-  const _xftfx81=GS[_xbfng78];if(!_xftfx81) return 0;
-  return _xgyrb49==='w'?_xftfx81.w/100:_xgyrb49==='d'?_xftfx81.d/100:_xgyrb49==='l'?_xftfx81.l/100:0;
+function _xwash28(_xfqbk29,_xmvoh51){
+  const _xzwxz58=GS[_xfqbk29];if(!_xzwxz58) return 0;
+  return _xmvoh51==='w'?_xzwxz58.w/100:_xmvoh51==='d'?_xzwxz58.d/100:_xmvoh51==='l'?_xzwxz58.l/100:0;
 }
-function _xszdn46(keys){
-  let _xvhhi37=1;keys.forEach((_xgyrb49,_xbfng78)=>{_xvhhi37*=_xbjbg19(_xbfng78,_xgyrb49);});return _xvhhi37;
+function _xdlwz26(keys){
+  let _xakmb90=1;keys.forEach((_xmvoh51,_xfqbk29)=>{_xakmb90*=_xwash28(_xfqbk29,_xmvoh51);});return _xakmb90;
 }
  
-function _xfjkr80(strat, maxTry=500, fixedKeys=null){
-  const _xatmi73=_xensr19[strat];
-  let _xhdpk69=null, bestDist=Infinity;
-  for(let _xrqvo15=0;_xrqvo15<maxTry;_xrqvo15++){
-    const keys=GS.map((_xftfx81,_xbfng78)=>{
-      if(fixedKeys&&fixedKeys[_xbfng78]!==null) return fixedKeys[_xbfng78];
-      const _xmuui68=[{_xgyrb49:'w',_xfdyk60:_xftfx81.w},{_xgyrb49:'d',_xfdyk60:_xftfx81.d},{_xgyrb49:'l',_xfdyk60:_xftfx81.l}];
-      return _xmuui68[Math.floor(Math.random()*3)]._xgyrb49;
+function _xaxli61(strat, maxTry=500, fixedKeys=null){
+  const _xjdnb38=_xynih89[strat];
+  let _xskyf53=null, bestDist=Infinity;
+  for(let _xzdrg21=0;_xzdrg21<maxTry;_xzdrg21++){
+    const keys=GS.map((_xzwxz58,_xfqbk29)=>{
+      if(fixedKeys&&fixedKeys[_xfqbk29]!==null) return fixedKeys[_xfqbk29];
+      const _xvfqm71=[{_xmvoh51:'w',_xwdlp32:_xzwxz58.w},{_xmvoh51:'d',_xwdlp32:_xzwxz58.d},{_xmvoh51:'l',_xwdlp32:_xzwxz58.l}];
+      return _xvfqm71[Math.floor(Math.random()*3)]._xmvoh51;
     });
-    const _xtgwi25=_xszdn46(keys);
-    const _xfwls99=TV*_xtgwi25;
-    if(_xatmi73(_xfwls99)){
-      return {strat,keys,_xtgwi25,_xfwls99};
+    const _xhqwg26=_xdlwz26(keys);
+    const _xxscx97=TV*_xhqwg26;
+    if(_xjdnb38(_xxscx97)){
+      return {strat,keys,_xhqwg26,_xxscx97};
     }
-    const _xlpsa63=strat==='H'?20:strat==='M'?7:1.5;
-    const _xqvoa14=Math.abs(_xfwls99-_xlpsa63);
-    if(_xqvoa14<bestDist){bestDist=_xqvoa14;_xhdpk69={strat,keys,_xtgwi25,_xfwls99};}
+    const _xraws38=strat==='H'?20:strat==='M'?7:1.5;
+    const _xdand60=Math.abs(_xxscx97-_xraws38);
+    if(_xdand60<bestDist){bestDist=_xdand60;_xskyf53={strat,keys,_xhqwg26,_xxscx97};}
   }
-  return _xhdpk69;
+  return _xskyf53;
 }
  
-function _xfmpf34(_xrerx25, fixedKeys=null){
+function _xdvfo81(_xuugc91, fixedKeys=null){
   const result=[];
-  let _xdbhl18=0;
-  _xrerx25.forEach(({_xwnwt25,n})=>{
-    for(let _xkmuv76=0;_xkmuv76<n;_xkmuv76++){
-      const _xmrph84=_xfjkr80(_xwnwt25, 500, fixedKeys);
-      if(_xmrph84&&!_xensr19[_xwnwt25](_xmrph84._xfwls99)) _xdbhl18++;
-      if(_xmrph84) result.push(_xmrph84);
+  let _xswag64=0;
+  _xuugc91.forEach(({_xurrl59,n})=>{
+    for(let _xwldk38=0;_xwldk38<n;_xwldk38++){
+      const _xfmfk69=_xaxli61(_xurrl59, 500, fixedKeys);
+      if(_xfmfk69&&!_xynih89[_xurrl59](_xfmfk69._xxscx97)) _xswag64++;
+      if(_xfmfk69) result.push(_xfmfk69);
     }
   });
-  return {combos:result, _xoztz62:_xdbhl18};
+  return {combos:result, _xifyl51:_xswag64};
 }
-function manualPick0(_xbfng78, _xgyrb49){
-  const _xwnwt25 = _xeqir69[_xbfng78];
-  if(_xtqpk39.length > 0 && !_xtqpk39[0].partial){
-    if(_xwnwt25.has(_xgyrb49)){
-      _xwnwt25.delete(_xgyrb49);
+function manualPick0(_xfqbk29, _xmvoh51){
+  const _xurrl59 = _xvdge47[_xfqbk29];
+  if(_xvfwz14.length > 0 && !_xvfwz14[0].partial){
+    if(_xurrl59.has(_xmvoh51)){
+      _xurrl59.delete(_xmvoh51);
     } else {
-      _xwnwt25.add(_xgyrb49);
+      _xurrl59.add(_xmvoh51);
     }
-    if(_xwnwt25.size>0){
-      const _xaocu82=[];
-      _xtqpk39.forEach(_xmrph84=>{
-        _xwnwt25.forEach(sk=>{
-          const _xazbx49=[..._xmrph84.keys];
-          _xazbx49[_xbfng78]=sk;
-          const _xtgwi25=_xszdn46(_xazbx49);
-          _xaocu82.push({..._xmrph84,keys:_xazbx49,_xtgwi25,_xfwls99:TV*_xtgwi25});
+    if(_xurrl59.size>0){
+      const _xoldv55=[];
+      _xvfwz14.forEach(_xfmfk69=>{
+        _xurrl59.forEach(sk=>{
+          const _xvzgs64=[..._xfmfk69.keys];
+          _xvzgs64[_xfqbk29]=sk;
+          const _xhqwg26=_xdlwz26(_xvzgs64);
+          _xoldv55.push({..._xfmfk69,keys:_xvzgs64,_xhqwg26,_xxscx97:TV*_xhqwg26});
         });
       });
-      const _xfuoe97=new Set();
-      _xtqpk39=_xaocu82.filter(_xmrph84=>{
-        const _xdaiu12=_xmrph84.keys.join('');
-        if(_xfuoe97.has(_xdaiu12)) return false;
-        _xfuoe97.add(_xdaiu12); return true;
+      const _xkxcn96=new Set();
+      _xvfwz14=_xoldv55.filter(_xfmfk69=>{
+        const _xkzjy53=_xfmfk69.keys.join('');
+        if(_xkxcn96.has(_xkzjy53)) return false;
+        _xkxcn96.add(_xkzjy53); return true;
       });
     }
-    _xlfwb81();
+    _xhpse93();
   } else {
-    if(_xwnwt25.has(_xgyrb49)) _xwnwt25.delete(_xgyrb49);
-    else _xwnwt25.add(_xgyrb49);
-    _xlfwb81();
-    _xahbf79();
+    if(_xurrl59.has(_xmvoh51)) _xurrl59.delete(_xmvoh51);
+    else _xurrl59.add(_xmvoh51);
+    _xhpse93();
+    _xuihm71();
   }
   rdrTbl0();
-  _xegdc29();
+  _xpxmz83();
 }
-function _xpild77(){
-  return _xeqir69.reduce((_xvhhi37,_xwnwt25)=>_xvhhi37*(_xwnwt25.size||1),1);
+function _xxpxa48(){
+  return _xvdge47.reduce((_xakmb90,_xurrl59)=>_xakmb90*(_xurrl59.size||1),1);
 }
-function _xpgnt99(){
-  return _xeqir69.filter(_xwnwt25=>_xwnwt25.size>0).length;
+function _xeqcj78(){
+  return _xvdge47.filter(_xurrl59=>_xurrl59.size>0).length;
 }
-function _xlfwb81(){
-  const _xnqqf14 = _xpild77();
-  const _xqjxf94 = document.getElementById('asel0');
-  Array.from(_xqjxf94.options).forEach(_ximjw56=>{
-    const _xfdyk60 = +_ximjw56.value;
-    if(_xfdyk60===0) return;
-    const _xscon23 = (_xfdyk60 >= _xnqqf14 && _xfdyk60 % _xnqqf14 === 0);
-    _ximjw56.disabled = !_xscon23;
-    _ximjw56.style.color = _xscon23 ? '' : '#bbb';
-    _ximjw56.style.background = _xscon23 ? '' : '#f5f5f5';
-    _ximjw56.title = _xscon23 ? '' : (_xfdyk60 < _xnqqf14 ? `수동 조합(${_xnqqf14}개)보다 작습니다` : `수동 조합(${_xnqqf14}개)의 배수가 아닙니다`);
+function _xhpse93(){
+  const _xxcgw13 = _xxpxa48();
+  const _xpctb75 = document.getElementById('asel0');
+  Array.from(_xpctb75.options).forEach(_xotje43=>{
+    const _xwdlp32 = +_xotje43.value;
+    if(_xwdlp32===0) return;
+    const _xrdfq43 = (_xwdlp32 >= _xxcgw13 && _xwdlp32 % _xxcgw13 === 0);
+    _xotje43.disabled = !_xrdfq43;
+    _xotje43.style.color = _xrdfq43 ? '' : '#bbb';
+    _xotje43.style.background = _xrdfq43 ? '' : '#f5f5f5';
+    _xotje43.title = _xrdfq43 ? '' : (_xwdlp32 < _xxcgw13 ? `수동 조합(${_xxcgw13}개)보다 작습니다` : `수동 조합(${_xxcgw13}개)의 배수가 아닙니다`);
   });
-  if(_xqjxf94.value && (+_xqjxf94.value < _xnqqf14 || +_xqjxf94.value % _xnqqf14 !== 0)){
-    _xqjxf94.value = '0';
+  if(_xpctb75.value && (+_xpctb75.value < _xxcgw13 || +_xpctb75.value % _xxcgw13 !== 0)){
+    _xpctb75.value = '0';
     setSA0(0);
   }
 }
-function _xahbf79(){
-  const _xxbmi87 = _xpgnt99();
-  if(_xxbmi87 === 0){ _xtqpk39=[]; return; }
-  let rows=[{keys:[], _xtgwi25:1, partial: _xxbmi87 < GS.length}];
-  for(let _xbfng78=0; _xbfng78<GS.length; _xbfng78++){
-    const _xwnwt25 = _xeqir69[_xbfng78];
-    if(_xwnwt25.size === 0){
-      rows = rows.map(_xfktp97=>({..._xfktp97, keys:[..._xfktp97.keys,'?']}));
+function _xuihm71(){
+  const _xnaoa48 = _xeqcj78();
+  if(_xnaoa48 === 0){ _xvfwz14=[]; return; }
+  let rows=[{keys:[], _xhqwg26:1, partial: _xnaoa48 < GS.length}];
+  for(let _xfqbk29=0; _xfqbk29<GS.length; _xfqbk29++){
+    const _xurrl59 = _xvdge47[_xfqbk29];
+    if(_xurrl59.size === 0){
+      rows = rows.map(_xmied15=>({..._xmied15, keys:[..._xmied15.keys,'?']}));
     } else {
-      const _xybcu89=[];
-      for(const _xfktp97 of rows){
-        for(const _xgyrb49 of _xwnwt25){
-          const _xbpcx64 = _xbjbg19(_xbfng78,_xgyrb49);
-          _xybcu89.push({keys:[..._xfktp97.keys,_xgyrb49], _xtgwi25:_xfktp97._xtgwi25*_xbpcx64, _xfwls99:TV*_xfktp97._xtgwi25*_xbpcx64, partial:_xfktp97.partial, strat:'MANUAL'});
+      const _xywpb40=[];
+      for(const _xmied15 of rows){
+        for(const _xmvoh51 of _xurrl59){
+          const _xojru19 = _xwash28(_xfqbk29,_xmvoh51);
+          _xywpb40.push({keys:[..._xmied15.keys,_xmvoh51], _xhqwg26:_xmied15._xhqwg26*_xojru19, _xxscx97:TV*_xmied15._xhqwg26*_xojru19, partial:_xmied15.partial, strat:'MANUAL'});
         }
       }
-      rows=_xybcu89;
+      rows=_xywpb40;
     }
   }
-  _xtqpk39 = rows;
+  _xvfwz14 = rows;
 }
 function genAI0(){
-  const _xkygq77=_xdyzv75[0];
-  if(!_xkygq77){alert('먼저 금액을 선택해 주세요.');return;}
-  const _xzdkb59=[..._xafgc72];
-  const _xrgaa29=_xpild77();
-  if(_xkygq77%_xrgaa29!==0){
-    alert(`선택한 금액(${_xkygq77}조합)은 수동 조합 수(${_xrgaa29}개)의 배수가 아닙니다.`);
+  const _xrdkx96=_xnysr78[0];
+  if(!_xrdkx96){alert('먼저 금액을 선택해 주세요.');return;}
+  const _xckio34=[..._xhvdx18];
+  const _xfyuc32=_xxpxa48();
+  if(_xrdkx96%_xfyuc32!==0){
+    alert(`선택한 금액(${_xrdkx96}조합)은 수동 조합 수(${_xfyuc32}개)의 배수가 아닙니다.`);
     return;
   }
   genCnt[0]++;
   document.getElementById('gc0').textContent=genCnt[0]+'회';
-  const _xhzog94=GS.map((_,_xbfng78)=>_xeqir69[_xbfng78].size>0);
-  const _xpith45=[];
-  GS.forEach((_,_xbfng78)=>{if(!_xhzog94[_xbfng78]) _xpith45.push(_xbfng78);});
-  const _xxecb82=_xkygq77/_xrgaa29; // AI가 자유 경기에서 만들어야 할 조합 수
-  function _xuvxg85(n){
-    const _xbimf80=[];
-    while(n%3===0){_xbimf80.push(3);n/=3;}
-    while(n%2===0){_xbimf80.push(2);n/=2;}
+  const _xgukl23=GS.map((_,_xfqbk29)=>_xvdge47[_xfqbk29].size>0);
+  const _xwxod21=[];
+  GS.forEach((_,_xfqbk29)=>{if(!_xgukl23[_xfqbk29]) _xwxod21.push(_xfqbk29);});
+  const _xatvh95=_xrdkx96/_xfyuc32; // AI가 자유 경기에서 만들어야 할 조합 수
+  function _xvpzo40(n){
+    const _xnvga98=[];
+    while(n%3===0){_xnvga98.push(3);n/=3;}
+    while(n%2===0){_xnvga98.push(2);n/=2;}
     if(n!==1) return null; // 2,3으로만 분해 불가
-    return _xbimf80;
+    return _xnvga98;
   }
-  const _xbimf80=_xuvxg85(_xxecb82);
-  if(!_xbimf80||_xbimf80.length>_xpith45.length){
+  const _xnvga98=_xvpzo40(_xatvh95);
+  if(!_xnvga98||_xnvga98.length>_xwxod21.length){
     alert('자유 경기 수가 부족하여 조합을 생성할 수 없습니다.');
     return;
   }
-  const _xrtny18=_xeyry23(_xxecb82,_xzdkb59);
-  const _xrvcz26={H:'높음',M:'중간',L:'낮음'};
-  let _xldfm14=null, bestFallback=Infinity;
-  for(let _xiwjc19=0;_xiwjc19<200;_xiwjc19++){
-    const _xbkdp55=_xyagx88([..._xpith45]);
-    const _xling83={}; // _xbfng78 → Set of keys
-    for(let _xbuha60=0;_xbuha60<_xbimf80.length;_xbuha60++){
-      const _xbfng78=_xbkdp55[_xbuha60];
-      const _xftfx81=GS[_xbfng78];
-      const _xrqmd86=_xbimf80[_xbuha60]; // 2 또는 3
-      const _xizwf86=['w','d','l'];
-      if(_xrqmd86===3){
-        _xling83[_xbfng78]=new Set(_xizwf86);
+  const _xdiwy73=_xaauv33(_xatvh95,_xckio34);
+  const _xogjc38={H:'높음',M:'중간',L:'낮음'};
+  let _xfgqw94=null, bestFallback=Infinity;
+  for(let _xtsnv88=0;_xtsnv88<200;_xtsnv88++){
+    const _xvyhh52=_xtqbx10([..._xwxod21]);
+    const _xtqha99={}; // _xfqbk29 → Set of keys
+    for(let _xzzuj32=0;_xzzuj32<_xnvga98.length;_xzzuj32++){
+      const _xfqbk29=_xvyhh52[_xzzuj32];
+      const _xzwxz58=GS[_xfqbk29];
+      const _xsncz73=_xnvga98[_xzzuj32]; // 2 또는 3
+      const _xhbmg29=['w','d','l'];
+      if(_xsncz73===3){
+        _xtqha99[_xfqbk29]=new Set(_xhbmg29);
       } else {
-        const _xwpjt15=_xyagx88([..._xizwf86]);
-        _xling83[_xbfng78]=new Set(_xwpjt15.slice(0,2));
+        const _xdmeh69=_xtqbx10([..._xhbmg29]);
+        _xtqha99[_xfqbk29]=new Set(_xdmeh69.slice(0,2));
       }
     }
-    for(let _xbuha60=_xbimf80.length;_xbuha60<_xbkdp55.length;_xbuha60++){
-      const _xbfng78=_xbkdp55[_xbuha60];
-      const _xizwf86=['w','d','l'];
-      _xling83[_xbfng78]=new Set([_xizwf86[Math.floor(Math.random()*3)]]);
+    for(let _xzzuj32=_xnvga98.length;_xzzuj32<_xvyhh52.length;_xzzuj32++){
+      const _xfqbk29=_xvyhh52[_xzzuj32];
+      const _xhbmg29=['w','d','l'];
+      _xtqha99[_xfqbk29]=new Set([_xhbmg29[Math.floor(Math.random()*3)]]);
     }
-    let _xexjl96=[{keys:new Array(GS.length).fill(null),_xtgwi25:1}];
-    for(const _xbfng78 of _xpith45){
-      const _xybcu89=[];
-      for(const _xfktp97 of _xexjl96){
-        for(const _xgyrb49 of _xling83[_xbfng78]){
-          const _xazbx49=[..._xfktp97.keys];
-          _xazbx49[_xbfng78]=_xgyrb49;
-          const _xbpcx64=_xbjbg19(_xbfng78,_xgyrb49);
-          _xybcu89.push({keys:_xazbx49, _xtgwi25:_xfktp97._xtgwi25*_xbpcx64});
+    let _xvsae90=[{keys:new Array(GS.length).fill(null),_xhqwg26:1}];
+    for(const _xfqbk29 of _xwxod21){
+      const _xywpb40=[];
+      for(const _xmied15 of _xvsae90){
+        for(const _xmvoh51 of _xtqha99[_xfqbk29]){
+          const _xvzgs64=[..._xmied15.keys];
+          _xvzgs64[_xfqbk29]=_xmvoh51;
+          const _xojru19=_xwash28(_xfqbk29,_xmvoh51);
+          _xywpb40.push({keys:_xvzgs64, _xhqwg26:_xmied15._xhqwg26*_xojru19});
         }
       }
-      _xexjl96=_xybcu89;
+      _xvsae90=_xywpb40;
     }
-    let _xnpdc93=1;
-    for(let _xbfng78=0;_xbfng78<GS.length;_xbfng78++){
-      if(_xhzog94[_xbfng78]){
-        _xnpdc93*=_xbjbg19(_xbfng78,[..._xeqir69[_xbfng78]][0]);
+    let _xmslm81=1;
+    for(let _xfqbk29=0;_xfqbk29<GS.length;_xfqbk29++){
+      if(_xgukl23[_xfqbk29]){
+        _xmslm81*=_xwash28(_xfqbk29,[..._xvdge47[_xfqbk29]][0]);
       }
     }
-    let _xoztz62=0;
-    const _xajml62=[];
-    _xrtny18.forEach(({_xwnwt25,n})=>{for(let _xkmuv76=0;_xkmuv76<n;_xkmuv76++) _xajml62.push(_xwnwt25);});
-    _xexjl96.forEach(_xbpcx64=>{_xbpcx64._xfwls99=TV*_xnpdc93*_xbpcx64._xtgwi25;});
-    _xexjl96.sort((_xwmpz57,_xmdnk38)=>_xmdnk38._xfwls99-_xwmpz57._xfwls99); // 높은 생존 → H 우선
-    _xajml62.sort((_xwmpz57,_xmdnk38)=>{const _xzjkl48={H:0,M:1,L:2};return _xzjkl48[_xwmpz57]-_xzjkl48[_xmdnk38];});
-    for(let _xkmuv76=0;_xkmuv76<_xexjl96.length;_xkmuv76++){
-      _xexjl96[_xkmuv76].strat=_xajml62[_xkmuv76]||_xzdkb59[0];
-      if(!_xensr19[_xexjl96[_xkmuv76].strat](_xexjl96[_xkmuv76]._xfwls99)) _xoztz62++;
+    let _xifyl51=0;
+    const _xkwex85=[];
+    _xdiwy73.forEach(({_xurrl59,n})=>{for(let _xwldk38=0;_xwldk38<n;_xwldk38++) _xkwex85.push(_xurrl59);});
+    _xvsae90.forEach(_xojru19=>{_xojru19._xxscx97=TV*_xmslm81*_xojru19._xhqwg26;});
+    _xvsae90.sort((_xsxgt99,_xdlzv90)=>_xdlzv90._xxscx97-_xsxgt99._xxscx97); // 높은 생존 → H 우선
+    _xkwex85.sort((_xsxgt99,_xdlzv90)=>{const _xorrt93={H:0,M:1,L:2};return _xorrt93[_xsxgt99]-_xorrt93[_xdlzv90];});
+    for(let _xwldk38=0;_xwldk38<_xvsae90.length;_xwldk38++){
+      _xvsae90[_xwldk38].strat=_xkwex85[_xwldk38]||_xckio34[0];
+      if(!_xynih89[_xvsae90[_xwldk38].strat](_xvsae90[_xwldk38]._xxscx97)) _xifyl51++;
     }
-    if(_xoztz62<bestFallback){
-      bestFallback=_xoztz62;
-      _xldfm14={_xling83, _xexjl96};
-      if(_xoztz62===0) break;
+    if(_xifyl51<bestFallback){
+      bestFallback=_xifyl51;
+      _xfgqw94={_xtqha99, _xvsae90};
+      if(_xifyl51===0) break;
     }
   }
-  let _xftnz98=[{keys:new Array(GS.length).fill(null)}];
-  for(let _xbfng78=0;_xbfng78<GS.length;_xbfng78++){
-    if(!_xhzog94[_xbfng78]) continue;
-    const _xybcu89=[];
-    for(const _xfktp97 of _xftnz98){
-      for(const _xgyrb49 of _xeqir69[_xbfng78]){
-        const _xazbx49=[..._xfktp97.keys];
-        _xazbx49[_xbfng78]=_xgyrb49;
-        _xybcu89.push({keys:_xazbx49});
+  let _xjhgo94=[{keys:new Array(GS.length).fill(null)}];
+  for(let _xfqbk29=0;_xfqbk29<GS.length;_xfqbk29++){
+    if(!_xgukl23[_xfqbk29]) continue;
+    const _xywpb40=[];
+    for(const _xmied15 of _xjhgo94){
+      for(const _xmvoh51 of _xvdge47[_xfqbk29]){
+        const _xvzgs64=[..._xmied15.keys];
+        _xvzgs64[_xfqbk29]=_xmvoh51;
+        _xywpb40.push({keys:_xvzgs64});
       }
     }
-    _xftnz98=_xybcu89;
+    _xjhgo94=_xywpb40;
   }
-  const _xsmfl58=[];
-  for(const _xbatr57 of _xftnz98){
-    for(const _xtcvl39 of _xldfm14._xexjl96){
-      const keys=[..._xbatr57.keys];
-      _xpith45.forEach(_xbfng78=>{keys[_xbfng78]=_xtcvl39.keys[_xbfng78];});
-      const _xtgwi25=_xszdn46(keys);
-      const _xfwls99=TV*_xtgwi25;
-      const _xaqln15=_xensr19.H(_xfwls99)?'H':_xensr19.M(_xfwls99)?'M':'L';
-      _xsmfl58.push({keys,_xtgwi25,_xfwls99,strat:_xaqln15,requestedStrat:_xtcvl39.strat});
+  const _xupvy80=[];
+  for(const _xikvt53 of _xjhgo94){
+    for(const _xgvep20 of _xfgqw94._xvsae90){
+      const keys=[..._xikvt53.keys];
+      _xwxod21.forEach(_xfqbk29=>{keys[_xfqbk29]=_xgvep20.keys[_xfqbk29];});
+      const _xhqwg26=_xdlwz26(keys);
+      const _xxscx97=TV*_xhqwg26;
+      const _xdjfc43=_xynih89.H(_xxscx97)?'H':_xynih89.M(_xxscx97)?'M':'L';
+      _xupvy80.push({keys,_xhqwg26,_xxscx97,strat:_xdjfc43,requestedStrat:_xgvep20.strat});
     }
   }
-  _xtqpk39=_xsmfl58;
-  let _xuzsf13=0;
-  const _xlsex83={H:0,M:0,L:0};
-  _xsmfl58.forEach(c=>{
-    _xlsex83[c.strat]++;
-    if(c.strat!==c.requestedStrat) _xuzsf13++;
+  _xvfwz14=_xupvy80;
+  let _xcjyl20=0;
+  const _xyfmd13={H:0,M:0,L:0};
+  _xupvy80.forEach(c=>{
+    _xyfmd13[c.strat]++;
+    if(c.strat!==c.requestedStrat) _xcjyl20++;
   });
-  const _xumvm36=_xeyry23(_xxecb82,_xzdkb59).map(_xwmpz57=>`${_xrvcz26[_xwmpz57._xwnwt25]} ${_xwmpz57.n}조합`).join(' + ');
-  const _xbrrg82=_xhzog94.filter(Boolean).length>0?
-    ` · 수동 고정 ${_xhzog94.filter(Boolean).length}경기 포함`:'';
-  const _xijgb24=_xbimf80.length>0?` · AI 복수 ${_xbimf80.length}경기`:'';
-  const _xvxzo21=document.getElementById('ah0');
-  _xvxzo21.style.cssText='display:block;background:#E1F5EE;border:1px solid #5DCAA5;border-radius:6px;padding:8px 12px;margin-bottom:8px;color:#085041;font-size:11px;line-height:1.7';
-  _xvxzo21.innerHTML=`<strong>${genCnt[0]}번째 생성</strong> · ${_xumvm36} = 총 <strong>${_xsmfl58.length}개 조합 = ${_xfabx84(_xsmfl58.length*1000)}</strong>${_xbrrg82}${_xijgb24}`;
-  const _xuvum77=document.getElementById('wb0');
-  if(_xuzsf13>0){
-    const _xuyfn95=Object.entries(_xlsex83).filter(([,_xfdyk60])=>_xfdyk60>0).map(([_xgyrb49,_xfdyk60])=>`${_xrvcz26[_xgyrb49]} ${_xfdyk60}개`).join(' / ');
-    _xuvum77.style.display='block';
-    _xuvum77.innerHTML=`⚠️ <strong>${_xuzsf13}개 조합</strong>이 선택한 전략 범위를 벗어났습니다.<br>실제 분포: ${_xuyfn95}<br><span style="font-size:10px;color:#999">다시 생성하면 다른 결과가 나올 수 있습니다.</span>`;
+  const _xwmpd38=_xaauv33(_xatvh95,_xckio34).map(_xsxgt99=>`${_xogjc38[_xsxgt99._xurrl59]} ${_xsxgt99.n}조합`).join(' + ');
+  const _xshul24=_xgukl23.filter(Boolean).length>0?
+    ` · 수동 고정 ${_xgukl23.filter(Boolean).length}경기 포함`:'';
+  const _xtoki45=_xnvga98.length>0?` · AI 복수 ${_xnvga98.length}경기`:'';
+  const _xjqut63=document.getElementById('ah0');
+  _xjqut63.style.cssText='display:block;background:#E1F5EE;border:1px solid #5DCAA5;border-radius:6px;padding:8px 12px;margin-bottom:8px;color:#085041;font-size:11px;line-height:1.7';
+  _xjqut63.innerHTML=`<strong>${genCnt[0]}번째 생성</strong> · ${_xwmpd38} = 총 <strong>${_xupvy80.length}개 조합 = ${_xpcon95(_xupvy80.length*1000)}</strong>${_xshul24}${_xtoki45}`;
+  const _xxrvg40=document.getElementById('wb0');
+  if(_xcjyl20>0){
+    const _xdsnx60=Object.entries(_xyfmd13).filter(([,_xwdlp32])=>_xwdlp32>0).map(([_xmvoh51,_xwdlp32])=>`${_xogjc38[_xmvoh51]} ${_xwdlp32}개`).join(' / ');
+    _xxrvg40.style.display='block';
+    _xxrvg40.innerHTML=`⚠️ <strong>${_xcjyl20}개 조합</strong>이 선택한 전략 범위를 벗어났습니다.<br>실제 분포: ${_xdsnx60}<br><span style="font-size:10px;color:#999">다시 생성하면 다른 결과가 나올 수 있습니다.</span>`;
   } else {
-    _xuvum77.style.display='none';
+    _xxrvg40.style.display='none';
   }
   rdrTbl0();
-  _xegdc29();
+  _xpxmz83();
 }
 function rdrTbl0(){
-  const _xolzu22=_xtqpk39.length>0?_xtqpk39[0].keys:null;
-  document.getElementById('tb0').innerHTML=GS.map((_xftfx81,_xbfng78)=>{
-    const _xijtt25 = _xeqir69[_xbfng78];
-    const _xwtdf69 = _xijtt25.size===0 && _xtqpk39.length>0
-      ? new Set(_xtqpk39.map(_xmrph84=>_xmrph84.keys[_xbfng78]).filter(_xgyrb49=>_xgyrb49&&_xgyrb49!=='?'))
+  const _xuxby97=_xvfwz14.length>0?_xvfwz14[0].keys:null;
+  document.getElementById('tb0').innerHTML=GS.map((_xzwxz58,_xfqbk29)=>{
+    const _xuigx72 = _xvdge47[_xfqbk29];
+    const _xnggj79 = _xuigx72.size===0 && _xvfwz14.length>0
+      ? new Set(_xvfwz14.map(_xfmfk69=>_xfmfk69.keys[_xfqbk29]).filter(_xmvoh51=>_xmvoh51&&_xmvoh51!=='?'))
       : null;
-    const _xhzxy41 = _xijtt25.size>0 ? null : (_xolzu22?_xolzu22[_xbfng78]:null);
-    const _xaxwk60=(_xgyrb49,_xfdyk60)=>{
-      const _xlixh18=_xftfx81.result===_xgyrb49&&_xftfx81.st==='종료';
-      const _xeuzl48 = _xijtt25.size>0 ? _xijtt25.has(_xgyrb49) :
-                         _xwtdf69 ? _xwtdf69.has(_xgyrb49) :
-                         _xhzxy41===_xgyrb49;
-      let _xcwrh20='mpb';
-      if(_xeuzl48) _xcwrh20+=' '+_xgyrb49.toUpperCase();
-      if(_xijtt25.size>0&&_xijtt25.has(_xgyrb49)) _xcwrh20+=' locked-manual';
-      if(_xlixh18) _xcwrh20+=' result-'+_xgyrb49.toUpperCase();
-      return`<button class="${_xcwrh20}" onclick="manualPick0(${_xbfng78},'${_xgyrb49}')" title="${_xijtt25.size>0&&_xijtt25.has(_xgyrb49)?'🔒 수동 고정 (재클릭시 해제)':''}">${_xfdyk60.toFixed(1)}%</button>`;
+    const _xojps96 = _xuigx72.size>0 ? null : (_xuxby97?_xuxby97[_xfqbk29]:null);
+    const _xldfa84=(_xmvoh51,_xwdlp32)=>{
+      const _xbict59=_xzwxz58.result===_xmvoh51&&_xzwxz58.st==='종료';
+      const _xwyva83 = _xuigx72.size>0 ? _xuigx72.has(_xmvoh51) :
+                         _xnggj79 ? _xnggj79.has(_xmvoh51) :
+                         _xojps96===_xmvoh51;
+      let _xoxxs93='mpb';
+      if(_xwyva83) _xoxxs93+=' '+_xmvoh51.toUpperCase();
+      if(_xuigx72.size>0&&_xuigx72.has(_xmvoh51)) _xoxxs93+=' locked-manual';
+      if(_xbict59) _xoxxs93+=' result-'+_xmvoh51.toUpperCase();
+      return`<button class="${_xoxxs93}" onclick="manualPick0(${_xfqbk29},'${_xmvoh51}')" title="${_xuigx72.size>0&&_xuigx72.has(_xmvoh51)?'🔒 수동 고정 (재클릭시 해제)':''}">${_xwdlp32.toFixed(1)}%</button>`;
     };
     return`<tr>
-      <td style="font-size:12px;color:#1a1a1a;font-weight:600;white-space:nowrap;text-align:center">${_xftfx81.no}. ${_xftfx81.home} <span style="color:#bbb;font-weight:400;font-size:11px">vs</span> ${_xftfx81.away}</td>
-      <td style="font-size:11px;color:#888;text-align:_xlpsa63;white-space:nowrap;padding-left:2px;padding-right:14px">${_xftfx81.lge}</td>
-      <td style="text-align:_xlpsa63;padding-left:4px;padding-right:4px">${_xaxwk60('w',_xftfx81.w)}</td>
-      <td style="text-align:_xlpsa63;padding-left:4px;padding-right:4px">${_xaxwk60('d',_xftfx81.d)}</td>
-      <td style="text-align:_xlpsa63;padding-left:4px;padding-right:4px">${_xaxwk60('l',_xftfx81.l)}</td>
-      <td style="text-align:_xlpsa63;padding:5px 3px">${stag(_xftfx81.st, _xftfx81.result)}</td>
+      <td style="font-size:12px;color:#1a1a1a;font-weight:600;white-space:nowrap;text-align:center">${_xzwxz58.no}. ${_xzwxz58.home} <span style="color:#bbb;font-weight:400;font-size:11px">vs</span> ${_xzwxz58.away}</td>
+      <td style="font-size:11px;color:#888;text-align:_xraws38;white-space:nowrap;padding-left:2px;padding-right:14px">${_xzwxz58.lge}</td>
+      <td style="text-align:_xraws38;padding-left:4px;padding-right:4px">${_xldfa84('w',_xzwxz58.w)}</td>
+      <td style="text-align:_xraws38;padding-left:4px;padding-right:4px">${_xldfa84('d',_xzwxz58.d)}</td>
+      <td style="text-align:_xraws38;padding-left:4px;padding-right:4px">${_xldfa84('l',_xzwxz58.l)}</td>
+      <td style="text-align:_xraws38;padding:5px 3px">${stag(_xzwxz58.st, _xzwxz58.result)}</td>
     </tr>`;
   }).join('');
-  _xnivi46();
+  _xvmgr80();
 }
-function _xnivi46(){
-  const _xkygq77=_xtqpk39.length;
-  const _xzkcv93=_xkygq77*1000;
-  const _xxbmi87=GS.filter((_,_xbfng78)=>_xeqir69[_xbfng78]&&_xeqir69[_xbfng78].size>0).length;
-  const _xeorx33 = _xtqpk39.length>0 && _xtqpk39[0].partial ? `${_xxbmi87}/${GS.length}경기 선택 중` : (_xkygq77>0?`${_xkygq77}개 조합 생성됨`:'0개 조합 생성됨');
-  document.getElementById('sc0').textContent = _xtqpk39.length===0 && _xxbmi87===0 ? '0개 조합 생성됨' : _xeorx33;
-  document.getElementById('cv0').textContent=_xkygq77.toLocaleString();
-  const _xtahi58=document.getElementById('ca0');
-  _xtahi58.textContent=_xfabx84(_xzkcv93);
-  _xtahi58.className='camt'+(_xzkcv93>_xhgdm72?' over':'');
-  if(!_xkygq77){['mp0','ms0','mr0'].forEach(id=>document.getElementById(id).textContent='-');return;}
-  document.getElementById('mp0').textContent=_xkygq77+'개';
-  document.getElementById('ms0').textContent=_xfabx84(_xzkcv93);
-  const _xyrcn71=_xtqpk39.reduce((_xwnwt25,c)=>_xwnwt25+c._xfwls99,0);
-  document.getElementById('mr0').textContent=fmtSurvTotal(_xyrcn71);
+function _xvmgr80(){
+  const _xrdkx96=_xvfwz14.length;
+  const _xcraj13=_xrdkx96*1000;
+  const _xnaoa48=GS.filter((_,_xfqbk29)=>_xvdge47[_xfqbk29]&&_xvdge47[_xfqbk29].size>0).length;
+  const _xnyxf96 = _xvfwz14.length>0 && _xvfwz14[0].partial ? `${_xnaoa48}/${GS.length}경기 선택 중` : (_xrdkx96>0?`${_xrdkx96}개 조합 생성됨`:'0개 조합 생성됨');
+  document.getElementById('sc0').textContent = _xvfwz14.length===0 && _xnaoa48===0 ? '0개 조합 생성됨' : _xnyxf96;
+  document.getElementById('cv0').textContent=_xrdkx96.toLocaleString();
+  const _xuxlu80=document.getElementById('ca0');
+  _xuxlu80.textContent=_xpcon95(_xcraj13);
+  _xuxlu80.className='camt'+(_xcraj13>_xzylf38?' over':'');
+  if(!_xrdkx96){['mp0','ms0','mr0'].forEach(id=>document.getElementById(id).textContent='-');return;}
+  document.getElementById('mp0').textContent=_xrdkx96+'개';
+  document.getElementById('ms0').textContent=_xpcon95(_xcraj13);
+  const _xqlhp26=_xvfwz14.reduce((_xurrl59,c)=>_xurrl59+c._xxscx97,0);
+  document.getElementById('mr0').textContent=fmtSurvTotal(_xqlhp26);
 }
  
 function rdrTbl1(){
-  const _xolzu22=_xirwo83.length>0?_xirwo83[0].keys:null;
-  document.getElementById('tb1').innerHTML=GS.map((_xftfx81,_xbfng78)=>{
-    const _xkjht27=_xsvdt88[_xbfng78];
-    const _xwtdf69 = _xkjht27.size===0 && _xirwo83.length>0
-      ? new Set(_xirwo83.map(_xmrph84=>_xmrph84.keys[_xbfng78]).filter(_xgyrb49=>_xgyrb49&&_xgyrb49!=='?'))
+  const _xuxby97=_xlpwo67.length>0?_xlpwo67[0].keys:null;
+  document.getElementById('tb1').innerHTML=GS.map((_xzwxz58,_xfqbk29)=>{
+    const _xawvz75=_xycai41[_xfqbk29];
+    const _xnggj79 = _xawvz75.size===0 && _xlpwo67.length>0
+      ? new Set(_xlpwo67.map(_xfmfk69=>_xfmfk69.keys[_xfqbk29]).filter(_xmvoh51=>_xmvoh51&&_xmvoh51!=='?'))
       : null;
-    const _xhzxy41=_xkjht27.size>0?null:(_xolzu22?_xolzu22[_xbfng78]:null);
-    const _xaxwk60=(_xgyrb49,_xfdyk60)=>{
-      const _xlixh18=_xftfx81.result===_xgyrb49&&_xftfx81.st==='종료';
-      const _xeuzl48=_xkjht27.size>0?_xkjht27.has(_xgyrb49):
-                       _xwtdf69?_xwtdf69.has(_xgyrb49):
-                       _xhzxy41===_xgyrb49;
-      let _xcwrh20='mpb';
-      if(_xeuzl48) _xcwrh20+=' '+_xgyrb49.toUpperCase();
-      if(_xlixh18) _xcwrh20+=' result-'+_xgyrb49.toUpperCase();
-      if(_xkjht27.size>0&&_xkjht27.has(_xgyrb49)) _xcwrh20+=' locked-manual';
-      const _xvjlg99=_xkjht27.size>0&&_xkjht27.has(_xgyrb49)?'🔒 수동 고정 (재클릭시 해제)':'';
-      return`<button class="${_xcwrh20}" onclick="manualPick1(${_xbfng78},'${_xgyrb49}')" title="${_xvjlg99}">${_xfdyk60.toFixed(1)}%</button>`;
+    const _xojps96=_xawvz75.size>0?null:(_xuxby97?_xuxby97[_xfqbk29]:null);
+    const _xldfa84=(_xmvoh51,_xwdlp32)=>{
+      const _xbict59=_xzwxz58.result===_xmvoh51&&_xzwxz58.st==='종료';
+      const _xwyva83=_xawvz75.size>0?_xawvz75.has(_xmvoh51):
+                       _xnggj79?_xnggj79.has(_xmvoh51):
+                       _xojps96===_xmvoh51;
+      let _xoxxs93='mpb';
+      if(_xwyva83) _xoxxs93+=' '+_xmvoh51.toUpperCase();
+      if(_xbict59) _xoxxs93+=' result-'+_xmvoh51.toUpperCase();
+      if(_xawvz75.size>0&&_xawvz75.has(_xmvoh51)) _xoxxs93+=' locked-manual';
+      const _xvfbt95=_xawvz75.size>0&&_xawvz75.has(_xmvoh51)?'🔒 수동 고정 (재클릭시 해제)':'';
+      return`<button class="${_xoxxs93}" onclick="manualPick1(${_xfqbk29},'${_xmvoh51}')" title="${_xvfbt95}">${_xwdlp32.toFixed(1)}%</button>`;
     };
     return`<tr>
-      <td style="font-size:12px;color:#1a1a1a;font-weight:600;white-space:nowrap;text-align:center">${_xftfx81.no}. ${_xftfx81.home} <span style="color:#bbb;font-weight:400;font-size:11px">vs</span> ${_xftfx81.away}</td>
-      <td style="font-size:11px;color:#888;text-align:_xlpsa63;white-space:nowrap;padding-left:2px;padding-right:14px">${_xftfx81.lge}</td>
-      <td style="text-align:_xlpsa63;padding-left:4px;padding-right:4px">${_xaxwk60('w',_xftfx81.w)}</td>
-      <td style="text-align:_xlpsa63;padding-left:4px;padding-right:4px">${_xaxwk60('d',_xftfx81.d)}</td>
-      <td style="text-align:_xlpsa63;padding-left:4px;padding-right:4px">${_xaxwk60('l',_xftfx81.l)}</td>
-      <td style="text-align:_xlpsa63;padding:5px 3px">${stag(_xftfx81.st, _xftfx81.result)}</td>
+      <td style="font-size:12px;color:#1a1a1a;font-weight:600;white-space:nowrap;text-align:center">${_xzwxz58.no}. ${_xzwxz58.home} <span style="color:#bbb;font-weight:400;font-size:11px">vs</span> ${_xzwxz58.away}</td>
+      <td style="font-size:11px;color:#888;text-align:_xraws38;white-space:nowrap;padding-left:2px;padding-right:14px">${_xzwxz58.lge}</td>
+      <td style="text-align:_xraws38;padding-left:4px;padding-right:4px">${_xldfa84('w',_xzwxz58.w)}</td>
+      <td style="text-align:_xraws38;padding-left:4px;padding-right:4px">${_xldfa84('d',_xzwxz58.d)}</td>
+      <td style="text-align:_xraws38;padding-left:4px;padding-right:4px">${_xldfa84('l',_xzwxz58.l)}</td>
+      <td style="text-align:_xraws38;padding:5px 3px">${stag(_xzwxz58.st, _xzwxz58.result)}</td>
     </tr>`;
   }).join('');
-  _xmjvu10();
+  _xlkjt90();
 }
-function tp1(_xbfng78,_xgyrb49){
-  manualPick1(_xbfng78,_xgyrb49);
+function tp1(_xfqbk29,_xmvoh51){
+  manualPick1(_xfqbk29,_xmvoh51);
 }
-function _xmjvu10(){
-  const _xkygq77=_xirwo83.length;
-  const _xzkcv93=_xkygq77*1000;
-  const _xqiip93=_xzkcv93>_xhgdm72;
-  const _xfuog95=GS.filter((_,_xbfng78)=>_xsvdt88[_xbfng78].size>0).length;
-  const _xtmgm70=_xirwo83.length>0&&_xirwo83[0]&&_xirwo83[0].partial?`${_xfuog95}/${GS.length}경기 선택 중`:(_xkygq77>0?`${_xkygq77}개 조합 생성됨`:'0 / 14 경기 선택됨');
-  document.getElementById('sc1').textContent=_xtmgm70;
-  document.getElementById('cv1').textContent=_xkygq77.toLocaleString();
-  const _xtahi58=document.getElementById('ca1');
-  _xtahi58.textContent=_xfabx84(_xzkcv93);
-  _xtahi58.className='camt'+(_xqiip93?' over':'');
-  if(!_xkygq77){['mp1','ms1','mr1'].forEach(id=>document.getElementById(id).textContent='-');return;}
-  document.getElementById('mp1').textContent=_xkygq77+'개';
-  document.getElementById('ms1').textContent=_xqiip93?'한도 초과':_xfabx84(_xzkcv93);
-  const _xyrcn71=_xirwo83.reduce((_xwnwt25,c)=>_xwnwt25+c._xfwls99,0);
-  document.getElementById('mr1').textContent=fmtSurv(_xyrcn71);
+function _xlkjt90(){
+  const _xrdkx96=_xlpwo67.length;
+  const _xcraj13=_xrdkx96*1000;
+  const _xgfme89=_xcraj13>_xzylf38;
+  const _xgiiv54=GS.filter((_,_xfqbk29)=>_xycai41[_xfqbk29].size>0).length;
+  const _xcbkk88=_xlpwo67.length>0&&_xlpwo67[0]&&_xlpwo67[0].partial?`${_xgiiv54}/${GS.length}경기 선택 중`:(_xrdkx96>0?`${_xrdkx96}개 조합 생성됨`:'0 / 14 경기 선택됨');
+  document.getElementById('sc1').textContent=_xcbkk88;
+  document.getElementById('cv1').textContent=_xrdkx96.toLocaleString();
+  const _xuxlu80=document.getElementById('ca1');
+  _xuxlu80.textContent=_xpcon95(_xcraj13);
+  _xuxlu80.className='camt'+(_xgfme89?' over':'');
+  if(!_xrdkx96){['mp1','ms1','mr1'].forEach(id=>document.getElementById(id).textContent='-');return;}
+  document.getElementById('mp1').textContent=_xrdkx96+'개';
+  document.getElementById('ms1').textContent=_xgfme89?'한도 초과':_xpcon95(_xcraj13);
+  const _xqlhp26=_xlpwo67.reduce((_xurrl59,c)=>_xurrl59+c._xxscx97,0);
+  document.getElementById('mr1').textContent=fmtSurv(_xqlhp26);
 }
-function manualPick1(_xbfng78,_xgyrb49){
-  const _xwnwt25 = _xsvdt88[_xbfng78];
-  if(_xwnwt25.has(_xgyrb49)) _xwnwt25.delete(_xgyrb49);
-  else          _xwnwt25.add(_xgyrb49);
-  _xcoeb58();
-  _xzgdn18();
+function manualPick1(_xfqbk29,_xmvoh51){
+  const _xurrl59 = _xycai41[_xfqbk29];
+  if(_xurrl59.has(_xmvoh51)) _xurrl59.delete(_xmvoh51);
+  else          _xurrl59.add(_xmvoh51);
+  _xyplh30();
+  _xpkzw63();
   rdrTbl1();
-  _xukon21();
+  _xakos46();
 }
-function _xzgdn18(){
-  const _xxbmi87=GS.filter((_,_xbfng78)=>_xsvdt88[_xbfng78].size>0).length;
-  if(_xxbmi87===0){_xirwo83=[];return;}
-  let rows=[{keys:[],_xtgwi25:1,partial:_xxbmi87<GS.length}];
-  for(let _xbfng78=0;_xbfng78<GS.length;_xbfng78++){
-    const _xwnwt25=_xsvdt88[_xbfng78];
-    if(_xwnwt25.size===0){
-      rows=rows.map(_xfktp97=>({..._xfktp97,keys:[..._xfktp97.keys,'?']}));
+function _xpkzw63(){
+  const _xnaoa48=GS.filter((_,_xfqbk29)=>_xycai41[_xfqbk29].size>0).length;
+  if(_xnaoa48===0){_xlpwo67=[];return;}
+  let rows=[{keys:[],_xhqwg26:1,partial:_xnaoa48<GS.length}];
+  for(let _xfqbk29=0;_xfqbk29<GS.length;_xfqbk29++){
+    const _xurrl59=_xycai41[_xfqbk29];
+    if(_xurrl59.size===0){
+      rows=rows.map(_xmied15=>({..._xmied15,keys:[..._xmied15.keys,'?']}));
     } else {
-      const _xybcu89=[];
-      for(const _xfktp97 of rows)
-        for(const _xgyrb49 of _xwnwt25){
-          const _xbpcx64=_xbjbg19(_xbfng78,_xgyrb49);
-          _xybcu89.push({keys:[..._xfktp97.keys,_xgyrb49],_xtgwi25:_xfktp97._xtgwi25*_xbpcx64,_xfwls99:TV*_xfktp97._xtgwi25*_xbpcx64,partial:_xfktp97.partial});
+      const _xywpb40=[];
+      for(const _xmied15 of rows)
+        for(const _xmvoh51 of _xurrl59){
+          const _xojru19=_xwash28(_xfqbk29,_xmvoh51);
+          _xywpb40.push({keys:[..._xmied15.keys,_xmvoh51],_xhqwg26:_xmied15._xhqwg26*_xojru19,_xxscx97:TV*_xmied15._xhqwg26*_xojru19,partial:_xmied15.partial});
         }
-      rows=_xybcu89;
+      rows=_xywpb40;
     }
   }
-  _xirwo83=rows;
+  _xlpwo67=rows;
 }
 function genAI1(){
-  const _xkygq77=_xdyzv75[1];
-  if(!_xkygq77){alert('먼저 금액을 선택해 주세요.');return;}
-  const _xcfjn53=parseFloat(document.getElementById('pi').value);
-  if(isNaN(_xcfjn53)||_xcfjn53<=0){alert('생존 인원 기준을 입력해 주세요.');return;}
+  const _xrdkx96=_xnysr78[1];
+  if(!_xrdkx96){alert('먼저 금액을 선택해 주세요.');return;}
+  const _xnswm68=parseFloat(document.getElementById('pi').value);
+  if(isNaN(_xnswm68)||_xnswm68<=0){alert('생존 인원 기준을 입력해 주세요.');return;}
   genCnt[1]++;
   document.getElementById('gc1').textContent=genCnt[1]+'회';
-  const _xhzog94=GS.map((_,_xbfng78)=>_xsvdt88[_xbfng78].size>0);
-  const _xpith45=[];
-  GS.forEach((_,_xbfng78)=>{if(!_xhzog94[_xbfng78]) _xpith45.push(_xbfng78);});
-  const _xrgaa29=_xsvdt88.reduce((_xvhhi37,_xwnwt25)=>_xvhhi37*(_xwnwt25.size||1),1);
-  const _xxecb82=_xkygq77/_xrgaa29;
-  function _xuvxg85(n){
-    const _xbimf80=[];
-    while(n%3===0){_xbimf80.push(3);n/=3;}
-    while(n%2===0){_xbimf80.push(2);n/=2;}
+  const _xgukl23=GS.map((_,_xfqbk29)=>_xycai41[_xfqbk29].size>0);
+  const _xwxod21=[];
+  GS.forEach((_,_xfqbk29)=>{if(!_xgukl23[_xfqbk29]) _xwxod21.push(_xfqbk29);});
+  const _xfyuc32=_xycai41.reduce((_xakmb90,_xurrl59)=>_xakmb90*(_xurrl59.size||1),1);
+  const _xatvh95=_xrdkx96/_xfyuc32;
+  function _xvpzo40(n){
+    const _xnvga98=[];
+    while(n%3===0){_xnvga98.push(3);n/=3;}
+    while(n%2===0){_xnvga98.push(2);n/=2;}
     if(n!==1) return null;
-    return _xbimf80;
+    return _xnvga98;
   }
-  const _xbimf80=_xuvxg85(_xxecb82);
-  if(!_xbimf80||_xbimf80.length>_xpith45.length){
+  const _xnvga98=_xvpzo40(_xatvh95);
+  if(!_xnvga98||_xnvga98.length>_xwxod21.length){
     alert('자유 경기 수가 부족하여 조합을 생성할 수 없습니다.');
     return;
   }
-  const _xsvhb47 = Math.log(_xcfjn53 / TV);
-  const _xpusp29 = _xsvhb47 / GS.length;
-  function _xclzo99(_xbfng78){
-    const _xftfx81=GS[_xbfng78];
-    const _xmuui68=[{_xgyrb49:'w',_xfdyk60:_xftfx81.w},{_xgyrb49:'d',_xfdyk60:_xftfx81.d},{_xgyrb49:'l',_xfdyk60:_xftfx81.l}];
-    _xmuui68.sort((_xwmpz57,_xmdnk38)=>Math.abs(Math.log(_xwmpz57._xfdyk60/100)-_xpusp29)-Math.abs(Math.log(_xmdnk38._xfdyk60/100)-_xpusp29));
-    return _xmuui68;
+  const _xrcyp75 = Math.log(_xnswm68 / TV);
+  const _xuktj56 = _xrcyp75 / GS.length;
+  function _xseqf50(_xfqbk29){
+    const _xzwxz58=GS[_xfqbk29];
+    const _xvfqm71=[{_xmvoh51:'w',_xwdlp32:_xzwxz58.w},{_xmvoh51:'d',_xwdlp32:_xzwxz58.d},{_xmvoh51:'l',_xwdlp32:_xzwxz58.l}];
+    _xvfqm71.sort((_xsxgt99,_xdlzv90)=>Math.abs(Math.log(_xsxgt99._xwdlp32/100)-_xuktj56)-Math.abs(Math.log(_xdlzv90._xwdlp32/100)-_xuktj56));
+    return _xvfqm71;
   }
-  let _xldfm14=null, bestDiff=Infinity;
-  for(let _xiwjc19=0;_xiwjc19<200;_xiwjc19++){
-    const _xbkdp55=_xyagx88([..._xpith45]);
-    const _xling83={};
-    for(let _xbuha60=0;_xbuha60<_xbimf80.length;_xbuha60++){
-      const _xbfng78=_xbkdp55[_xbuha60];
-      const _xrqmd86=_xbimf80[_xbuha60];
-      const _xzzbx89=_xclzo99(_xbfng78);
-      if(_xrqmd86===3){
-        _xling83[_xbfng78]=new Set(_xzzbx89.map(o=>o._xgyrb49));
+  let _xfgqw94=null, bestDiff=Infinity;
+  for(let _xtsnv88=0;_xtsnv88<200;_xtsnv88++){
+    const _xvyhh52=_xtqbx10([..._xwxod21]);
+    const _xtqha99={};
+    for(let _xzzuj32=0;_xzzuj32<_xnvga98.length;_xzzuj32++){
+      const _xfqbk29=_xvyhh52[_xzzuj32];
+      const _xsncz73=_xnvga98[_xzzuj32];
+      const _xsnti88=_xseqf50(_xfqbk29);
+      if(_xsncz73===3){
+        _xtqha99[_xfqbk29]=new Set(_xsnti88.map(o=>o._xmvoh51));
       } else {
-        const _xgbvq94=_xyagx88([..._xzzbx89]).slice(0,2);
-        _xling83[_xbfng78]=new Set(_xgbvq94.map(o=>o._xgyrb49));
+        const _xvmib62=_xtqbx10([..._xsnti88]).slice(0,2);
+        _xtqha99[_xfqbk29]=new Set(_xvmib62.map(o=>o._xmvoh51));
       }
     }
-    for(let _xbuha60=_xbimf80.length;_xbuha60<_xbkdp55.length;_xbuha60++){
-      const _xbfng78=_xbkdp55[_xbuha60];
-      const _xftfx81=GS[_xbfng78];
-      const _xmuui68=[{_xgyrb49:'w',_xfdyk60:_xftfx81.w},{_xgyrb49:'d',_xfdyk60:_xftfx81.d},{_xgyrb49:'l',_xfdyk60:_xftfx81.l}];
-      const _xzsax69=_xmuui68.map(o=>1/(Math.abs(Math.log(o._xfdyk60/100)-_xpusp29)+0.01));
-      const _xewwz91=_xzsax69.reduce((_xwnwt25,w)=>_xwnwt25+w,0);
-      let _xbpcx64=Math.random()*_xewwz91, cum=0;
-      let _xxbuy44=_xmuui68[_xmuui68.length-1]._xgyrb49;
-      for(let _xkmuv76=0;_xkmuv76<_xmuui68.length;_xkmuv76++){cum+=_xzsax69[_xkmuv76];if(_xbpcx64<=cum){_xxbuy44=_xmuui68[_xkmuv76]._xgyrb49;break;}}
-      _xling83[_xbfng78]=new Set([_xxbuy44]);
+    for(let _xzzuj32=_xnvga98.length;_xzzuj32<_xvyhh52.length;_xzzuj32++){
+      const _xfqbk29=_xvyhh52[_xzzuj32];
+      const _xzwxz58=GS[_xfqbk29];
+      const _xvfqm71=[{_xmvoh51:'w',_xwdlp32:_xzwxz58.w},{_xmvoh51:'d',_xwdlp32:_xzwxz58.d},{_xmvoh51:'l',_xwdlp32:_xzwxz58.l}];
+      const _xmztl13=_xvfqm71.map(o=>1/(Math.abs(Math.log(o._xwdlp32/100)-_xuktj56)+0.01));
+      const _xajch71=_xmztl13.reduce((_xurrl59,w)=>_xurrl59+w,0);
+      let _xojru19=Math.random()*_xajch71, cum=0;
+      let _xrqhj75=_xvfqm71[_xvfqm71.length-1]._xmvoh51;
+      for(let _xwldk38=0;_xwldk38<_xvfqm71.length;_xwldk38++){cum+=_xmztl13[_xwldk38];if(_xojru19<=cum){_xrqhj75=_xvfqm71[_xwldk38]._xmvoh51;break;}}
+      _xtqha99[_xfqbk29]=new Set([_xrqhj75]);
     }
-    let _xexjl96=[{keys:new Array(GS.length).fill(null),_xtgwi25:1}];
-    for(const _xbfng78 of _xpith45){
-      const _xybcu89=[];
-      for(const _xfktp97 of _xexjl96){
-        for(const _xgyrb49 of _xling83[_xbfng78]){
-          const _xazbx49=[..._xfktp97.keys];
-          _xazbx49[_xbfng78]=_xgyrb49;
-          const _xbpcx64=_xbjbg19(_xbfng78,_xgyrb49);
-          _xybcu89.push({keys:_xazbx49,_xtgwi25:_xfktp97._xtgwi25*_xbpcx64});
+    let _xvsae90=[{keys:new Array(GS.length).fill(null),_xhqwg26:1}];
+    for(const _xfqbk29 of _xwxod21){
+      const _xywpb40=[];
+      for(const _xmied15 of _xvsae90){
+        for(const _xmvoh51 of _xtqha99[_xfqbk29]){
+          const _xvzgs64=[..._xmied15.keys];
+          _xvzgs64[_xfqbk29]=_xmvoh51;
+          const _xojru19=_xwash28(_xfqbk29,_xmvoh51);
+          _xywpb40.push({keys:_xvzgs64,_xhqwg26:_xmied15._xhqwg26*_xojru19});
         }
       }
-      _xexjl96=_xybcu89;
+      _xvsae90=_xywpb40;
     }
-    let _xnpdc93=1;
-    for(let _xbfng78=0;_xbfng78<GS.length;_xbfng78++){
-      if(_xhzog94[_xbfng78]) _xnpdc93*=_xbjbg19(_xbfng78,[..._xsvdt88[_xbfng78]][0]);
+    let _xmslm81=1;
+    for(let _xfqbk29=0;_xfqbk29<GS.length;_xfqbk29++){
+      if(_xgukl23[_xfqbk29]) _xmslm81*=_xwash28(_xfqbk29,[..._xycai41[_xfqbk29]][0]);
     }
-    const _xdfwx74=_xexjl96.reduce((_xwnwt25,_xbpcx64)=>_xwnwt25+TV*_xnpdc93*_xbpcx64._xtgwi25,0)/_xexjl96.length;
-    const _xrpox20=Math.abs(_xdfwx74-_xcfjn53);
-    if(_xrpox20<bestDiff){
-      bestDiff=_xrpox20;
-      _xldfm14={_xling83,_xexjl96};
-      if(_xrpox20<_xcfjn53*0.1) break; // 10% 이내면 충분
+    const _xvyti51=_xvsae90.reduce((_xurrl59,_xojru19)=>_xurrl59+TV*_xmslm81*_xojru19._xhqwg26,0)/_xvsae90.length;
+    const _xqrqz61=Math.abs(_xvyti51-_xnswm68);
+    if(_xqrqz61<bestDiff){
+      bestDiff=_xqrqz61;
+      _xfgqw94={_xtqha99,_xvsae90};
+      if(_xqrqz61<_xnswm68*0.1) break; // 10% 이내면 충분
     }
   }
-  let _xftnz98=[{keys:new Array(GS.length).fill(null)}];
-  for(let _xbfng78=0;_xbfng78<GS.length;_xbfng78++){
-    if(!_xhzog94[_xbfng78]) continue;
-    const _xybcu89=[];
-    for(const _xfktp97 of _xftnz98){
-      for(const _xgyrb49 of _xsvdt88[_xbfng78]){
-        const _xazbx49=[..._xfktp97.keys];
-        _xazbx49[_xbfng78]=_xgyrb49;
-        _xybcu89.push({keys:_xazbx49});
+  let _xjhgo94=[{keys:new Array(GS.length).fill(null)}];
+  for(let _xfqbk29=0;_xfqbk29<GS.length;_xfqbk29++){
+    if(!_xgukl23[_xfqbk29]) continue;
+    const _xywpb40=[];
+    for(const _xmied15 of _xjhgo94){
+      for(const _xmvoh51 of _xycai41[_xfqbk29]){
+        const _xvzgs64=[..._xmied15.keys];
+        _xvzgs64[_xfqbk29]=_xmvoh51;
+        _xywpb40.push({keys:_xvzgs64});
       }
     }
-    _xftnz98=_xybcu89;
+    _xjhgo94=_xywpb40;
   }
-  _xirwo83=[];
-  for(const _xbatr57 of _xftnz98){
-    for(const _xtcvl39 of _xldfm14._xexjl96){
-      const keys=[..._xbatr57.keys];
-      _xpith45.forEach(_xbfng78=>{keys[_xbfng78]=_xtcvl39.keys[_xbfng78];});
-      const _xtgwi25=_xszdn46(keys);
-      _xirwo83.push({keys,_xtgwi25,_xfwls99:TV*_xtgwi25});
+  _xlpwo67=[];
+  for(const _xikvt53 of _xjhgo94){
+    for(const _xgvep20 of _xfgqw94._xvsae90){
+      const keys=[..._xikvt53.keys];
+      _xwxod21.forEach(_xfqbk29=>{keys[_xfqbk29]=_xgvep20.keys[_xfqbk29];});
+      const _xhqwg26=_xdlwz26(keys);
+      _xlpwo67.push({keys,_xhqwg26,_xxscx97:TV*_xhqwg26});
     }
   }
-  const _xmwgj10 = _xirwo83.length>1
-    ? `${fmtSurv(Math.min(..._xirwo83.map(c=>c._xfwls99)))} ~ ${fmtSurv(Math.max(..._xirwo83.map(c=>c._xfwls99)))}`
-    : fmtSurv(_xirwo83[0]?._xfwls99||0);
-  const _xbrrg82=_xhzog94.filter(Boolean).length>0?` · 수동 고정 ${_xhzog94.filter(Boolean).length}경기`:'';
-  const _xijgb24=_xbimf80.length>0?` · AI 복수 ${_xbimf80.length}경기`:'';
-  const _xvxzo21=document.getElementById('ah1');
-  _xvxzo21.style.cssText='display:block;background:#E1F5EE;border:1px solid #5DCAA5;border-radius:6px;padding:8px 12px;margin-bottom:8px;color:#085041;font-size:11px;line-height:1.8';
-  _xvxzo21.innerHTML=`<strong>${genCnt[1]}번째 생성</strong> · 목표 생존: <strong>${_xcfjn53.toLocaleString()}명</strong> · <strong>${_xirwo83.length}개 조합 = ${_xfabx84(_xirwo83.length*1000)}</strong>${_xbrrg82}${_xijgb24}<br>생성 조합 예상 생존 범위: <strong>${_xmwgj10}</strong>`;
-  const _xlsvq35=document.getElementById('wb1');
-  const _xmuar73=_xirwo83.filter(c=>c._xfwls99<_xcfjn53);
-  if(_xmuar73.length>0){
-    const _xbnub97=Math.min(..._xirwo83.map(c=>c._xfwls99));
-    const _xokho50=Math.max(..._xirwo83.map(c=>c._xfwls99));
-    const _xdfwx74=_xirwo83.reduce((_xwnwt25,c)=>_xwnwt25+c._xfwls99,0)/_xirwo83.length;
-    _xlsvq35.style.display='block';
-    _xlsvq35.innerHTML=`⚠️ <strong>${_xmuar73.length}개 조합</strong>이 목표 생존(${_xcfjn53.toLocaleString()}명)보다 낮습니다.<br>실제 범위: ${fmtSurv(_xbnub97)} ~ ${fmtSurv(_xokho50)} · 평균: ${fmtSurv(_xdfwx74)}<br><span style="font-size:10px;color:#999">다시 생성하면 다른 결과가 나올 수 있습니다.</span>`;
+  const _xagin18 = _xlpwo67.length>1
+    ? `${fmtSurv(Math.min(..._xlpwo67.map(c=>c._xxscx97)))} ~ ${fmtSurv(Math.max(..._xlpwo67.map(c=>c._xxscx97)))}`
+    : fmtSurv(_xlpwo67[0]?._xxscx97||0);
+  const _xshul24=_xgukl23.filter(Boolean).length>0?` · 수동 고정 ${_xgukl23.filter(Boolean).length}경기`:'';
+  const _xtoki45=_xnvga98.length>0?` · AI 복수 ${_xnvga98.length}경기`:'';
+  const _xjqut63=document.getElementById('ah1');
+  _xjqut63.style.cssText='display:block;background:#E1F5EE;border:1px solid #5DCAA5;border-radius:6px;padding:8px 12px;margin-bottom:8px;color:#085041;font-size:11px;line-height:1.8';
+  _xjqut63.innerHTML=`<strong>${genCnt[1]}번째 생성</strong> · 목표 생존: <strong>${_xnswm68.toLocaleString()}명</strong> · <strong>${_xlpwo67.length}개 조합 = ${_xpcon95(_xlpwo67.length*1000)}</strong>${_xshul24}${_xtoki45}<br>생성 조합 예상 생존 범위: <strong>${_xagin18}</strong>`;
+  const _xsovp17=document.getElementById('wb1');
+  const _xynpq52=_xlpwo67.filter(c=>c._xxscx97<_xnswm68);
+  if(_xynpq52.length>0){
+    const _xeywr36=Math.min(..._xlpwo67.map(c=>c._xxscx97));
+    const _xijon47=Math.max(..._xlpwo67.map(c=>c._xxscx97));
+    const _xvyti51=_xlpwo67.reduce((_xurrl59,c)=>_xurrl59+c._xxscx97,0)/_xlpwo67.length;
+    _xsovp17.style.display='block';
+    _xsovp17.innerHTML=`⚠️ <strong>${_xynpq52.length}개 조합</strong>이 목표 생존(${_xnswm68.toLocaleString()}명)보다 낮습니다.<br>실제 범위: ${fmtSurv(_xeywr36)} ~ ${fmtSurv(_xijon47)} · 평균: ${fmtSurv(_xvyti51)}<br><span style="font-size:10px;color:#999">다시 생성하면 다른 결과가 나올 수 있습니다.</span>`;
   } else {
-    _xlsvq35.style.display='none';
+    _xsovp17.style.display='none';
   }
   rdrTbl1();
-  _xukon21();
+  _xakos46();
 }
  
-function renderComboLine(c, _xkmuv76){
-  const _xvayl59={w:'W',d:'D',l:'L','?':'q'};
-  const _xkadl65={w:'승',d:'무',l:'패','?':'?'};
-  const _xkuxs23={H:'H',M:'M',L:'L',MANUAL:'MN'};
-  const _xwfkd44={H:'높음',M:'중간',L:'낮음',MANUAL:'수동'};
-  const _xmmhr56 = c.keys.map((_xgyrb49,_xbfng78)=>{
-    const _xcwrh20='cl-pick '+(_xvayl59[_xgyrb49]||'q');
-    return`<span class="${_xcwrh20}" title="${GS[_xbfng78]?GS[_xbfng78].no+'.'+GS[_xbfng78].home:''}${_xbfng78+1}">${_xbfng78+1}</span>`;
+function renderComboLine(c, _xwldk38){
+  const _xteyg52={w:'W',d:'D',l:'L','?':'q'};
+  const _xgjpa60={w:'승',d:'무',l:'패','?':'?'};
+  const _xlkac68={H:'H',M:'M',L:'L',MANUAL:'MN'};
+  const _xgokq71={H:'높음',M:'중간',L:'낮음',MANUAL:'수동'};
+  const _xxiyj52 = c.keys.map((_xmvoh51,_xfqbk29)=>{
+    const _xoxxs93='cl-pick '+(_xteyg52[_xmvoh51]||'q');
+    return`<span class="${_xoxxs93}" title="${GS[_xfqbk29]?GS[_xfqbk29].no+'.'+GS[_xfqbk29].home:''}${_xfqbk29+1}">${_xfqbk29+1}</span>`;
   }).join('');
-  const _xzvgu82 = _xwggz16(c.keys.map(_xgyrb49=>_xkadl65[_xgyrb49]).join('-'));
-  const _xdwdl61 = _xzvgu82?_xlzpy78(_xzvgu82._xzfdt95,_xzvgu82._xewwz91):'';
-  const _xerpk64 = _xdwdl61?`<span class="result-_xkzlw45 ${_xdwdl61.includes('1등')?'rb-1':_xdwdl61.includes('2등')?'rb-2':_xdwdl61.includes('3등')?'rb-3':'rb-4'}" style="margin-right:4px">${_xdwdl61}</span>`:'';
-  const _xjpcl25 = c.strat?(_xkuxs23[c.strat]||'MN'):'MN';
-  const _xcexw42 = c.strat?(_xwfkd44[c.strat]||'수동'):'수동';
+  const _xpndt99 = _xeixb62(c.keys.map(_xmvoh51=>_xgjpa60[_xmvoh51]).join('-'));
+  const _xlamq59 = _xpndt99?_xvkzr67(_xpndt99._xvaby79,_xpndt99._xajch71):'';
+  const _xepmr54 = _xlamq59?`<span class="result-_xuzgj30 ${_xlamq59.includes('1등')?'rb-1':_xlamq59.includes('2등')?'rb-2':_xlamq59.includes('3등')?'rb-3':'rb-4'}" style="margin-right:4px">${_xlamq59}</span>`:'';
+  const _xkoeb90 = c.strat?(_xlkac68[c.strat]||'MN'):'MN';
+  const _xhzxe48 = c.strat?(_xgokq71[c.strat]||'수동'):'수동';
   return`<div class="combo-line">
-    <span class="cl-idx">${_xkmuv76+1}</span>
-    <div class="cl-picks">${_xmmhr56}</div>
-    ${_xerpk64}
-    <span class="cl-strat ${_xjpcl25}">${_xcexw42}</span>
-    <span class="cl-surv">${fmtSurv(c._xfwls99)}</span>
+    <span class="cl-idx">${_xwldk38+1}</span>
+    <div class="cl-picks">${_xxiyj52}</div>
+    ${_xepmr54}
+    <span class="cl-strat ${_xkoeb90}">${_xhzxe48}</span>
+    <span class="cl-surv">${fmtSurv(c._xxscx97)}</span>
   </div>`;
 }
-function _xegdc29(){
-  const _xmgzb54=document.getElementById('cp0');
-  const _xngna70=document.getElementById('cp0b');
-  if(!_xtqpk39.length){_xmgzb54.style.display='none';return;}
-  _xmgzb54.style.display='block';
-  _xngna70.innerHTML=_xtqpk39.map((c,_xkmuv76)=>renderComboLine(c,_xkmuv76)).join('');
+function _xpxmz83(){
+  const _xbbjt70=document.getElementById('cp0');
+  const _xbmzi55=document.getElementById('cp0b');
+  if(!_xvfwz14.length){_xbbjt70.style.display='none';return;}
+  _xbbjt70.style.display='block';
+  _xbmzi55.innerHTML=_xvfwz14.map((c,_xwldk38)=>renderComboLine(c,_xwldk38)).join('');
 }
-function _xukon21(){
-  const _xmgzb54=document.getElementById('cp1');
-  const _xngna70=document.getElementById('cp1b');
-  if(!_xirwo83.length){_xmgzb54.style.display='none';return;}
-  _xmgzb54.style.display='block';
-  _xngna70.innerHTML=_xirwo83.map((c,_xkmuv76)=>renderComboLine(c,_xkmuv76)).join('');
+function _xakos46(){
+  const _xbbjt70=document.getElementById('cp1');
+  const _xbmzi55=document.getElementById('cp1b');
+  if(!_xlpwo67.length){_xbbjt70.style.display='none';return;}
+  _xbbjt70.style.display='block';
+  _xbmzi55.innerHTML=_xlpwo67.map((c,_xwldk38)=>renderComboLine(c,_xwldk38)).join('');
 }
  
 function showInfo(tab){
@@ -1328,88 +1328,88 @@ function showInfo(tab){
   document.getElementById('infoTeam').style.display=tab==='team'?'block':'none';
   document.getElementById('infoForm').style.display=tab==='form'?'block':'none';
 }
-function _xzily69(val,_xcwrh20){
-  return`<div class="stat-bar"><div class="stat-fill ${_xcwrh20}" style="width:${val}%"></div></div>`;
+function _xmbnw94(val,_xoxxs93){
+  return`<div class="stat-bar"><div class="stat-fill ${_xoxxs93}" style="width:${val}%"></div></div>`;
 }
 function renderTeams(){
-  const _xmgzb54=document.getElementById('infoTeam');
-  if(!_xmgzb54) return;
-  _xmgzb54.innerHTML=GS.map((_xftfx81,_xkmuv76)=>{
-    const _xyrcn71=TEAM_STATS[_xkmuv76]||{home:{name:_xftfx81.home,atk:50,def:50,pos:50,ovr:50,rec:[]},away:{name:_xftfx81.away,atk:50,def:50,pos:50,ovr:50,rec:[]},tip:''};
-    const _xiswm99=(_xrqvo15,isHome)=>{
-      const _xkzlw45=isHome?'<span class="home-badge">홈</span>':'<span class="away-badge">원정</span>';
+  const _xbbjt70=document.getElementById('infoTeam');
+  if(!_xbbjt70) return;
+  _xbbjt70.innerHTML=GS.map((_xzwxz58,_xwldk38)=>{
+    const _xqlhp26=TEAM_STATS[_xwldk38]||{home:{name:_xzwxz58.home,atk:50,def:50,pos:50,ovr:50,rec:[]},away:{name:_xzwxz58.away,atk:50,def:50,pos:50,ovr:50,rec:[]},tip:''};
+    const _xfwki98=(_xzdrg21,isHome)=>{
+      const _xuzgj30=isHome?'<span class="home-badge">홈</span>':'<span class="away-badge">원정</span>';
       return`<div class="team-col">
-        <div class="team-name">${_xrqvo15.name}${_xkzlw45}</div>
-        <div class="stat-row"><span class="stat-label">공격</span>${_xzily69(_xrqvo15.atk,'atk')}<span class="stat-val">${_xrqvo15.atk}</span></div>
-        <div class="stat-row"><span class="stat-label">수비</span>${_xzily69(_xrqvo15.def,'def')}<span class="stat-val">${_xrqvo15.def}</span></div>
-        <div class="stat-row"><span class="stat-label">점유</span>${_xzily69(_xrqvo15.pos,'pos')}<span class="stat-val">${_xrqvo15.pos}</span></div>
-        <div class="stat-row"><span class="stat-label">종합</span>${_xzily69(_xrqvo15.ovr,'ovr')}<span class="stat-val" style="font-size:11px;font-weight:800;color:#F57F17">${_xrqvo15.ovr}</span></div>
+        <div class="team-name">${_xzdrg21.name}${_xuzgj30}</div>
+        <div class="stat-row"><span class="stat-label">공격</span>${_xmbnw94(_xzdrg21.atk,'atk')}<span class="stat-val">${_xzdrg21.atk}</span></div>
+        <div class="stat-row"><span class="stat-label">수비</span>${_xmbnw94(_xzdrg21.def,'def')}<span class="stat-val">${_xzdrg21.def}</span></div>
+        <div class="stat-row"><span class="stat-label">점유</span>${_xmbnw94(_xzdrg21.pos,'pos')}<span class="stat-val">${_xzdrg21.pos}</span></div>
+        <div class="stat-row"><span class="stat-label">종합</span>${_xmbnw94(_xzdrg21.ovr,'ovr')}<span class="stat-val" style="font-size:11px;font-weight:800;color:#F57F17">${_xzdrg21.ovr}</span></div>
       </div>`;
     };
     return`<div class="match-card">
       <div class="match-header">
-        <span class="match-no">${_xftfx81.no}</span>
-        ${_xftfx81.home} <span style="color:#9FE1CB;margin:0 6px;font-size:11px">vs</span> ${_xftfx81.away}
-        <span class="match-lge">${_xftfx81.lge}</span>
+        <span class="match-no">${_xzwxz58.no}</span>
+        ${_xzwxz58.home} <span style="color:#9FE1CB;margin:0 6px;font-size:11px">vs</span> ${_xzwxz58.away}
+        <span class="match-lge">${_xzwxz58.lge}</span>
       </div>
       <div style="padding:8px 12px 4px;display:flex;gap:4px;font-size:11px;color:#555;align-items:center">
-        <span style="font-weight:600;color:#1B7A1B">승 ${_xftfx81.w}%</span>
-        <span class="vote-bar-w" style="width:${_xftfx81.w*0.7}px"></span>
-        <span style="color:#888;margin:0 4px">무 ${_xftfx81.d}%</span>
-        <span class="vote-bar-d" style="width:${_xftfx81.d*0.7}px"></span>
-        <span style="color:#C0180E;margin-left:4px">패 ${_xftfx81.l}%</span>
-        <span class="vote-bar-l" style="width:${_xftfx81.l*0.7}px"></span>
+        <span style="font-weight:600;color:#1B7A1B">승 ${_xzwxz58.w}%</span>
+        <span class="vote-bar-w" style="width:${_xzwxz58.w*0.7}px"></span>
+        <span style="color:#888;margin:0 4px">무 ${_xzwxz58.d}%</span>
+        <span class="vote-bar-d" style="width:${_xzwxz58.d*0.7}px"></span>
+        <span style="color:#C0180E;margin-left:4px">패 ${_xzwxz58.l}%</span>
+        <span class="vote-bar-l" style="width:${_xzwxz58.l*0.7}px"></span>
       </div>
-      <div class="team-row">${_xiswm99(_xyrcn71.home,true)}${_xiswm99(_xyrcn71.away,false)}</div>
+      <div class="team-row">${_xfwki98(_xqlhp26.home,true)}${_xfwki98(_xqlhp26.away,false)}</div>
     </div>`;
   }).join('');
 }
 function renderFormations(){
-  const _xmgzb54=document.getElementById('infoForm');
-  _xmgzb54.innerHTML=GS.map((_xftfx81,_xkmuv76)=>{
-    const _xlqmp53=_xmkpo90[_xkmuv76];
-    if(!_xlqmp53) return '';
-    const _xdphz21={GK:0,DF:1,MF:2,FW:3};
-    const _xjdqe88=(side, label)=>{
-      const _xzzbx89=[...side.players].sort((_xwmpz57,_xmdnk38)=>(_xdphz21[_xwmpz57.pos]||0)-(_xdphz21[_xmdnk38.pos]||0));
-      const rows=_xzzbx89.map(_xvhhi37=>`<tr>
-        <td><span class="pos-_xkzlw45 pos-${_xvhhi37.pos}">${_xvhhi37.pos}</span></td>
-        <td style="text-align:left;font-weight:500">${_xvhhi37.name}</td>
+  const _xbbjt70=document.getElementById('infoForm');
+  _xbbjt70.innerHTML=GS.map((_xzwxz58,_xwldk38)=>{
+    const _xcmxr88=FORMATIONS[_xwldk38];
+    if(!_xcmxr88) return '';
+    const _xxptx49={GK:0,DF:1,MF:2,FW:3};
+    const _xtevq85=(side, label)=>{
+      const _xsnti88=[...side.players].sort((_xsxgt99,_xdlzv90)=>(_xxptx49[_xsxgt99.pos]||0)-(_xxptx49[_xdlzv90.pos]||0));
+      const rows=_xsnti88.map(_xakmb90=>`<tr>
+        <td><span class="pos-_xuzgj30 pos-${_xakmb90.pos}">${_xakmb90.pos}</span></td>
+        <td style="text-align:left;font-weight:500">${_xakmb90.name}</td>
       </tr>`).join('');
       return`<div style="flex:1;min-width:0">
         <div style="font-size:12px;font-weight:700;color:#1a1a1a;margin-bottom:4px">${label} <span style="font-size:10px;color:#888;font-weight:400">${side.formation}</span></div>
         <table class="form-table">
-          <thead><tr><th style="width:40px">포지션</th><th style="text-align:left">선수명</th></tr></thead>
+          <thead><tr><th style="width:40px;white-space:nowrap;font-size:11px">포지션</th><th style="text-align:left">선수명</th></tr></thead>
           <tbody>${rows}</tbody>
         </table>
       </div>`;
     };
     return`<div class="match-card">
       <div class="match-header">
-        <span class="match-no">${_xftfx81.no}</span>
-        ${_xftfx81.home} <span style="color:#9FE1CB;margin:0 6px;font-size:11px">vs</span> ${_xftfx81.away}
-        <span class="match-lge">${_xftfx81.lge}</span>
+        <span class="match-no">${_xzwxz58.no}</span>
+        ${_xzwxz58.home} <span style="color:#9FE1CB;margin:0 6px;font-size:11px">vs</span> ${_xzwxz58.away}
+        <span class="match-lge">${_xzwxz58.lge}</span>
       </div>
       <div style="display:flex;gap:10px;padding:10px 12px">
-        ${_xjdqe88(_xlqmp53.home,'홈: '+_xftfx81.home)}
+        ${_xtevq85(_xcmxr88.home,'홈: '+_xzwxz58.home)}
         <div style="width:1px;background:#e0e0e0;flex-shrink:0"></div>
-        ${_xjdqe88(_xlqmp53.away,'원정: '+_xftfx81.away)}
+        ${_xtevq85(_xcmxr88.away,'원정: '+_xzwxz58.away)}
       </div>
     </div>`;
   }).join('');
 }
 function resetTab(tab){
   if(tab===0){
-    _xtqpk39=[];genCnt[0]=0;GS.forEach((_,_xbfng78)=>{_xeqir69[_xbfng78]=new Set();});
+    _xvfwz14=[];genCnt[0]=0;GS.forEach((_,_xfqbk29)=>{_xvdge47[_xfqbk29]=new Set();});
     document.getElementById('gc0').textContent='0회';
     document.getElementById('ah0').style.display='none';
-    _xlfwb81();
+    _xhpse93();
     document.getElementById('wb0').style.display='none';
     document.getElementById('cp0').style.display='none';
     rdrTbl0();
   } else {
-    _xirwo83=[];GS.forEach((_,_xbfng78)=>{_xsvdt88[_xbfng78]=new Set();});genCnt[1]=0;
-    _xcoeb58();
+    _xlpwo67=[];GS.forEach((_,_xfqbk29)=>{_xycai41[_xfqbk29]=new Set();});genCnt[1]=0;
+    _xyplh30();
     document.getElementById('gc1').textContent='0회';
     document.getElementById('ah1').style.display='none';
     document.getElementById('wb1').style.display='none';
@@ -1419,305 +1419,305 @@ function resetTab(tab){
 }
  
 function saveTab(tab){
-  const _xjqio85={w:'승',d:'무',l:'패'};
-  let _xfeum31=[];let _xaqap89='';let _xgsvt54='';
-  const _xkrkr39=new Date();
-  const _xyrcn71=`${_xkrkr39.getMonth()+1}/${_xkrkr39.getDate()} ${String(_xkrkr39.getHours()).padStart(2,'0')}:${String(_xkrkr39.getMinutes()).padStart(2,'0')}`;
+  const _xunat78={w:'승',d:'무',l:'패'};
+  let _xvasf91=[];let _xwdjb31='';let _xsbhp84='';
+  const _xdezn71=new Date();
+  const _xqlhp26=`${_xdezn71.getMonth()+1}/${_xdezn71.getDate()} ${String(_xdezn71.getHours()).padStart(2,'0')}:${String(_xdezn71.getMinutes()).padStart(2,'0')}`;
   if(tab===0){
-    if(!_xtqpk39.length){alert('먼저 AI 자동 선택을 적용해 주세요.');return;}
-    const _xzkcv93=_xtqpk39.length*1000;
-    const _xrvcz26={H:'AI①높음',M:'AI①중간',L:'AI①낮음',MANUAL:'수동선택'};
-    const _xttlv70={H:'cH',M:'cM',L:'cL',MANUAL:'c2'};
-    _xfeum31=_xtqpk39.map((c,_xkmuv76)=>({num:_xkmuv76+1,pickStr:c.keys.map(_xgyrb49=>_xjqio85[_xgyrb49]).join('-'),_xxhlg34:c._xtgwi25*100,_xfwls99:c._xfwls99,label:_xrvcz26[c.strat],_xcwrh20:_xttlv70[c.strat]}));
-    const _xzdkb59=[..._xafgc72];
-    _xaqap89=_xzdkb59.length>1?'AI①복합':_xrvcz26[_xzdkb59[0]]||'AI①높음';
-    _xgsvt54=_xzdkb59.length>1?'cCMP':_xttlv70[_xzdkb59[0]]||'cH';
+    if(!_xvfwz14.length){alert('먼저 AI 자동 선택을 적용해 주세요.');return;}
+    const _xcraj13=_xvfwz14.length*1000;
+    const _xogjc38={H:'AI①높음',M:'AI①중간',L:'AI①낮음',MANUAL:'수동선택'};
+    const _xxbuf27={H:'cH',M:'cM',L:'cL',MANUAL:'c2'};
+    _xvasf91=_xvfwz14.map((c,_xwldk38)=>({num:_xwldk38+1,pickStr:c.keys.map(_xmvoh51=>_xunat78[_xmvoh51]).join('-'),_xxmnj88:c._xhqwg26*100,_xxscx97:c._xxscx97,label:_xogjc38[c.strat],_xoxxs93:_xxbuf27[c.strat]}));
+    const _xckio34=[..._xhvdx18];
+    _xwdjb31=_xckio34.length>1?'AI①복합':_xogjc38[_xckio34[0]]||'AI①높음';
+    _xsbhp84=_xckio34.length>1?'cCMP':_xxbuf27[_xckio34[0]]||'cH';
   } else {
-    const _xnogo20=_xcuwf94();
-    if(!_xnogo20.length){alert('14경기를 모두 선택해 주세요.');return;}
-    const _xzkcv93=_xnogo20.length*1000;
-    _xfeum31=_xnogo20.map((c,_xkmuv76)=>({num:_xkmuv76+1,pickStr:c.keys.map(_xgyrb49=>_xjqio85[_xgyrb49]).join('-'),_xxhlg34:c._xtgwi25*100,_xfwls99:TV*c._xtgwi25,label:'AI②투표율',_xcwrh20:'c2'}));
-    _xaqap89='AI②투표율';_xgsvt54='c2';
+    const _xpjmo86=_xslnb97();
+    if(!_xpjmo86.length){alert('14경기를 모두 선택해 주세요.');return;}
+    const _xcraj13=_xpjmo86.length*1000;
+    _xvasf91=_xpjmo86.map((c,_xwldk38)=>({num:_xwldk38+1,pickStr:c.keys.map(_xmvoh51=>_xunat78[_xmvoh51]).join('-'),_xxmnj88:c._xhqwg26*100,_xxscx97:TV*c._xhqwg26,label:'AI②투표율',_xoxxs93:'c2'}));
+    _xwdjb31='AI②투표율';_xsbhp84='c2';
   }
   groupIdCnt++;
-  _xrorx21.push({id:groupIdCnt,time:_xyrcn71,label:_xaqap89,_xcwrh20:_xgsvt54,combos:_xfeum31,open:false});
-  _xwmeb47();
-  _xrekp58();
-  alert(_xfeum31.length+'개 조합('+_xfabx84(_xfeum31.length*1000)+') 저장 완료!');
+  _xqtyw53.push({id:groupIdCnt,time:_xqlhp26,label:_xwdjb31,_xoxxs93:_xsbhp84,combos:_xvasf91,open:false});
+  _xfmte34();
+  _xmduj51();
+  alert(_xvasf91.length+'개 조합('+_xpcon95(_xvasf91.length*1000)+') 저장 완료!');
 }
  
-function openPop(){_xwmeb47();document.getElementById('pov').classList.add('open');}
+function openPop(){_xfmte34();document.getElementById('pov').classList.add('open');}
 function closePop(){document.getElementById('pov').classList.remove('open');}
 function closePovOut(e){if(e.target===document.getElementById('pov'))closePop();}
-function clearAll(){if(!_xrorx21.length){alert('저장된 조합이 없습니다.');return;}if(!confirm('모든 조합을 삭제하시겠습니까?'))return;_xrorx21=[];_xwmeb47();_xrekp58();}
-function delGroup(id){_xrorx21=_xrorx21.filter(_xftfx81=>_xftfx81.id!==id);_xwmeb47();_xrekp58();}
-function togGroup(id){const _xftfx81=_xrorx21.find(_xftfx81=>_xftfx81.id===id);if(_xftfx81)_xftfx81.open=!_xftfx81.open;_xwmeb47();}
-function _xwmeb47(){
-  const _xtyrw40=_xrorx21.reduce((_xwnwt25,_xftfx81)=>_xwnwt25+_xftfx81.combos.length,0);
-  const _xewwz91=_xtyrw40*1000;
-  document.getElementById('savedBadge').textContent=_xrorx21.length;
-  document.getElementById('poptot').textContent=_xewwz91.toLocaleString()+'원 / 100,000원';
-  const _xxhlg34=Math.min(100,_xewwz91/_xhgdm72*100);
-  document.getElementById('popbf').style.width=_xxhlg34+'%';
-  document.getElementById('popbf').className='bfill'+(_xxhlg34>=100?' over':'');
-  const _xngna70=document.getElementById('popb');
-  if(!_xrorx21.length){_xngna70.innerHTML='<div class="empty">저장된 조합이 없습니다.</div>';return;}
-  const _xfafk90=_xrorx21.reduce((_xwnwt25,_xftfx81)=>_xwnwt25+_xftfx81.combos.reduce((ss,c)=>ss+c._xfwls99,0),0);
-  _xngna70.innerHTML=_xrorx21.map(_xftfx81=>`
+function clearAll(){if(!_xqtyw53.length){alert('저장된 조합이 없습니다.');return;}if(!confirm('모든 조합을 삭제하시겠습니까?'))return;_xqtyw53=[];_xfmte34();_xmduj51();}
+function delGroup(id){_xqtyw53=_xqtyw53.filter(_xzwxz58=>_xzwxz58.id!==id);_xfmte34();_xmduj51();}
+function togGroup(id){const _xzwxz58=_xqtyw53.find(_xzwxz58=>_xzwxz58.id===id);if(_xzwxz58)_xzwxz58.open=!_xzwxz58.open;_xfmte34();}
+function _xfmte34(){
+  const _xrnmy10=_xqtyw53.reduce((_xurrl59,_xzwxz58)=>_xurrl59+_xzwxz58.combos.length,0);
+  const _xajch71=_xrnmy10*1000;
+  document.getElementById('savedBadge').textContent=_xqtyw53.length;
+  document.getElementById('poptot').textContent=_xajch71.toLocaleString()+'원 / 100,000원';
+  const _xxmnj88=Math.min(100,_xajch71/_xzylf38*100);
+  document.getElementById('popbf').style.width=_xxmnj88+'%';
+  document.getElementById('popbf').className='bfill'+(_xxmnj88>=100?' over':'');
+  const _xbmzi55=document.getElementById('popb');
+  if(!_xqtyw53.length){_xbmzi55.innerHTML='<div class="empty">저장된 조합이 없습니다.</div>';return;}
+  const _xrbcd33=_xqtyw53.reduce((_xurrl59,_xzwxz58)=>_xurrl59+_xzwxz58.combos.reduce((ss,c)=>ss+c._xxscx97,0),0);
+  _xbmzi55.innerHTML=_xqtyw53.map(_xzwxz58=>`
     <div class="sg">
-      <div class="sgh" onclick="togGroup(${_xftfx81.id})">
+      <div class="sgh" onclick="togGroup(${_xzwxz58.id})">
         <div>
-          <div class="sgi"><span class="ctag ${_xftfx81._xcwrh20}" style="margin-right:6px">${_xftfx81.label}</span>${_xftfx81.combos.length}개 조합 · ${(_xftfx81.combos.length*1000).toLocaleString()}원</div>
-          <div class="sgm">저장: ${_xftfx81.time}</div>
+          <div class="sgi"><span class="ctag ${_xzwxz58._xoxxs93}" style="margin-right:6px">${_xzwxz58.label}</span>${_xzwxz58.combos.length}개 조합 · ${(_xzwxz58.combos.length*1000).toLocaleString()}원</div>
+          <div class="sgm">저장: ${_xzwxz58.time}</div>
         </div>
         <div class="sgr">
-          <button class="delg" onclick="event.stopPropagation();delGroup(${_xftfx81.id})">삭제</button>
-          <span class="sgarr${_xftfx81.open?' open':''}">▼</span>
+          <button class="delg" onclick="event.stopPropagation();delGroup(${_xzwxz58.id})">삭제</button>
+          <span class="sgarr${_xzwxz58.open?' open':''}">▼</span>
         </div>
       </div>
-      <div class="sgb${_xftfx81.open?' open':''}">
-        ${_xftfx81.combos.map(c=>`
+      <div class="sgb${_xzwxz58.open?' open':''}">
+        ${_xzwxz58.combos.map(c=>`
           <div class="ci">
-            <div style="display:flex;align-items:_xlpsa63;gap:5px;margin-bottom:4px">
+            <div style="display:flex;align-items:_xraws38;gap:5px;margin-bottom:4px">
               <span class="cidx">${c.num}조합</span>
-              <span class="ctag ${c._xcwrh20}">${c.label}</span>
+              <span class="ctag ${c._xoxxs93}">${c.label}</span>
             </div>
             ${(()=>{
-              const _xzvgu82=_xwggz16(c.pickStr);
-              const _xdwdl61=_xzvgu82?_xlzpy78(_xzvgu82._xzfdt95,_xzvgu82._xewwz91):'';
-              const _xjimd88=_xzvgu82&&_xzvgu82._xewwz91>0?`결과: ${_xzvgu82._xzfdt95}/${_xzvgu82._xdkzs79}`:'';
-              return (_xdwdl61?`<span class="result-_xkzlw45 ${_xdwdl61.includes('1등')?'rb-1':_xdwdl61.includes('2등')?'rb-2':_xdwdl61.includes('3등')?'rb-3':'rb-4'}">${_xdwdl61}</span>`:'')
-                +(_xjimd88?`<div class="result-score">${_xjimd88}</div>`:'')
-                +_xhryz67(c.pickStr);
+              const _xpndt99=_xeixb62(c.pickStr);
+              const _xlamq59=_xpndt99?_xvkzr67(_xpndt99._xvaby79,_xpndt99._xajch71):'';
+              const _xrqta77=_xpndt99&&_xpndt99._xajch71>0?`결과: ${_xpndt99._xvaby79}/${_xpndt99._xzyjn63}`:'';
+              return (_xlamq59?`<span class="result-_xuzgj30 ${_xlamq59.includes('1등')?'rb-1':_xlamq59.includes('2등')?'rb-2':_xlamq59.includes('3등')?'rb-3':'rb-4'}">${_xlamq59}</span>`:'')
+                +(_xrqta77?`<div class="result-score">${_xrqta77}</div>`:'')
+                +_xwlgr24(c.pickStr);
             })()}
             <div class="cm">
-              <span>투표율 곱: <strong style="color:#0C447C">${_xyiff91(c._xxhlg34)}</strong></span>
-              <span>예상 생존: <strong style="color:#028A8A">${fmtSurv(c._xfwls99)}</strong></span>
+              <span>투표율 곱: <strong style="color:#0C447C">${_xlptx50(c._xxmnj88)}</strong></span>
+              <span>예상 생존: <strong style="color:#028A8A">${fmtSurv(c._xxscx97)}</strong></span>
               <span style="color:#aaa">1,000원</span>
             </div>
           </div>`).join('')}
       </div>
     </div>`).join('')+`
     <div class="tbox">
-      <span style="font-size:13px;color:#0C447C;font-weight:600">전체 ${_xtyrw40}조합 합산</span>
-      <span style="font-size:13px;color:#0C447C">총 예상 생존 <strong>${fmtSurv(_xfafk90)}</strong> · ${_xewwz91.toLocaleString()}원</span>
+      <span style="font-size:13px;color:#0C447C;font-weight:600">전체 ${_xrnmy10}조합 합산</span>
+      <span style="font-size:13px;color:#0C447C">총 예상 생존 <strong>${fmtSurv(_xrbcd33)}</strong> · ${_xajch71.toLocaleString()}원</span>
     </div>`;
 }
-function _xfabx84(n){return n.toLocaleString()+'원';}
-function _xyiff91(_xfdyk60){
-  if(!_xfdyk60||_xfdyk60<=0||isNaN(_xfdyk60)) return '0.0000%';
-  if(_xfdyk60<0.001) return _xfdyk60.toFixed(6)+'%';
-  if(_xfdyk60<0.1)   return _xfdyk60.toFixed(4)+'%';
-  if(_xfdyk60<1)     return _xfdyk60.toFixed(4)+'%';
-  return _xfdyk60.toFixed(2)+'%';
+function _xpcon95(n){return n.toLocaleString()+'원';}
+function _xlptx50(_xwdlp32){
+  if(!_xwdlp32||_xwdlp32<=0||isNaN(_xwdlp32)) return '0.0000%';
+  if(_xwdlp32<0.001) return _xwdlp32.toFixed(6)+'%';
+  if(_xwdlp32<0.1)   return _xwdlp32.toFixed(4)+'%';
+  if(_xwdlp32<1)     return _xwdlp32.toFixed(4)+'%';
+  return _xwdlp32.toFixed(2)+'%';
 }
-function fmtSurv(_xfdyk60){
-  if(!_xfdyk60||_xfdyk60<=0||isNaN(_xfdyk60)) return '0.0명';
-  if(_xfdyk60<0.1) return _xfdyk60.toFixed(1)+'명';
-  return _xfdyk60.toFixed(1)+'명';
+function fmtSurv(_xwdlp32){
+  if(!_xwdlp32||_xwdlp32<=0||isNaN(_xwdlp32)) return '0.0명';
+  if(_xwdlp32<0.1) return _xwdlp32.toFixed(1)+'명';
+  return _xwdlp32.toFixed(1)+'명';
 }
-function fmtSurvTotal(_xfdyk60){
-  if(!_xfdyk60||_xfdyk60<=0||isNaN(_xfdyk60)) return '0.0명';
-  if(_xfdyk60<0.1) return _xfdyk60.toFixed(4)+'명';
-  return _xfdyk60.toFixed(1)+'명';
+function fmtSurvTotal(_xwdlp32){
+  if(!_xwdlp32||_xwdlp32<=0||isNaN(_xwdlp32)) return '0.0명';
+  if(_xwdlp32<0.1) return _xwdlp32.toFixed(4)+'명';
+  return _xwdlp32.toFixed(1)+'명';
 }
-function stag(_xwnwt25, result){
-  if(_xwnwt25==='종료'){
+function stag(_xurrl59, result){
+  if(_xurrl59==='종료'){
     if(result==='w') return '<span class="sttag sresW">승</span>';
     if(result==='d') return '<span class="sttag sresD">무</span>';
     if(result==='l') return '<span class="sttag sresL">패</span>';
     return '<span class="sttag send">종료</span>';
   }
-  if(_xwnwt25==='진행중') return '<span class="sttag slive">진행</span>';
+  if(_xurrl59==='진행중') return '<span class="sttag slive">진행</span>';
   return '<span class="sttag spre">예정</span>';
 }
-function _xyagx88(arr){for(let _xkmuv76=arr.length-1;_xkmuv76>0;_xkmuv76--){const _xqpuk58=Math.floor(Math.random()*(_xkmuv76+1));[arr[_xkmuv76],arr[_xqpuk58]]=[arr[_xqpuk58],arr[_xkmuv76]];}return arr;}
-function setSA0(_xfdyk60){
-  _xdyzv75[0]=_xfdyk60;
-  const _xsris10=document.getElementById('sbg0');
-  if(_xfdyk60>0){_xsris10.style.display='inline-block';_xsris10.textContent=_xfdyk60+'조합 = '+_xfabx84(_xfdyk60*1000);}
-  else _xsris10.style.display='none';
-  _xzbaz79();
+function _xtqbx10(arr){for(let _xwldk38=arr.length-1;_xwldk38>0;_xwldk38--){const _xlbsx32=Math.floor(Math.random()*(_xwldk38+1));[arr[_xwldk38],arr[_xlbsx32]]=[arr[_xlbsx32],arr[_xwldk38]];}return arr;}
+function setSA0(_xwdlp32){
+  _xnysr78[0]=_xwdlp32;
+  const _xwnfe85=document.getElementById('sbg0');
+  if(_xwdlp32>0){_xwnfe85.style.display='inline-block';_xwnfe85.textContent=_xwdlp32+'조합 = '+_xpcon95(_xwdlp32*1000);}
+  else _xwnfe85.style.display='none';
+  _xhdcd96();
 }
-function setSA1(_xfdyk60){
-  _xdyzv75[1]=_xfdyk60;
-  const _xsris10=document.getElementById('sbg1');
-  if(_xfdyk60>0){_xsris10.style.display='inline-block';_xsris10.textContent=_xfdyk60+'조합 = '+_xfabx84(_xfdyk60*1000);}
-  else _xsris10.style.display='none';
+function setSA1(_xwdlp32){
+  _xnysr78[1]=_xwdlp32;
+  const _xwnfe85=document.getElementById('sbg1');
+  if(_xwdlp32>0){_xwnfe85.style.display='inline-block';_xwnfe85.textContent=_xwdlp32+'조합 = '+_xpcon95(_xwdlp32*1000);}
+  else _xwnfe85.style.display='none';
 }
-function _xcoeb58(){
-  const _xnqqf14=_xsvdt88.reduce((_xvhhi37,_xwnwt25)=>_xvhhi37*(_xwnwt25.size||1),1);
-  const _xqjxf94=document.getElementById('asel1');
-  Array.from(_xqjxf94.options).forEach(_ximjw56=>{
-    const _xfdyk60=+_ximjw56.value;
-    if(_xfdyk60===0) return;
-    const _xscon23=(_xfdyk60>=_xnqqf14&&_xfdyk60%_xnqqf14===0);
-    _ximjw56.disabled=!_xscon23;
-    _ximjw56.style.color=_xscon23?'':'#bbb';
-    _ximjw56.style.background=_xscon23?'':'#f5f5f5';
+function _xyplh30(){
+  const _xxcgw13=_xycai41.reduce((_xakmb90,_xurrl59)=>_xakmb90*(_xurrl59.size||1),1);
+  const _xpctb75=document.getElementById('asel1');
+  Array.from(_xpctb75.options).forEach(_xotje43=>{
+    const _xwdlp32=+_xotje43.value;
+    if(_xwdlp32===0) return;
+    const _xrdfq43=(_xwdlp32>=_xxcgw13&&_xwdlp32%_xxcgw13===0);
+    _xotje43.disabled=!_xrdfq43;
+    _xotje43.style.color=_xrdfq43?'':'#bbb';
+    _xotje43.style.background=_xrdfq43?'':'#f5f5f5';
   });
-  if(_xqjxf94.value&&(+_xqjxf94.value<_xnqqf14||+_xqjxf94.value%_xnqqf14!==0)){_xqjxf94.value='0';setSA1(0);}
+  if(_xpctb75.value&&(+_xpctb75.value<_xxcgw13||+_xpctb75.value%_xxcgw13!==0)){_xpctb75.value='0';setSA1(0);}
 }
 function clearPrev1(){
-  _xirwo83=[];
-  GS.forEach((_,_xbfng78)=>{_xsvdt88[_xbfng78]=new Set();});
+  _xlpwo67=[];
+  GS.forEach((_,_xfqbk29)=>{_xycai41[_xfqbk29]=new Set();});
   document.getElementById('cp1').style.display='none';
   rdrTbl1();
 }
 function clearPrev0(){
-  _xtqpk39=[];
+  _xvfwz14=[];
   document.getElementById('cp0').style.display='none';
   document.getElementById('wb0').style.display='none';
-  _xnivi46();
+  _xvmgr80();
 }
  
-function _xwggz16(pickStr){
-  const _xjqio85={'승':'w','무':'d','패':'l'};
-  const _xmmhr56=pickStr.split('-');
-  if(_xmmhr56.length!==GS.length) return null;
-  const _xjusk11=GS.some(_xftfx81=>_xftfx81.result);
-  if(!_xjusk11) return null;
-  let _xzfdt95=0,_xdkzs79=0,_xewwz91=0;
-  const _xbwfo78=_xmmhr56.map((_xvhhi37,_xkmuv76)=>{
-    const _xftfx81=GS[_xkmuv76];
-    if(!_xftfx81.result) return {_xvhhi37,_xbpcx64:null,_xscon23:null};
-    _xewwz91++;
-    const _xscon23=(_xjqio85[_xvhhi37]===_xftfx81.result);
-    if(_xscon23) _xzfdt95++; else _xdkzs79++;
-    return{_xvhhi37,_xbpcx64:_xftfx81.result,_xscon23};
+function _xeixb62(pickStr){
+  const _xunat78={'승':'w','무':'d','패':'l'};
+  const _xxiyj52=pickStr.split('-');
+  if(_xxiyj52.length!==GS.length) return null;
+  const _xttew65=GS.some(_xzwxz58=>_xzwxz58.result);
+  if(!_xttew65) return null;
+  let _xvaby79=0,_xzyjn63=0,_xajch71=0;
+  const _xecsi62=_xxiyj52.map((_xakmb90,_xwldk38)=>{
+    const _xzwxz58=GS[_xwldk38];
+    if(!_xzwxz58.result) return {_xakmb90,_xojru19:null,_xrdfq43:null};
+    _xajch71++;
+    const _xrdfq43=(_xunat78[_xakmb90]===_xzwxz58.result);
+    if(_xrdfq43) _xvaby79++; else _xzyjn63++;
+    return{_xakmb90,_xojru19:_xzwxz58.result,_xrdfq43};
   });
-  return{_xzfdt95,_xdkzs79,_xewwz91,_xbwfo78};
+  return{_xvaby79,_xzyjn63,_xajch71,_xecsi62};
 }
-function _xlzpy78(_xzfdt95,_xewwz91){
-  if(_xewwz91===0) return null;
-  const _xdkzs79=_xewwz91-_xzfdt95;
-  if(_xdkzs79===0) return'🏆 1등 당첨!';
-  if(_xdkzs79===1) return'🥈 2등 당첨';
-  if(_xdkzs79===2) return'🥉 3등 당첨';
-  if(_xdkzs79===3) return'4등 당첨';
+function _xvkzr67(_xvaby79,_xajch71){
+  if(_xajch71===0) return null;
+  const _xzyjn63=_xajch71-_xvaby79;
+  if(_xzyjn63===0) return'🏆 1등 당첨!';
+  if(_xzyjn63===1) return'🥈 2등 당첨';
+  if(_xzyjn63===2) return'🥉 3등 당첨';
+  if(_xzyjn63===3) return'4등 당첨';
   return null;
 }
-function _xhryz67(pickStr){
-  const _xjqio85={'승':'w','무':'d','패':'l'};
-  const _xmmhr56=pickStr.split('-');
-  const _xgrre69=_xwggz16(pickStr);
-  if(!_xgrre69) return`<span class="cpk">${pickStr}</span>`;
-  const _xbmfv46=_xmmhr56.map((_xvhhi37,_xkmuv76)=>{
-    const _xswby89=_xgrre69._xbwfo78[_xkmuv76];
-    if(_xswby89._xscon23===null) return`<span class="pk-item">${_xvhhi37}</span>`;
-    const _xhimf69=_xswby89._xscon23
+function _xwlgr24(pickStr){
+  const _xunat78={'승':'w','무':'d','패':'l'};
+  const _xxiyj52=pickStr.split('-');
+  const _xkqnd44=_xeixb62(pickStr);
+  if(!_xkqnd44) return`<span class="cpk">${pickStr}</span>`;
+  const _xeney69=_xxiyj52.map((_xakmb90,_xwldk38)=>{
+    const _xtlqj72=_xkqnd44._xecsi62[_xwldk38];
+    if(_xtlqj72._xrdfq43===null) return`<span class="pk-item">${_xakmb90}</span>`;
+    const _xlyqv24=_xtlqj72._xrdfq43
       ?`<span class="pk-o">O</span>`
       :`<span class="pk-x">X</span>`;
-    return`<span class="pk-item">${_xhimf69}${_xvhhi37}</span>`;
+    return`<span class="pk-item">${_xlyqv24}${_xakmb90}</span>`;
   }).join('<span class="pk-sep">-</span>');
-  return`<div class="cpk-detail">${_xbmfv46}</div>`;
+  return`<div class="cpk-detail">${_xeney69}</div>`;
 }
  
-const _xowuu62 = 'toto_savedGroups';
-const _xrqty61 = 'toto_round';
-function _xrekp58(){
+const _xsogc72 = 'toto_savedGroups';
+const _xfvul72 = 'toto_round';
+function _xmduj51(){
   try {
-    localStorage.setItem(_xowuu62, JSON.stringify(_xrorx21));
-    localStorage.setItem(_xrqty61, roundLabel);
+    localStorage.setItem(_xsogc72, JSON.stringify(_xqtyw53));
+    localStorage.setItem(_xfvul72, roundLabel);
   } catch(e){ console.warn('localStorage 저장 실패:', e); }
 }
-function _xlqnh87(){
+function _xzzow93(){
   try {
-    const _xikjw95 = localStorage.getItem(_xrqty61);
-    if(_xikjw95 && _xikjw95 !== roundLabel){
-      localStorage.removeItem(_xowuu62);
-      localStorage.setItem(_xrqty61, roundLabel);
-      _xrorx21 = [];
+    const _xolfy61 = localStorage.getItem(_xfvul72);
+    if(_xolfy61 && _xolfy61 !== roundLabel){
+      localStorage.removeItem(_xsogc72);
+      localStorage.setItem(_xfvul72, roundLabel);
+      _xqtyw53 = [];
       groupIdCnt = 0;
-      _xwmeb47();
+      _xfmte34();
       return;
     }
-    const _xmpok60 = localStorage.getItem(_xowuu62);
-    if(!_xmpok60) return;
-    const _xqitn49 = JSON.parse(_xmpok60);
-    if(Array.isArray(_xqitn49)){
-      _xrorx21 = _xqitn49;
-      groupIdCnt  = _xrorx21.reduce((_xnqqf14,_xftfx81)=>Math.max(_xnqqf14,_xftfx81.id),0);
-      _xwmeb47();
+    const _xybzi59 = localStorage.getItem(_xsogc72);
+    if(!_xybzi59) return;
+    const _xczte27 = JSON.parse(_xybzi59);
+    if(Array.isArray(_xczte27)){
+      _xqtyw53 = _xczte27;
+      groupIdCnt  = _xqtyw53.reduce((_xxcgw13,_xzwxz58)=>Math.max(_xxcgw13,_xzwxz58.id),0);
+      _xfmte34();
     }
   } catch(e){ console.warn('localStorage 불러오기 실패:', e); }
 }
-function _xvytl80(selId){
-  const _xqjxf94=document.getElementById(selId);
-  _xfavt32.forEach(n=>{const _ximjw56=document.createElement('option');_ximjw56.value=n;_ximjw56.textContent=n.toLocaleString()+'조합 = '+(n*1000).toLocaleString()+'원';_xqjxf94.appendChild(_ximjw56);});
+function _xzgvi60(selId){
+  const _xpctb75=document.getElementById(selId);
+  _xkyky83.forEach(n=>{const _xotje43=document.createElement('option');_xotje43.value=n;_xotje43.textContent=n.toLocaleString()+'조합 = '+(n*1000).toLocaleString()+'원';_xpctb75.appendChild(_xotje43);});
 }
-function _xcuwf94(){
-  return _xirwo83.map(c=>({keys:c.keys, _xtgwi25:c._xtgwi25}));
+function _xslnb97(){
+  return _xlpwo67.map(c=>({keys:c.keys, _xhqwg26:c._xhqwg26}));
 }
-_xvytl80('asel0');_xvytl80('asel1');
-rdrTbl0();rdrTbl1();_xcjec87();
-_xlqnh87();
+_xzgvi60('asel0');_xzgvi60('asel1');
+rdrTbl0();rdrTbl1();_xlwpk83();
+_xzzow93();
 renderTeams();
 renderFormations();
  
-const _xlzyz16 = 'toto_session';
-function _xmlul85(){
+const _xjpnf55 = 'toto_session';
+function _xlccs66(){
   try {
-    const _xcdnp93 = document.getElementById('t0').classList.contains('on');
-    const _xnwko99 = {
-      activeTab: _xcdnp93 ? 0 : (document.getElementById('t2').classList.contains('on') ? 2 : 1),
-      _xeqir69: _xeqir69.map(_xwnwt25=>[..._xwnwt25]),
-      _xsvdt88: _xsvdt88.map(_xwnwt25=>[..._xwnwt25]),
-      _xtqpk39: _xtqpk39,
-      _xirwo83: _xirwo83,
-      selAmt0: _xdyzv75[0],
-      selAmt1: _xdyzv75[1],
+    const _xghuz40 = document.getElementById('t0').classList.contains('on');
+    const _xbcci55 = {
+      activeTab: _xghuz40 ? 0 : (document.getElementById('t2').classList.contains('on') ? 2 : 1),
+      _xvdge47: _xvdge47.map(_xurrl59=>[..._xurrl59]),
+      _xycai41: _xycai41.map(_xurrl59=>[..._xurrl59]),
+      _xvfwz14: _xvfwz14,
+      _xlpwo67: _xlpwo67,
+      selAmt0: _xnysr78[0],
+      selAmt1: _xnysr78[1],
       genCnt0: genCnt[0],
       genCnt1: genCnt[1],
-      _xafgc72: [..._xafgc72],
+      _xhvdx18: [..._xhvdx18],
       asel0: document.getElementById('asel0').value,
       asel1: document.getElementById('asel1').value,
       piVal: document.getElementById('pi')?.value || '10'
     };
-    sessionStorage.setItem(_xlzyz16, JSON.stringify(_xnwko99));
+    sessionStorage.setItem(_xjpnf55, JSON.stringify(_xbcci55));
   } catch(e){}
 }
-function _xhoqk20(){
+function _xssiq60(){
   try {
-    const _xmpok60 = sessionStorage.getItem(_xlzyz16);
-    if(!_xmpok60) return;
-    const st = JSON.parse(_xmpok60);
-    if(st._xeqir69) st._xeqir69.forEach((arr,_xbfng78)=>{ _xeqir69[_xbfng78]=new Set(arr); });
-    if(st._xsvdt88) st._xsvdt88.forEach((arr,_xbfng78)=>{ _xsvdt88[_xbfng78]=new Set(arr); });
-    if(st._xtqpk39) _xtqpk39 = st._xtqpk39;
-    if(st._xirwo83) _xirwo83 = st._xirwo83;
-    if(st.selAmt0 !== undefined) _xdyzv75[0] = st.selAmt0;
-    if(st.selAmt1 !== undefined) _xdyzv75[1] = st.selAmt1;
+    const _xybzi59 = sessionStorage.getItem(_xjpnf55);
+    if(!_xybzi59) return;
+    const st = JSON.parse(_xybzi59);
+    if(st._xvdge47) st._xvdge47.forEach((arr,_xfqbk29)=>{ _xvdge47[_xfqbk29]=new Set(arr); });
+    if(st._xycai41) st._xycai41.forEach((arr,_xfqbk29)=>{ _xycai41[_xfqbk29]=new Set(arr); });
+    if(st._xvfwz14) _xvfwz14 = st._xvfwz14;
+    if(st._xlpwo67) _xlpwo67 = st._xlpwo67;
+    if(st.selAmt0 !== undefined) _xnysr78[0] = st.selAmt0;
+    if(st.selAmt1 !== undefined) _xnysr78[1] = st.selAmt1;
     if(st.genCnt0 !== undefined) genCnt[0] = st.genCnt0;
     if(st.genCnt1 !== undefined) genCnt[1] = st.genCnt1;
-    if(st._xafgc72){ _xafgc72.clear(); st._xafgc72.forEach(_xwnwt25=>_xafgc72.add(_xwnwt25)); _xcjec87(); }
+    if(st._xhvdx18){ _xhvdx18.clear(); st._xhvdx18.forEach(_xurrl59=>_xhvdx18.add(_xurrl59)); _xlwpk83(); }
     if(st.asel0) document.getElementById('asel0').value = st.asel0;
     if(st.asel1) document.getElementById('asel1').value = st.asel1;
     if(st.piVal && document.getElementById('pi')) document.getElementById('pi').value = st.piVal;
     document.getElementById('gc0').textContent = genCnt[0] + '회';
     document.getElementById('gc1').textContent = genCnt[1] + '회';
     if(st.activeTab !== undefined){
-      [0,1,2].forEach(_xkmuv76=>{
-        const _xcjup82=document.getElementById('t'+_xkmuv76);
-        const _xvhhi37=document.getElementById('p'+_xkmuv76);
-        if(_xcjup82) _xcjup82.className = 'tab' + (_xkmuv76===st.activeTab?' on':'');
-        if(_xvhhi37){
-          if(_xkmuv76===st.activeTab){_xvhhi37.className='panel on';_xvhhi37.style.display='block';}
-          else{_xvhhi37.className='panel';_xvhhi37.style.display='none';}
+      [0,1,2].forEach(_xwldk38=>{
+        const _xccbq50=document.getElementById('t'+_xwldk38);
+        const _xakmb90=document.getElementById('p'+_xwldk38);
+        if(_xccbq50) _xccbq50.className = 'tab' + (_xwldk38===st.activeTab?' on':'');
+        if(_xakmb90){
+          if(_xwldk38===st.activeTab){_xakmb90.className='panel on';_xakmb90.style.display='block';}
+          else{_xakmb90.className='panel';_xakmb90.style.display='none';}
         }
       });
       if(st.activeTab===2){renderTeams();renderFormations();}
     }
     rdrTbl0(); rdrTbl1();
-    _xegdc29(); _xukon21();
+    _xpxmz83(); _xakos46();
   } catch(e){ console.warn('세션 복원 실패:', e); }
 }
-window.addEventListener('beforeunload', _xmlul85);
+window.addEventListener('beforeunload', _xlccs66);
 document.addEventListener('click', function(e){
-  var _xwmpz57 = e.target.closest('a');
-  if(_xwmpz57 && _xwmpz57.href && !_xwmpz57.href.includes('#')) _xmlul85();
+  var _xsxgt99 = e.target.closest('a');
+  if(_xsxgt99 && _xsxgt99.href && !_xsxgt99.href.includes('#')) _xlccs66();
 });
-_xhoqk20();
+_xssiq60();
 window._rT0 = rdrTbl0;
 window._rT1 = rdrTbl1;
 window._rTm = renderTeams;
@@ -1798,6 +1798,27 @@ function loadFromSheet(){
             for(var m=0;m<arr.length;m++){
               var gg=arr[m];
               FM.push({h:gg.hFm||{fm:'4-4-2',pl:[]},aw:gg.aFm||{fm:'4-4-2',pl:[]}});
+            }
+          }
+
+          // FORMATIONS 배열도 업데이트
+          if(typeof FORMATIONS!=='undefined'){
+            FORMATIONS.length=0;
+            for(var fm=0;fm<arr.length;fm++){
+              var gg=arr[fm];
+              var hf=gg.hFm||{fm:'4-4-2',pl:[]};
+              var af=gg.aFm||{fm:'4-4-2',pl:[]};
+              FORMATIONS.push({
+                match:gg.home+' vs '+gg.away,
+                home:{
+                  formation:hf.fm||'4-4-2',
+                  players:(hf.pl||[]).map(function(p){return{pos:p.pos||'MF',name:p.n||''};})
+                },
+                away:{
+                  formation:af.fm||'4-4-2',
+                  players:(af.pl||[]).map(function(p){return{pos:p.pos||'MF',name:p.n||''};})
+                }
+              });
             }
           }
           if(window._rT0)window._rT0();
