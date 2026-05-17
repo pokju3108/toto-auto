@@ -273,75 +273,86 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 /* ── 다크모드 토글 버튼 ── */
 .dark-toggle{background:rgba(255,255,255,.15);color:#fff;border:1.5px solid rgba(255,255,255,.4);border-radius:20px;padding:5px 12px;font-size:12px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:5px;margin-left:8px;transition:all .2s}
 .dark-toggle:hover{background:rgba(255,255,255,.25)}
-body.dark .dark-toggle{background:rgba(159,225,203,.15);border-color:#9FE1CB;color:#9FE1CB}
+body.dark .dark-toggle{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.25);color:#ccc}
 
-/* ── 다크모드 전체 ── */
-body.dark{background:#0d1b2a}
-body.dark .w{background:#0d1b2a}
-body.dark .topbar{background:#0a2540}
-body.dark .sec{background:#112233;border-color:#1e3a55}
-body.dark .tab{background:#112233;color:#7a9bb5;border-color:#1e3a55}
-body.dark .tab.on{background:#063B5D;color:#9FE1CB;border-color:#063B5D}
-body.dark .stitle{color:#c8dce8}
-body.dark .explain{color:#7a9bb5;background:#0a1e30}
-body.dark .stbtn{background:#112233;border-color:#1e3a55;color:#7a9bb5}
-body.dark .stbtn.onH{background:#1a3a1a;border-color:#27500A;color:#9FE1CB}
-body.dark .stbtn.onM{background:#2a1f0a;border-color:#7A4400;color:#f0c070}
-body.dark .stbtn.onL{background:#2a0f0f;border-color:#791F1F;color:#f08080}
-body.dark .gtbl th{background:#0a2540;color:#9FE1CB}
-body.dark .gtbl td{border-color:#1e3a55;color:#c8dce8}
-body.dark .gtbl tr:nth-child(even) td{background:#0f1e2e}
-body.dark .mpb{background:#112233;color:#7a9bb5;border-color:#1e3a55}
-body.dark .combo-row{background:#0a1e30;color:#7a9bb5}
-body.dark .cval{color:#c8dce8}
-body.dark .met{background:#0a1e30}
-body.dark .mlab{color:#7a9bb5}
-body.dark .mv{color:#c8dce8}
-body.dark .drop-row label{color:#7a9bb5}
-body.dark .asel{background:#112233;color:#c8dce8;border-color:#1e3a55}
-body.dark .alloc-bar{background:#0a1e30;color:#7a9bb5}
-body.dark .ahint{background:#0a1e30;border-color:#1e3a55}
-body.dark .combo-line{background:#112233;border-color:#1e3a55}
-body.dark .combo-line:hover{background:#0f1e2e}
-body.dark .cl-idx{color:#7a9bb5}
-body.dark #roundMetaBar{background:#112233;color:#c8dce8;border:1px solid #1e3a55}
-body.dark .match-card{background:#112233;border-color:#1e3a55}
-body.dark .match-header{background:#0a2540}
-body.dark .team-col{color:#c8dce8;border-color:#1e3a55}
-body.dark .team-name{color:#c8dce8}
-body.dark .stat-label{color:#7a9bb5}
-body.dark .stat-bar{background:#1e3a55}
-body.dark .nav-tabs{border-color:#1e3a55}
-body.dark .nav-tab{color:#7a9bb5}
-body.dark .nav-tab.on{color:#9FE1CB;border-bottom-color:#9FE1CB}
-body.dark .pov{background:rgba(0,0,0,.75)}
-body.dark .pop{background:#112233}
-body.dark .ph{background:#0a2540}
-body.dark .pb{background:#112233}
-body.dark .pf{background:#0d1b2a;border-color:#1e3a55}
-body.dark .sg{background:#112233;border-color:#1e3a55}
-body.dark .sgh{background:#0d1b2a}
-body.dark .sgh:hover{background:#0f1e2e}
-body.dark .sgi{color:#c8dce8}
-body.dark .sgm{color:#7a9bb5}
-body.dark .ci{background:#0d1b2a;border-color:#1e3a55}
-body.dark .cpk{color:#9FE1CB}
-body.dark .cm{color:#7a9bb5}
-body.dark .empty{color:#7a9bb5;border-color:#1e3a55}
-body.dark .savebtn{background:#0a2540}
-body.dark .viewbtn{background:#112233;color:#9FE1CB;border-color:#1e3a55}
-body.dark .rstbtn{background:#112233;color:#7a9bb5;border-color:#1e3a55}
-body.dark .cprev{background:#0d1b2a;border-color:#1e3a55}
-body.dark .cprev-title{color:#9FE1CB}
-body.dark .citem{background:#112233;border-color:#1e3a55}
-body.dark .cpks{color:#c8dce8}
-body.dark .cmeta{color:#7a9bb5}
-body.dark .tbox{background:#0a2540;border-color:#1e3a55}
-body.dark select{background:#112233;color:#c8dce8;border-color:#1e3a55}
-body.dark input[type=number]{background:#112233;color:#c8dce8;border-color:#1e3a55}
-body.dark .score-box{color:#9FE1CB}
-body.dark .warn-box{background:#2a1500;border-color:#7A4400;color:#f0c070}
-
+/* ── 다크모드 (갤럭시 절전모드: 딥 네이비 블랙) ── */
+body.dark{background:#1a2332 !important;color:#e8edf2}
+body.dark .w{background:#1a2332 !important}
+body.dark .topbar{background:#0f1923 !important}
+body.dark .sec{background:#243044 !important;border-color:#2e3f55 !important}
+body.dark .tab{background:#1e2f45 !important;color:#7a9bb5 !important;border-color:#2e3f55 !important}
+body.dark .tab.on{background:#2d4a6b !important;color:#fff !important;border-color:#2d4a6b !important}
+body.dark .stitle{color:#e8edf2 !important}
+body.dark .explain{color:#a0b4c8 !important;background:#2a3a4f !important}
+body.dark .stbtn{background:#1e2f45 !important;border-color:#2e3f55 !important;color:#7a9bb5 !important}
+body.dark .stbtn.onH{background:#1a3320 !important;border-color:#27500A !important;color:#9FE1CB !important}
+body.dark .stbtn.onM{background:#2a1f0a !important;border-color:#7A4400 !important;color:#f0c070 !important}
+body.dark .stbtn.onL{background:#2a1010 !important;border-color:#791F1F !important;color:#f08080 !important}
+body.dark .gtbl th{background:#1e2f45 !important;color:#9FE1CB !important}
+body.dark .gtbl td{border-color:#2e3f55 !important;color:#e8edf2 !important;background:#243044 !important}
+body.dark .gtbl tr:nth-child(even) td{background:#1e2f45 !important}
+body.dark .gtbl tr:nth-child(odd) td{background:#243044 !important}
+body.dark .mpb{background:#1e2f45 !important;color:#7a9bb5 !important;border-color:#2e3f55 !important}
+body.dark .combo-row{background:#1a2332 !important;color:#7a9bb5 !important}
+body.dark .cval{color:#e8edf2 !important}
+body.dark .camt{color:#9FE1CB !important}
+body.dark .met{background:#1a2332 !important}
+body.dark .mlab{color:#7a9bb5 !important}
+body.dark .mv{color:#e8edf2 !important}
+body.dark .drop-row label{color:#a0b4c8 !important}
+body.dark .asel{background:#1e2f45 !important;color:#e8edf2 !important;border-color:#2e3f55 !important}
+body.dark .alloc-bar{background:#1a2332 !important;color:#a0b4c8 !important}
+body.dark .ahint{background:#1a2332 !important;border-color:#2e3f55 !important;color:#a0b4c8 !important}
+body.dark .combo-line{background:#243044 !important;border-color:#2e3f55 !important}
+body.dark .combo-line:hover{background:#2a3a4f !important}
+body.dark .cl-idx{color:#7a9bb5 !important}
+body.dark .sc{color:#7a9bb5 !important}
+body.dark .match-card{background:#243044 !important;border-color:#2e3f55 !important}
+body.dark .match-header{background:#1e2f45 !important}
+body.dark .team-col{color:#e8edf2 !important;border-color:#2e3f55 !important}
+body.dark .team-name{color:#e8edf2 !important}
+body.dark .stat-label{color:#7a9bb5 !important}
+body.dark .stat-bar{background:#2e3f55 !important}
+body.dark .nav-tabs{border-color:#2e3f55 !important}
+body.dark .nav-tab{color:#7a9bb5 !important}
+body.dark .nav-tab.on{color:#9FE1CB !important;border-bottom-color:#9FE1CB !important}
+body.dark .pov{background:rgba(0,0,0,.8) !important}
+body.dark .pop{background:#243044 !important}
+body.dark .ph{background:#1e2f45 !important}
+body.dark .pb{background:#243044 !important}
+body.dark .pf{background:#1a2332 !important;border-color:#2e3f55 !important}
+body.dark .sg{background:#243044 !important;border-color:#2e3f55 !important}
+body.dark .sgh{background:#1e2f45 !important}
+body.dark .sgh:hover{background:#2a3a4f !important}
+body.dark .sgi{color:#e8edf2 !important}
+body.dark .sgm{color:#7a9bb5 !important}
+body.dark .sgb{background:#243044 !important}
+body.dark .ci{background:#1e2f45 !important;border-color:#2e3f55 !important}
+body.dark .cpk{color:#9FE1CB !important}
+body.dark .cm{color:#7a9bb5 !important}
+body.dark .empty{color:#7a9bb5 !important;border-color:#2e3f55 !important}
+body.dark .savebtn{background:#1e4d7a !important;color:#fff !important}
+body.dark .viewbtn{background:#1e2f45 !important;color:#9FE1CB !important;border-color:#2e3f55 !important}
+body.dark .rstbtn{background:#1e2f45 !important;color:#a0b4c8 !important;border-color:#2e3f55 !important}
+body.dark .cprev{background:#1a2332 !important;border-color:#2e3f55 !important}
+body.dark .cprev-title{color:#9FE1CB !important}
+body.dark .citem{background:#1e2f45 !important;border-color:#2e3f55 !important}
+body.dark .cpks{color:#e8edf2 !important}
+body.dark .cmeta{color:#7a9bb5 !important}
+body.dark .tbox{background:#1e4d7a !important;border-color:#2e3f55 !important}
+body.dark .btrack{background:#2e3f55 !important}
+body.dark .bfill{background:#9FE1CB !important}
+body.dark .warn-box{background:#2a1f00 !important;border-color:#7A4400 !important;color:#f0c070 !important}
+body.dark .genbtn{background:#1e4d7a !important}
+body.dark .genbtn:hover{background:#1a3d6a !important}
+body.dark .score-box{color:#9FE1CB !important}
+body.dark select{background:#1e2f45 !important;color:#e8edf2 !important;border-color:#2e3f55 !important}
+body.dark input[type=number]{background:#1e2f45 !important;color:#e8edf2 !important;border-color:#2e3f55 !important}
+body.dark .pinp{background:#1e2f45 !important;color:#e8edf2 !important;border-color:#2e3f55 !important}
+body.dark .ft th{background:#1e2f45 !important;color:#9FE1CB !important}
+body.dark .ft td{border-color:#2e3f55 !important;color:#e8edf2 !important}
+body.dark .rmbar{background:#1e2f45 !important;color:#e8edf2 !important;border:1px solid #2e3f55 !important}
+body.dark .rmbar div div:first-child{color:#7a9bb5 !important}
 </style>
 </head>
 <body>
@@ -376,7 +387,7 @@ body.dark .warn-box{background:#2a1500;border-color:#7A4400;color:#f0c070}
     <button class="dark-toggle" id="darkBtn" onclick="toggleDark()">🌙 다크</button>
   </div>
 </div>
-<div id="roundMetaBar" style="display:flex;justify-content:space-around;background:#f0f4f8;border-radius:8px;padding:8px 10px;margin-bottom:8px;font-size:11px;color:#444;text-align:center">
+<div id="roundMetaBar" class="rmbar" style="display:flex;justify-content:space-around;background:#f0f4f8;border-radius:8px;padding:8px 10px;margin-bottom:8px;font-size:11px;color:#444;text-align:center">
   <div><div style="color:#888;font-size:10px">발매기간</div><div id="rmPeriod" style="font-weight:600">-</div></div>
   <div style="border-left:1px solid #ddd;padding-left:10px"><div style="color:#888;font-size:10px">총 투표수</div><div id="rmVotes" style="font-weight:600">-</div></div>
   <div style="border-left:1px solid #ddd;padding-left:10px"><div style="color:#888;font-size:10px">1등 예상 적중금</div><div id="rmPrize" style="font-weight:700;color:#C62828">-</div></div>
@@ -2083,6 +2094,19 @@ function toggleDark(){
     btn.innerHTML = '🌙 다크';
     localStorage.setItem('darkMode','0');
   }
+  applyDarkInline(isDark);
+}
+function applyDarkInline(isDark){
+  // 인라인 스타일 배경색 강제 오버라이드
+  var rmbar = document.getElementById('roundMetaBar');
+  if(rmbar) rmbar.style.background = isDark ? '#1e2f45' : '#f0f4f8';
+  if(rmbar) rmbar.style.color = isDark ? '#e8edf2' : '#444';
+  // sec 내부 인라인 배경 처리
+  var bg1 = isDark ? '#243044' : '';
+  var bg2 = isDark ? '#1a2332' : '';
+  document.querySelectorAll('.sec').forEach(function(el){ el.style.background = bg1; });
+  document.querySelectorAll('.met').forEach(function(el){ el.style.background = bg2; });
+  document.querySelectorAll('.combo-row').forEach(function(el){ el.style.background = bg2; });
 }
 // 다크모드 복원
 if(localStorage.getItem('darkMode')==='1'){
@@ -2090,6 +2114,7 @@ if(localStorage.getItem('darkMode')==='1'){
   setTimeout(function(){
     var btn=document.getElementById('darkBtn');
     if(btn) btn.innerHTML='☀️ 라이트';
+    applyDarkInline(true);
   },50);
 }
 
@@ -2214,6 +2239,7 @@ function loadFromSheet(){
           }
           if(window._rT0)window._rT0();
           if(window._rT1)window._rT1();
+          if(document.body.classList.contains('dark'))applyDarkInline(true);
           if(window._rTm)window._rTm();
           if(window._rFm)window._rFm();
           if(rs[0]&&rs[0].c){
