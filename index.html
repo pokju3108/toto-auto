@@ -351,6 +351,15 @@ body.dark input[type=number]{background:#1e2f45 !important;color:#e8edf2 !import
 body.dark .pinp{background:#1e2f45 !important;color:#e8edf2 !important;border-color:#2e3f55 !important}
 body.dark .ft th{background:#1e2f45 !important;color:#9FE1CB !important}
 body.dark .ft td{border-color:#2e3f55 !important;color:#e8edf2 !important}
+body.dark .ft tr:nth-child(even) td{background:#1e2f45 !important}
+body.dark .form-table th{background:#1e2f45 !important;color:#9FE1CB !important}
+body.dark .form-table td{border-color:#2e3f55 !important;color:#e8edf2 !important}
+body.dark .form-table tr:nth-child(even) td{background:#1e2f45 !important}
+body.dark .pf{background:#1a2332 !important;border-color:#2e3f55 !important}
+body.dark .tab{background:#1e2f45 !important;color:#7a9bb5 !important;border-color:#2e3f55 !important}
+body.dark .stbtn{background:#1e2f45 !important;border-color:#2e3f55 !important;color:#7a9bb5 !important}
+body.dark .gtbl tr:nth-child(even) td{background:#1e2f45 !important}
+body.dark .gtbl tr:nth-child(odd) td{background:#243044 !important}
 body.dark .rmbar{background:#1e2f45 !important;color:#e8edf2 !important;border:1px solid #2e3f55 !important}
 body.dark .rmbar div div:first-child{color:#7a9bb5 !important}
 </style>
@@ -2097,16 +2106,34 @@ function toggleDark(){
   applyDarkInline(isDark);
 }
 function applyDarkInline(isDark){
-  // 인라인 스타일 배경색 강제 오버라이드
+  var D = isDark;
+  // roundMetaBar 인라인 스타일
   var rmbar = document.getElementById('roundMetaBar');
-  if(rmbar) rmbar.style.background = isDark ? '#1e2f45' : '#f0f4f8';
-  if(rmbar) rmbar.style.color = isDark ? '#e8edf2' : '#444';
-  // sec 내부 인라인 배경 처리
-  var bg1 = isDark ? '#243044' : '';
-  var bg2 = isDark ? '#1a2332' : '';
-  document.querySelectorAll('.sec').forEach(function(el){ el.style.background = bg1; });
-  document.querySelectorAll('.met').forEach(function(el){ el.style.background = bg2; });
-  document.querySelectorAll('.combo-row').forEach(function(el){ el.style.background = bg2; });
+  if(rmbar){ rmbar.style.background = D?'#1e2f45':'#f0f4f8'; rmbar.style.color = D?'#e8edf2':'#444'; }
+  // 섹션/카드 배경
+  document.querySelectorAll('.sec').forEach(function(el){ el.style.background = D?'#243044':''; });
+  document.querySelectorAll('.met').forEach(function(el){ el.style.background = D?'#1a2332':''; });
+  document.querySelectorAll('.combo-row').forEach(function(el){ el.style.background = D?'#1a2332':''; });
+  // 팀정보 팁 박스 (인라인 style 배경)
+  document.querySelectorAll('[style*="background:#f0f7ff"]').forEach(function(el){
+    el.style.background = D?'#1a3a5c':'#f0f7ff';
+    el.style.color = D?'#9FE1CB':'#444';
+  });
+  document.querySelectorAll('[style*="background:#f8f8f8"]').forEach(function(el){
+    el.style.background = D?'#1e2f45':'#f8f8f8';
+  });
+  document.querySelectorAll('[style*="background:#fafafa"]').forEach(function(el){
+    el.style.background = D?'#1e2f45':'';
+  });
+  document.querySelectorAll('[style*="background:#f0f4f8"]').forEach(function(el){
+    if(el.id!=='roundMetaBar') el.style.background = D?'#1a2332':'#f0f4f8';
+  });
+  // 포메이션/팀정보 div 배경
+  document.querySelectorAll('.team-row').forEach(function(el){ el.style.background = D?'#243044':''; });
+  document.querySelectorAll('#infoTeam, #infoForm').forEach(function(el){ el.style.background = D?'#1a2332':''; });
+  // poptot 글자색
+  var pt = document.getElementById('poptot');
+  if(pt) pt.style.color = D?'#9FE1CB':'#0C447C';
 }
 // 다크모드 복원
 if(localStorage.getItem('darkMode')==='1'){
@@ -2242,6 +2269,7 @@ function loadFromSheet(){
           if(document.body.classList.contains('dark'))applyDarkInline(true);
           if(window._rTm)window._rTm();
           if(window._rFm)window._rFm();
+          if(document.body.classList.contains('dark'))setTimeout(function(){applyDarkInline(true);},30);
           if(rs[0]&&rs[0].c){
             var tv=rs[0].c[9]&&rs[0].c[9].v?rs[0].c[9].v:null;
             var p1=rs[0].c[10]&&rs[0].c[10].v?rs[0].c[10].v:null;
