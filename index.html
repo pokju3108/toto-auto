@@ -293,6 +293,15 @@ body.dark .gtbl td{border-color:#2e3f55 !important;color:#e8edf2 !important;back
 body.dark .gtbl tr:nth-child(even) td{background:#1e2f45 !important}
 body.dark .gtbl tr:nth-child(odd) td{background:#243044 !important}
 body.dark .mpb{background:#1e2f45 !important;color:#7a9bb5 !important;border-color:#2e3f55 !important}
+body.dark .mpb.W{background:#1B7A1B !important;border-color:#1B7A1B !important;color:#fff !important}
+body.dark .mpb.D{background:#0A3D8F !important;border-color:#0A3D8F !important;color:#fff !important}
+body.dark .mpb.L{background:#C0180E !important;border-color:#C0180E !important;color:#fff !important}
+body.dark .mpb.result-W{background:#1a3f1a !important;border-color:#1B7A1B !important;color:#7ecb7e !important}
+body.dark .mpb.result-D{background:#0f2547 !important;border-color:#0A3D8F !important;color:#7aadff !important}
+body.dark .mpb.result-L{background:#3f1010 !important;border-color:#C0180E !important;color:#ff8080 !important}
+body.dark .mpb.W.result-W{background:#1B7A1B !important;border-color:#fff !important;color:#fff !important;box-shadow:0 0 0 2px #1B7A1B !important}
+body.dark .mpb.D.result-D{background:#0A3D8F !important;border-color:#fff !important;color:#fff !important;box-shadow:0 0 0 2px #0A3D8F !important}
+body.dark .mpb.L.result-L{background:#C0180E !important;border-color:#fff !important;color:#fff !important;box-shadow:0 0 0 2px #C0180E !important}
 body.dark .combo-row{background:#1a2332 !important;color:#7a9bb5 !important}
 body.dark .cval{color:#e8edf2 !important}
 body.dark .camt{color:#9FE1CB !important}
@@ -2138,13 +2147,21 @@ function applyDarkInline(isDark){
 // 다크모드 복원
 (function(){
   var dm = localStorage.getItem('darkMode');
-  if(dm === null) localStorage.setItem('darkMode','0'); // 최초 방문: 라이트 기본
+  // null(최초방문) 또는 '0' → 라이트 모드 (기본값)
+  if(!dm) localStorage.setItem('darkMode','0');
   if(dm === '1'){
     document.body.classList.add('dark');
     setTimeout(function(){
       var btn=document.getElementById('darkBtn');
       if(btn) btn.innerHTML='☀️ 라이트';
       applyDarkInline(true);
+    },50);
+  } else {
+    // 라이트 모드: 혹시 남은 dark 클래스 제거
+    document.body.classList.remove('dark');
+    setTimeout(function(){
+      var btn=document.getElementById('darkBtn');
+      if(btn) btn.innerHTML='🌙 다크';
     },50);
   }
 })();
