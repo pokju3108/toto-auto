@@ -261,45 +261,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
   .alloc-bar .at{font-size:9px;padding:1px 5px}
 }
 
-/* ── 다크모드 ── */
-body.dark{background:#0f1923}
-body.dark .w{background:#0f1923}
-body.dark .topbar{background:#0a2540}
-body.dark .sec{background:#1a2535;border-color:#2a3a50}
-body.dark .tabs{background:#1a2535}
-body.dark .tab{background:#1a2535;color:#8899aa;border-color:#2a3a50}
-body.dark .tab.on{background:#063B5D;color:#9FE1CB}
-body.dark .stitle{color:#c8d8e8}
-body.dark .explain{color:#8899aa}
-body.dark .strat-btn{background:#1a2535;border-color:#2a3a50;color:#8899aa}
-body.dark .strat-btn.on{background:#063B5D;color:#9FE1CB;border-color:#063B5D}
-body.dark .gtbl{color:#c8d8e8}
-body.dark .gtbl td{border-color:#2a3a50}
-body.dark .gtbl tr:hover td{background:#1e2d3d}
-body.dark .mpb{background:#1a2535;color:#8899aa;border-color:#2a3a50}
-body.dark .mpb.on-w{background:#1B7A1B;color:#fff}
-body.dark .mpb.on-d{background:#555;color:#fff}
-body.dark .mpb.on-l{background:#C0180E;color:#fff}
-body.dark .combo-line{background:#1a2535;border-color:#2a3a50}
-body.dark .combo-line:hover{background:#1e2d3d}
-body.dark .rmbar{background:#1a2535;border-color:#2a3a50;color:#8899aa}
-body.dark .rmbar div{color:#c8d8e8}
-body.dark .rmbar span{color:#8899aa}
-body.dark select{background:#1a2535;color:#c8d8e8;border-color:#2a3a50}
-body.dark .match-card{background:#1a2535;border-color:#2a3a50}
-body.dark .match-header{background:#0a2540}
-body.dark .team-col{color:#c8d8e8}
-body.dark .stat-label{color:#8899aa}
-body.dark .nav-tabs{border-color:#2a3a50}
-body.dark .nav-tab{color:#8899aa}
-body.dark .nav-tab.on{color:#063B5D;border-color:#063B5D}
-body.dark .ft{color:#c8d8e8}
-body.dark .ft th{background:#0a2540;color:#9FE1CB}
-body.dark .ft td{border-color:#2a3a50}
-body.dark .pop{background:#1a2535}
-body.dark .ph{background:#0a2540;border-color:#2a3a50}
-body.dark .ph h3{color:#c8d8e8}
-body.dark input[type=password],body.dark input[type=text]{background:#1a2535;color:#c8d8e8;border-color:#2a3a50}
+
 
 /* ── 실시간 점수 ── */
 .live-score{display:inline-flex;align-items:center;gap:4px;background:#1B7A1B;color:#fff;border-radius:4px;padding:1px 6px;font-size:10px;font-weight:700}
@@ -307,7 +269,79 @@ body.dark input[type=password],body.dark input[type=text]{background:#1a2535;col
 .live-dot{width:6px;height:6px;border-radius:50%;background:#ff4444;animation:liveBlink 1s infinite}
 @keyframes liveBlink{0%,100%{opacity:1}50%{opacity:0}}
 .score-box{font-size:13px;font-weight:800;color:#063B5D;margin:0 4px}
+
+/* ── 다크모드 토글 버튼 ── */
+.dark-toggle{background:rgba(255,255,255,.15);color:#fff;border:1.5px solid rgba(255,255,255,.4);border-radius:20px;padding:5px 12px;font-size:12px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:5px;margin-left:8px;transition:all .2s}
+.dark-toggle:hover{background:rgba(255,255,255,.25)}
+body.dark .dark-toggle{background:rgba(159,225,203,.15);border-color:#9FE1CB;color:#9FE1CB}
+
+/* ── 다크모드 전체 ── */
+body.dark{background:#0d1b2a}
+body.dark .w{background:#0d1b2a}
+body.dark .topbar{background:#0a2540}
+body.dark .sec{background:#112233;border-color:#1e3a55}
+body.dark .tab{background:#112233;color:#7a9bb5;border-color:#1e3a55}
+body.dark .tab.on{background:#063B5D;color:#9FE1CB;border-color:#063B5D}
+body.dark .stitle{color:#c8dce8}
+body.dark .explain{color:#7a9bb5;background:#0a1e30}
+body.dark .stbtn{background:#112233;border-color:#1e3a55;color:#7a9bb5}
+body.dark .stbtn.onH{background:#1a3a1a;border-color:#27500A;color:#9FE1CB}
+body.dark .stbtn.onM{background:#2a1f0a;border-color:#7A4400;color:#f0c070}
+body.dark .stbtn.onL{background:#2a0f0f;border-color:#791F1F;color:#f08080}
+body.dark .gtbl th{background:#0a2540;color:#9FE1CB}
+body.dark .gtbl td{border-color:#1e3a55;color:#c8dce8}
+body.dark .gtbl tr:nth-child(even) td{background:#0f1e2e}
+body.dark .mpb{background:#112233;color:#7a9bb5;border-color:#1e3a55}
+body.dark .combo-row{background:#0a1e30;color:#7a9bb5}
+body.dark .cval{color:#c8dce8}
+body.dark .met{background:#0a1e30}
+body.dark .mlab{color:#7a9bb5}
+body.dark .mv{color:#c8dce8}
+body.dark .drop-row label{color:#7a9bb5}
+body.dark .asel{background:#112233;color:#c8dce8;border-color:#1e3a55}
+body.dark .alloc-bar{background:#0a1e30;color:#7a9bb5}
+body.dark .ahint{background:#0a1e30;border-color:#1e3a55}
+body.dark .combo-line{background:#112233;border-color:#1e3a55}
+body.dark .combo-line:hover{background:#0f1e2e}
+body.dark .cl-idx{color:#7a9bb5}
+body.dark #roundMetaBar{background:#112233;color:#c8dce8;border:1px solid #1e3a55}
+body.dark .match-card{background:#112233;border-color:#1e3a55}
+body.dark .match-header{background:#0a2540}
+body.dark .team-col{color:#c8dce8;border-color:#1e3a55}
+body.dark .team-name{color:#c8dce8}
+body.dark .stat-label{color:#7a9bb5}
+body.dark .stat-bar{background:#1e3a55}
+body.dark .nav-tabs{border-color:#1e3a55}
+body.dark .nav-tab{color:#7a9bb5}
+body.dark .nav-tab.on{color:#9FE1CB;border-bottom-color:#9FE1CB}
+body.dark .pov{background:rgba(0,0,0,.75)}
+body.dark .pop{background:#112233}
+body.dark .ph{background:#0a2540}
+body.dark .pb{background:#112233}
+body.dark .pf{background:#0d1b2a;border-color:#1e3a55}
+body.dark .sg{background:#112233;border-color:#1e3a55}
+body.dark .sgh{background:#0d1b2a}
+body.dark .sgh:hover{background:#0f1e2e}
+body.dark .sgi{color:#c8dce8}
+body.dark .sgm{color:#7a9bb5}
+body.dark .ci{background:#0d1b2a;border-color:#1e3a55}
+body.dark .cpk{color:#9FE1CB}
+body.dark .cm{color:#7a9bb5}
+body.dark .empty{color:#7a9bb5;border-color:#1e3a55}
+body.dark .savebtn{background:#0a2540}
+body.dark .viewbtn{background:#112233;color:#9FE1CB;border-color:#1e3a55}
+body.dark .rstbtn{background:#112233;color:#7a9bb5;border-color:#1e3a55}
+body.dark .cprev{background:#0d1b2a;border-color:#1e3a55}
+body.dark .cprev-title{color:#9FE1CB}
+body.dark .citem{background:#112233;border-color:#1e3a55}
+body.dark .cpks{color:#c8dce8}
+body.dark .cmeta{color:#7a9bb5}
+body.dark .tbox{background:#0a2540;border-color:#1e3a55}
+body.dark select{background:#112233;color:#c8dce8;border-color:#1e3a55}
+body.dark input[type=number]{background:#112233;color:#c8dce8;border-color:#1e3a55}
 body.dark .score-box{color:#9FE1CB}
+body.dark .warn-box{background:#2a1500;border-color:#7A4400;color:#f0c070}
+
 </style>
 </head>
 <body>
@@ -337,10 +371,10 @@ body.dark .score-box{color:#9FE1CB}
     <h2>승무패 조합 계산기</h2>
     <div class="sub" id="roundInfo">로딩중...</div>
   </div>
-  <button onclick="openPop()" style="background:rgba(255,255,255,.15);color:#fff;border:1.5px solid rgba(255,255,255,.5);border-radius:8px;padding:6px 12px;font-size:12px;font-weight:600;cursor:pointer">
-    저장 조합 보기 <span class="nb" id="savedBadge">0</span>
-  </button>
-  <button onclick="toggleDark()" id="darkBtn" style="background:rgba(255,255,255,.15);color:#fff;border:1.5px solid rgba(255,255,255,.5);border-radius:8px;padding:6px 10px;font-size:18px;margin-left:6px">🌙</button>
+  <div style="display:flex;align-items:center;gap:6px">
+    <button onclick="openPop()" style="background:rgba(255,255,255,.15);color:#fff;border:1.5px solid rgba(255,255,255,.5);border-radius:8px;padding:6px 12px;font-size:12px;font-weight:600;cursor:pointer">저장 조합 보기 <span class="nb" id="savedBadge">0</span></button>
+    <button class="dark-toggle" id="darkBtn" onclick="toggleDark()">🌙 다크</button>
+  </div>
 </div>
 <div id="roundMetaBar" style="display:flex;justify-content:space-around;background:#f0f4f8;border-radius:8px;padding:8px 10px;margin-bottom:8px;font-size:11px;color:#444;text-align:center">
   <div><div style="color:#888;font-size:10px">발매기간</div><div id="rmPeriod" style="font-weight:600">-</div></div>
@@ -1212,7 +1246,7 @@ function rdrTbl0(){
       if(isSelected) cls+=' '+k.toUpperCase();
       if(_manSet.size>0&&_manSet.has(k)) cls+=' locked-manual';
       if(isResult) cls+=' result-'+k.toUpperCase();
-      return`<button class="${cls}" onclick="manualPick0(${gi},'${k}')" title="${_manSet.size>0&&_manSet.has(k)?'🔒 수동 고정 (재클릭시 해제)':''}">${v.toFixed(1)}%</button>`;
+      return`<button class="${cls}" onclick="manualPick0(${gi},'${k}')" title="${_manSet.size>0&&_manSet.has(k)?'🔒 수동 고정 (재클릭시 해제)':''}">${v.toFixed(2)}%</button>`;
     };
     return`<tr>
       <td style="font-size:12px;color:#1a1a1a;font-weight:600;white-space:nowrap;text-align:center">${g.no}. ${g.home} <span style="color:#bbb;font-weight:400;font-size:11px">vs</span> ${g.away}</td>
@@ -1265,7 +1299,7 @@ function rdrTbl1(){
       if(isResult) cls+=' result-'+k.toUpperCase();
       if(_manSet1.size>0&&_manSet1.has(k)) cls+=' locked-manual';
       const t1=_manSet1.size>0&&_manSet1.has(k)?'🔒 수동 고정 (재클릭시 해제)':'';
-      return`<button class="${cls}" onclick="manualPick1(${gi},'${k}')" title="${t1}">${v.toFixed(1)}%</button>`;
+      return`<button class="${cls}" onclick="manualPick1(${gi},'${k}')" title="${t1}">${v.toFixed(2)}%</button>`;
     };
     return`<tr>
       <td style="font-size:12px;color:#1a1a1a;font-weight:600;white-space:nowrap;text-align:center">${g.no}. ${g.home} <span style="color:#bbb;font-weight:400;font-size:11px">vs</span> ${g.away}</td>
@@ -2037,14 +2071,16 @@ function startLive(){
   liveTimer = setInterval(fetchLiveScores, 60000); // 1분마다
 }
 
+
+// ── 다크모드 토글 ──
 function toggleDark(){
-  document.body.classList.toggle('dark');
-  const btn = document.getElementById('darkBtn');
-  if(document.body.classList.contains('dark')){
-    btn.textContent = '☀️';
+  var isDark = document.body.classList.toggle('dark');
+  var btn = document.getElementById('darkBtn');
+  if(isDark){
+    btn.innerHTML = '☀️ 라이트';
     localStorage.setItem('darkMode','1');
   } else {
-    btn.textContent = '🌙';
+    btn.innerHTML = '🌙 다크';
     localStorage.setItem('darkMode','0');
   }
 }
@@ -2053,8 +2089,8 @@ if(localStorage.getItem('darkMode')==='1'){
   document.body.classList.add('dark');
   setTimeout(function(){
     var btn=document.getElementById('darkBtn');
-    if(btn) btn.textContent='☀️';
-  },100);
+    if(btn) btn.innerHTML='☀️ 라이트';
+  },50);
 }
 
 // 페이지 떠날 때 자동 저장
