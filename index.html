@@ -1637,7 +1637,7 @@ function renderTeams(){
         <span class="vote-bar-l" style="width:${g.l*0.7}px"></span>
       </div>
       <div class="team-row">${teamBlock(ts.home,true)}${teamBlock(ts.away,false)}</div>
-    ${ts.tip?`<div style="margin-top:8px;padding:8px 10px;background:#f0f7ff;border-radius:6px;font-size:12px;color:#444;border-left:3px solid #063B5D">💬 ${ts.tip}</div>`:''}
+    ${ts.tip?`<div class="tip-box" style="margin-top:8px;padding:8px 10px;background:${document.body.classList.contains('dark')?'#1a3a5c':'#f0f7ff'};border-radius:6px;font-size:12px;color:${document.body.classList.contains('dark')?'#9FE1CB':'#444'};border-left:3px solid #063B5D">💬 ${ts.tip}</div>`:''}
     </div>`;
   }).join('');
 }
@@ -2124,7 +2124,7 @@ function applyDarkInline(isDark){
   document.querySelectorAll('.met').forEach(function(el){ el.style.background = D?'#1a2332':''; });
   document.querySelectorAll('.combo-row').forEach(function(el){ el.style.background = D?'#1a2332':''; });
   // 팀정보 팁 박스 (인라인 style 배경)
-  document.querySelectorAll('[style*="background:#f0f7ff"]').forEach(function(el){
+  document.querySelectorAll('[style*="background:#f0f7ff"], .tip-box').forEach(function(el){
     el.style.background = D?'#1a3a5c':'#f0f7ff';
     el.style.color = D?'#9FE1CB':'#444';
   });
