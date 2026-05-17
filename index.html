@@ -1834,9 +1834,9 @@ function startLive(){
   liveTimer = setInterval(fetchLiveScores, 60000); // 1분마다
 }
 function toggleDark(){
-  document._xqtyj51.classList.toggle('dark');
+  document.body.classList.toggle('dark');
   const _xhjgh69 = document.getElementById('darkBtn');
-  if(document._xqtyj51.classList.contains('dark')){
+  if(document.body.classList.contains('dark')){
     _xhjgh69.textContent = '☀️';
     localStorage.setItem('darkMode','1');
   } else {
@@ -1845,7 +1845,7 @@ function toggleDark(){
   }
 }
 if(localStorage.getItem('darkMode')==='1'){
-  document._xqtyj51.classList.add('dark');
+  document.body.classList.add('dark');
   setTimeout(function(){
     var _xhjgh69=document.getElementById('darkBtn');
     if(_xhjgh69) _xhjgh69.textContent='☀️';
