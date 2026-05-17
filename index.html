@@ -845,7 +845,7 @@ if(typeof roundMeta !== 'undefined'){
   document.getElementById('rmVotes').textContent = roundMeta.totalVotes + '명';
   document.getElementById('rmPrize').textContent = roundMeta.prize1st + '원';
 }
-const MAX=100000, TV=606668;
+const MAX=100000; let TV=606668;
 let combos0=[];
 let combos1=[];
 const selAmt=[0,0], genCnt=[0,0];
@@ -2136,14 +2136,18 @@ function applyDarkInline(isDark){
   if(pt) pt.style.color = D?'#9FE1CB':'#0C447C';
 }
 // 다크모드 복원
-if(localStorage.getItem('darkMode')==='1'){
-  document.body.classList.add('dark');
-  setTimeout(function(){
-    var btn=document.getElementById('darkBtn');
-    if(btn) btn.innerHTML='☀️ 라이트';
-    applyDarkInline(true);
-  },50);
-}
+(function(){
+  var dm = localStorage.getItem('darkMode');
+  if(dm === null) localStorage.setItem('darkMode','0'); // 최초 방문: 라이트 기본
+  if(dm === '1'){
+    document.body.classList.add('dark');
+    setTimeout(function(){
+      var btn=document.getElementById('darkBtn');
+      if(btn) btn.innerHTML='☀️ 라이트';
+      applyDarkInline(true);
+    },50);
+  }
+})();
 
 // 페이지 떠날 때 자동 저장
 window.addEventListener('beforeunload', saveSession);
@@ -2274,7 +2278,7 @@ function loadFromSheet(){
             var tv=rs[0].c[9]&&rs[0].c[9].v?rs[0].c[9].v:null;
             var p1=rs[0].c[10]&&rs[0].c[10].v?rs[0].c[10].v:null;
             var sp=rs[0].c[13]&&rs[0].c[13].v?rs[0].c[13].v:null;
-            if(tv){var tvEl=document.getElementById('rmVotes');if(tvEl)tvEl.textContent=parseInt(String(tv).replace(/[^0-9]/g,'')).toLocaleString()+'명';}
+            if(tv){var tvNum=parseInt(String(tv).replace(/[^0-9]/g,''));TV=tvNum;var tvEl=document.getElementById('rmVotes');if(tvEl)tvEl.textContent=tvNum.toLocaleString()+'명';}
             if(p1){var p1El=document.getElementById('rmPrize');if(p1El)p1El.textContent=parseInt(String(p1).replace(/[^0-9]/g,'')).toLocaleString()+'원';}
             if(sp){var spEl=document.getElementById('rmPeriod');if(spEl)spEl.textContent=sp;}
           }
