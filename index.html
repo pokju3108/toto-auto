@@ -798,9 +798,9 @@ const selAmt=[0,0], genCnt=[0,0];
 const selStrats0=new Set(['H']);
 let savedGroups=[], groupIdCnt=0;
 // AI① 수동 픽: manualSets0[gi] = Set (🔒 잠금)
-const manualSets0 = GS.map(()=>new Set());
+let manualSets0 = GS.map(()=>new Set());
 // AI② 수동 픽
-const manualSets1 = GS.map(()=>new Set());
+let manualSets1 = GS.map(()=>new Set());
 
 /* ── 전략 범위 정의 (조합 전체 예상 생존 기준) ──
    H: 조합의 TV*prod >= 10
@@ -2131,6 +2131,10 @@ function loadFromSheet(){
         if(arr.length>0){
           GS.length=0;
           for(var j=0;j<arr.length;j++)GS.push(arr[j]);
+          // GS 변경 후 manualSets 재초기화
+          manualSets0.length=0;
+          manualSets1.length=0;
+          for(var ms=0;ms<GS.length;ms++){manualSets0.push(new Set());manualSets1.push(new Set());}
           if(typeof TEAM_STATS!=='undefined'){
             TEAM_STATS.length=0;
             for(var k=0;k<arr.length;k++){
