@@ -1,15 +1,15 @@
 """
-베트맨 축구토토 승무패 투표율 크롤러
+젠토토 축구토토 승무패 투표율 크롤러
 매시간 GitHub Actions에서 자동 실행
 """
-import os, re, json, time
+import os, re, json
+import requests
 import gspread
 from google.oauth2.service_account import Credentials
-from playwright.sync_api import sync_playwright
 
 SHEET_ID = "1_nLxcE_ZpAB0GZ5UXFFkQO9rZqD8_K4aQeOqCbihXcA"
 SHEET_NAME = "시트1"
-BETMAN_URL = "https://www.betman.co.kr/main/mainPage/game/gmTotoSMGmBuyView.do?gmId=G101"
+ZENTOTO_URL = "https://www.zentoto.com/toto/soccer"
 
 def get_google_sheet():
     creds_json = os.environ.get("GOOGLE_CREDENTIALS")
@@ -21,95 +21,95 @@ def get_google_sheet():
     client = gspread.authorize(creds)
     return client.open_by_key(SHEET_ID).worksheet(SHEET_NAME)
 
-def crawl_betman():
+def crawl_zentoto():
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+        'Accept-Language': 'ko-KR,ko;q=0.9',
+        'Referer': 'https://www.zentoto.com',
+    }
+    
+    print(f"접속: {ZENTOTO_URL}")
+    resp = requests.get(ZENTOTO_URL, headers=headers, timeout=30)
+    print(f"상태코드: {resp.status_code}, 크기: {len(resp.text)}")
+    
+    html = resp.text
+    clean = re.sub(r'<[^>]+>', ' ', html)
+    clean = re.sub(r'\s+', ' ', clean)
+    
     games = []
-    with sync_playwright() as p:
-        browser = p.chromium.launch(headless=True, args=["--no-sandbox","--disable-dev-shm-usage"])
-        ctx = browser.new_context(
-            user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
-            viewport={"width":1280,"height":800}
-        )
-        page = ctx.new_page()
-        print(f"접속: {BETMAN_URL}")
-        page.goto(BETMAN_URL, timeout=60000)
+    result_map = {}
+    st_map = {}
+    
+    # 결과 파싱 (승/무/패)
+    result_pattern = re.compile(r'(\d+)\s+([가-힣A-Za-z0-9\.FC]+)\s+(\d+)\s*(승|무|패)\s*(\d+)\s+([가-힣A-Za-z0-9\.FC]+)\s+([\d\.]+)\s*%')
+    for rm in result_pattern.finditer(clean):
+        no = int(rm.group(1))
+        if 1 <= no <= 14:
+            result_map[no] = rm.group(4)
+            st_map[no] = '종료'
+    
+    # 경기 파싱
+    row_pattern = re.compile(r'(\d+)\s+([가-힣A-Za-z0-9\.FC]+)\s+경기분석\s+VS\s+([가-힣A-Za-z0-9\.FC]+)\s+([\d\.]+)\s*%\s+([\d\.]+)\s*%\s+([\d\.]+)\s*%')
+    for m in row_pattern.finditer(clean):
+        no = int(m.group(1))
+        if 1 <= no <= 14:
+            games.append({
+                "no": no,
+                "home": m.group(2)[:6],
+                "away": m.group(3)[:6],
+                "w": round(float(m.group(4)), 2),
+                "d": round(float(m.group(5)), 2),
+                "l": round(float(m.group(6)), 2),
+                "st": st_map.get(no, '예정'),
+                "result": result_map.get(no, '')
+            })
+            print(f"  {no}경기: {m.group(2)} vs {m.group(3)} | 승{m.group(4)}% 무{m.group(5)}% 패{m.group(6)}% | {st_map.get(no,'예정')}")
+    
+    # 메타 정보
+    meta = {'totalVotes': '', 'prize': '', 'salePeriod': '', 'round': ''}
+    
+    period_m = re.search(r'(\d{4}-\d{2}-\d{2})\s*\((\d{2}:\d{2})\)\s*~\s*(\d{4}-\d{2}-\d{2})\s*\((\d{2}:\d{2})\)', html)
+    if period_m:
+        days = ['일','월','화','수','목','금','토']
+        from datetime import datetime
+        d1 = datetime.strptime(period_m.group(1), '%Y-%m-%d')
+        d2 = datetime.strptime(period_m.group(3), '%Y-%m-%d')
+        meta['salePeriod'] = (period_m.group(1)[2:].replace('-','.') + 
+            '(' + days[d1.weekday()+1 if d1.weekday()<6 else 0] + ') ' + period_m.group(2) +
+            ' ~ ' + period_m.group(3)[2:].replace('-','.') +
+            '(' + days[d2.weekday()+1 if d2.weekday()<6 else 0] + ') ' + period_m.group(4))
+    
+    round_m = re.search(r'(\d+)\s*회차', clean)
+    if round_m:
+        meta['round'] = round_m.group(1)
+    
+    for pat in [r'투표수\s*가상조정\s*([\d,]+)', r'총\s*투표수\s*([\d,]+)', r'([\d,]{6,})\s*표']:
+        vm = re.search(pat, clean)
+        if vm:
+            meta['totalVotes'] = vm.group(1)
+            break
+    
+    for pat in [r'1등\s*예상금액\s*([\d,]{6,})', r'1등\s*당첨금액\s*([\d,]{6,})', r'예상\s*금액\s*([\d,]{6,})']:
+        pm = re.search(pat, clean)
+        if pm:
+            meta['prize'] = pm.group(1)
+            break
+    
+    print(f"총투표수: {meta['totalVotes']}, 회차: {meta['round']}, 발매기간: {meta['salePeriod'][:20] if meta['salePeriod'] else '없음'}")
+    return games, meta
 
-        for i in range(20):
-            time.sleep(1)
-            rows = page.query_selector_all("tr")
-            texts = [r.inner_text() for r in rows if re.match(r'^\d+경기', r.inner_text().strip())]
-            if texts:
-                print(f"  {i+1}초 후 경기 행 {len(texts)}개 발견!")
-                break
-            if i % 5 == 4:
-                print(f"  {i+1}초 대기...")
-
-        html = page.content()
-        print(f"페이지 크기: {len(html)}")
-
-        all_rows = page.query_selector_all("tr")
-        print(f"전체 tr: {len(all_rows)}개")
-
-        for row in all_rows:
-            try:
-                text = row.inner_text().strip()
-                m = re.match(r'^(\d+)경기', text)
-                if not m:
-                    continue
-                no = int(m.group(1))
-                if no < 1 or no > 14:
-                    continue
-
-                rates = re.findall(r'(\d+\.?\d*)%', text)
-                if len(rates) < 3:
-                    continue
-
-                w, d, l = float(rates[0]), float(rates[1]), float(rates[2])
-                if not (0 < w < 100 and 0 < d < 100 and 0 < l < 100):
-                    continue
-
-                tm = re.search(r'([가-힣A-Za-z0-9\.\s]+)\s+vs\s+([가-힣A-Za-z0-9\.\s]+)', text)
-                home = tm.group(1).strip()[:6] if tm else f"홈{no}"
-                away = tm.group(2).strip()[:6] if tm else f"원정{no}"
-
-                # ✅ 소수점 2자리로 저장
-                games.append({"no":no,"home":home,"away":away,"w":round(w,2),"d":round(d,2),"l":round(l,2),"st":"예정"})
-                print(f"  {no}경기: {home} vs {away} | 승{w}% 무{d}% 패{l}%")
-            except:
-                continue
-
-        if not games:
-            print("Fallback: HTML 직접 파싱")
-            blocks = re.findall(r'(\d+)경기.{0,200}?(\d+\.\d+).{0,50}?(\d+\.\d+).{0,50}?(\d+\.\d+)', html, re.DOTALL)
-            for b in blocks[:14]:
-                try:
-                    no=int(b[0]); w,d,l=float(b[1]),float(b[2]),float(b[3])
-                    if 1<=no<=14 and 0<w<100 and 0<d<100 and 0<l<100:
-                        games.append({"no":no,"home":f"홈{no}","away":f"원정{no}","w":round(w,2),"d":round(d,2),"l":round(l,2),"st":"예정"})
-                        print(f"  Fallback {no}경기: {w}% {d}% {l}%")
-                except:
-                    continue
-
-        browser.close()
-
-    seen=set(); unique=[]
-    for g in games:
-        if g["no"] not in seen:
-            seen.add(g["no"]); unique.append(g)
-    return sorted(unique, key=lambda x: x["no"])
-
-def update_sheet(sheet, games):
+def update_sheet(sheet, games, meta):
     from datetime import datetime, timezone, timedelta
     now_str = datetime.now(timezone(timedelta(hours=9))).strftime("%Y-%m-%d %H:%M KST")
 
     if not games:
-        print("데이터 없음"); return
+        print("데이터 없음 - 시트 업데이트 스킵")
+        return
 
-    # ✅ 핵심 수정: 1행 헤더 덮어쓰기 금지!
-    # ✅ 각 경기행의 해당 컬럼만 개별 업데이트 (다른 컬럼 보존)
+    # ✅ 각 경기행의 투표율/상태/결과만 업데이트 (다른 컬럼 보존)
     for g in games:
-        row = g["no"] + 1  # no=1 → 2행, no=2 → 3행
-        # A(no), B(home), C(away), E(w), F(d), G(l), H(st), I(updated)
-        # D(lge), J(totalVotes), K(prize), L(result), M(tip) 등은 건드리지 않음
+        row = g["no"] + 1
         sheet.update(f"A{row}", [[g["no"]]])
         sheet.update(f"B{row}", [[g["home"]]])
         sheet.update(f"C{row}", [[g["away"]]])
@@ -118,18 +118,29 @@ def update_sheet(sheet, games):
         sheet.update(f"G{row}", [[g["l"]]])
         sheet.update(f"H{row}", [[g["st"]]])
         sheet.update(f"I{row}", [[now_str]])
+        # 결과가 있을 때만 L열 업데이트
+        if g["result"]:
+            sheet.update(f"L{row}", [[g["result"]]])
 
-    print(f"시트 업데이트: {len(games)}경기 | {now_str}")
-    print("✅ 기존 데이터(한줄평/결과/팀정보 등) 보존됨")
+    # 메타 정보 업데이트 (2행에)
+    if meta['totalVotes']:
+        sheet.update("J2", [[meta['totalVotes']]])
+    if meta['prize']:
+        sheet.update("K2", [[meta['prize']]])
+    if meta['salePeriod']:
+        sheet.update("N2", [[meta['salePeriod']]])
+
+    print(f"✅ 시트 업데이트: {len(games)}경기 | {now_str}")
+    print("✅ 기존 데이터(한줄평/팀정보/포메이션 등) 보존됨")
 
 def main():
     print("="*50)
-    print("베트맨 크롤러 시작")
+    print("젠토토 크롤러 시작")
     print("="*50)
-    games = crawl_betman()
+    games, meta = crawl_zentoto()
     print(f"\n결과: {len(games)}경기")
     sheet = get_google_sheet()
-    update_sheet(sheet, games)
+    update_sheet(sheet, games, meta)
     print("완료!")
 
 if __name__ == "__main__":
