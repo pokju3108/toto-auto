@@ -97,6 +97,24 @@ def crawl_zentoto():
             break
     
     print(f"총투표수: {meta['totalVotes']}, 회차: {meta['round']}, 발매기간: {meta['salePeriod'][:20] if meta['salePeriod'] else '없음'}")
+    
+    # 디버그: 실제 HTML 구조 파악
+    if not games:
+        print("=== 디버그: HTML 샘플 ===")
+        # % 기호 근처 텍스트 추출
+        pct_samples = re.findall(r'.{0,80}[\d\.]+\s*%.{0,80}', clean)
+        for s in pct_samples[:5]:
+            print(f"  PCT샘플: {s[:150]}")
+        # 경기 번호 패턴 찾기
+        no_samples = re.findall(r'\d+\s+경기.{0,100}', clean)
+        for s in no_samples[:3]:
+            print(f"  경기샘플: {s[:150]}")
+        # VS 패턴
+        vs_samples = re.findall(r'.{0,30}[Vv][Ss].{0,80}', clean)
+        for s in vs_samples[:3]:
+            print(f"  VS샘플: {s[:150]}")
+        print(f"  클린텍스트 샘플: {clean[1000:1500]}")
+    
     return games, meta
 
 def update_sheet(sheet, games, meta):
