@@ -136,25 +136,37 @@ def update_sheet(sheet, games, meta):
         print("데이터 없음 - 시트 업데이트 스킵")
         return
 
+    # ✅ 배치 업데이트로 API 호출 최소화
+    batch = []
     for g in games:
         row = g["no"] + 1
-        sheet.update(f"A{row}", [[g["no"]]])
-        sheet.update(f"B{row}", [[g["home"]]])
-        sheet.update(f"C{row}", [[g["away"]]])
-        sheet.update(f"E{row}", [[g["w"]]])
-        sheet.update(f"F{row}", [[g["d"]]])
-        sheet.update(f"G{row}", [[g["l"]]])
-        sheet.update(f"H{row}", [[g["st"]]])
-        sheet.update(f"I{row}", [[now_str]])
+        # A~I열 한 번에 업데이트 (D열 lge는 건드리지 않음)
+        batch.append({
+            'range': f"A{row}:C{row}",
+            'values': [[g["no"], g["home"], g["away"]]]
+        })
+        batch.append({
+            'range': f"E{row}:I{row}",
+            'values': [[g["w"], g["d"], g["l"], g["st"], now_str]]
+        })
         if g["result"]:
-            sheet.update(f"L{row}", [[g["result"]]])
+            batch.append({
+                'range': f"L{row}",
+                'values': [[g["result"]]]
+            })
 
+    # 메타 정보
+    meta_batch = []
     if meta['totalVotes']:
-        sheet.update("J2", [[meta['totalVotes']]])
+        meta_batch.append({'range': 'J2', 'values': [[meta['totalVotes']]]})
     if meta['prize']:
-        sheet.update("K2", [[meta['prize']]])
+        meta_batch.append({'range': 'K2', 'values': [[meta['prize']]]})
     if meta['salePeriod']:
-        sheet.update("N2", [[meta['salePeriod']]])
+        meta_batch.append({'range': 'N2', 'values': [[meta['salePeriod']]]})
+
+    # 한 번에 업데이트 (API 호출 1~2회로 줄임)
+    all_batch = batch + meta_batch
+    sheet.batch_update(all_batch)
 
     print(f"✅ 시트 업데이트: {len(games)}경기 | {now_str}")
     print("✅ 기존 데이터(한줄평/팀정보/포메이션) 보존됨")
