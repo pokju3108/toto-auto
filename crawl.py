@@ -70,16 +70,19 @@ def crawl_zentoto():
             })
             print(f"  {no}경기(종료): {m.group(2)} vs {m.group(6)} | {m.group(4)} | 승{m.group(7)}% 무{m.group(8)}% 패{m.group(9)}%")
 
-    # 예정 경기 파싱 (스코어 없음)
-    p_pred = re.compile(
+    # 예정 경기 파싱 패턴1: "홈팀 경기 분석 VS 원정팀 ... XX.XX%"
+    p_pred1 = re.compile(
         r'(\d+)\s+'
+        r'(?:\d+\s+)*'
         r'([가-힣A-Za-z0-9\.]{2,8})\s+'
+        r'경기 분석 VS\s+'
         r'([가-힣A-Za-z0-9\.]{2,8})\s+'
+        r'(?:\d+\s+)*'
         r'(\d{1,2}\.\d{2})\s*%\s+'
         r'(\d{1,2}\.\d{2})\s*%\s+'
         r'(\d{1,2}\.\d{2})\s*%'
     )
-    for m in p_pred.finditer(clean):
+    for m in p_pred1.finditer(clean):
         no = int(m.group(1))
         if 1 <= no <= 14 and no not in seen:
             seen.add(no)
@@ -95,16 +98,32 @@ def crawl_zentoto():
             })
             print(f"  {no}경기(예정): {m.group(2)} vs {m.group(3)} | 승{m.group(4)}% 무{m.group(5)}% 패{m.group(6)}%")
 
-    games.sort(key=lambda x: x['no'])
+    # 예정 경기 파싱 패턴2: "홈팀 원정팀 XX.XX%" (패턴1 미매칭 시)
+    p_pred2 = re.compile(
+        r'(\d+)\s+'
+        r'([가-힣A-Za-z0-9\.]{2,8})\s+'
+        r'([가-힣A-Za-z0-9\.]{2,8})\s+'
+        r'(\d{1,2}\.\d{2})\s*%\s+'
+        r'(\d{1,2}\.\d{2})\s*%\s+'
+        r'(\d{1,2}\.\d{2})\s*%'
+    )
+    for m in p_pred2.finditer(clean):
+        no = int(m.group(1))
+        if 1 <= no <= 14 and no not in seen:
+            seen.add(no)
+            games.append({
+                "no": no,
+                "home": m.group(2)[:6],
+                "away": m.group(3)[:6],
+                "w": round(float(m.group(4)), 2),
+                "d": round(float(m.group(5)), 2),
+                "l": round(float(m.group(6)), 2),
+                "st": '예정',
+                "result": ''
+            })
+            print(f"  {no}경기(예정2): {m.group(2)} vs {m.group(3)} | 승{m.group(4)}% 무{m.group(5)}% 패{m.group(6)}%")
 
-    # 디버그: 0경기일 때 HTML 샘플 출력
-    if not games:
-        import re as re2
-        print("=== 디버그 ===")
-        pct = re2.findall(r'.{0,60}\d+\.\d+\s*%.{0,60}', clean)
-        for s in pct[:5]:
-            print("PCT:", s[:120])
-        print("클린텍스트[2000:2500]:", clean[2000:2500])
+    games.sort(key=lambda x: x['no'])
 
     # 메타 정보
     meta = {'totalVotes': '', 'prize': '', 'salePeriod': '', 'round': ''}
