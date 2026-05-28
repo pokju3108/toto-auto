@@ -97,6 +97,15 @@ def crawl_zentoto():
 
     games.sort(key=lambda x: x['no'])
 
+    # 디버그: 0경기일 때 HTML 샘플 출력
+    if not games:
+        import re as re2
+        print("=== 디버그 ===")
+        pct = re2.findall(r'.{0,60}\d+\.\d+\s*%.{0,60}', clean)
+        for s in pct[:5]:
+            print("PCT:", s[:120])
+        print("클린텍스트[2000:2500]:", clean[2000:2500])
+
     # 메타 정보
     meta = {'totalVotes': '', 'prize': '', 'salePeriod': '', 'round': ''}
 
