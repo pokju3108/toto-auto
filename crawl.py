@@ -125,6 +125,18 @@ def crawl_zentoto():
 
     games.sort(key=lambda x: x['no'])
 
+    # 누락 경기 디버그
+    if len(games) < 14:
+        found_nos = [g['no'] for g in games]
+        missing = [i for i in range(1,15) if i not in found_nos]
+        print(f"누락 경기번호: {missing}")
+        for no in missing:
+            import re as re2
+            matches = list(re2.finditer(str(no) + r'\s+[가-힣A-Za-z]', clean))
+            for m in matches[:2]:
+                start = max(0, m.start()-10)
+                print(f"  {no}번 근처: {clean[start:start+150]}")
+
     # 메타 정보
     meta = {'totalVotes': '', 'prize': '', 'salePeriod': '', 'round': ''}
 
