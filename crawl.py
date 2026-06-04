@@ -75,7 +75,7 @@ def crawl_zentoto():
         r'(\d+)\s+'
         r'(?:\d+\s+)*'
         r'([가-힣A-Za-z0-9\.]{2,8})\s+'
-        r'경기 분석 VS\s+'
+        r'경기\s*분석\s*VS\s+'
         r'([가-힣A-Za-z0-9\.]{2,8})\s+'
         r'(?:\d+\s+)*'
         r'(\d{1,2}\.\d{2})\s*%\s+'
@@ -124,18 +124,6 @@ def crawl_zentoto():
             print(f"  {no}경기(예정2): {m.group(2)} vs {m.group(3)} | 승{m.group(4)}% 무{m.group(5)}% 패{m.group(6)}%")
 
     games.sort(key=lambda x: x['no'])
-
-    # 누락 경기 디버그
-    if len(games) < 14:
-        found_nos = [g['no'] for g in games]
-        missing = [i for i in range(1,15) if i not in found_nos]
-        print(f"누락 경기번호: {missing}")
-        for no in missing:
-            import re as re2
-            matches = list(re2.finditer(str(no) + r'\s+[가-힣A-Za-z]', clean))
-            for m in matches[:2]:
-                start = max(0, m.start()-10)
-                print(f"  {no}번 근처: {clean[start:start+150]}")
 
     # 메타 정보
     meta = {'totalVotes': '', 'prize': '', 'salePeriod': '', 'round': ''}
