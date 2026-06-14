@@ -1601,8 +1601,7 @@ function calcExpectedSurv(){
   const totalVotes = TV;
   if(!totalVotes || totalVotes <= 0) return null;
   
-  // 각 등수별 허용 오답수
-  // 1등: 0개 틀림, 2등: 1개, 3등: 2개, 4등: 3개
+  // 각 등수별 허용 오답수 (전체 14경기 기준)
   const ranks = [
     {name:'1등', wrong:0, badge:'rb-1'},
     {name:'2등', wrong:1, badge:'rb-2'},
@@ -1610,25 +1609,23 @@ function calcExpectedSurv(){
     {name:'4등', wrong:3, badge:'rb-4'},
   ];
   
-  const total = finishedGames.length;
+  const finCount = finishedGames.length; // 종료된 경기 수
   
   return ranks.map(rank => {
-    // 조합 경우의 수 계산 (틀린 경기 위치 선택)
-    // C(total, rank.wrong) 경우의 수 합산
+    // 종료된 경기 기준으로만 생존 확률 계산
     let survProb = 0;
     
-    // 모든 경우의 수 계산
-    const combinations = getCombinations(total, rank.wrong);
+    const combinations = getCombinations(finCount, rank.wrong);
     combinations.forEach(wrongIdxs => {
       let prob = 1;
-      GS.forEach((g, i) => {
+      let idx = 0;
+      GS.forEach((g) => {
         if(!g.result) return;
-        const isWrong = wrongIdxs.includes(i);
-        // 정답 투표율
+        const isWrong = wrongIdxs.includes(idx);
         const correctRate = g[g.result] / 100;
-        // 오답 투표율 (나머지)
         const wrongRate = (1 - correctRate);
         prob *= isWrong ? wrongRate : correctRate;
+        idx++;
       });
       survProb += prob;
     });
@@ -1736,7 +1733,7 @@ function updPop(){
               const ri=getResultInfo(c.pickStr);
               const rank=ri?getRankLabel(ri.correct,ri.total):'';
               const finDone=GS.filter(g=>g.result).length;
-              const score=ri&&ri.total>0?`${ri.correct}/${finDone}`:'';
+              const score=ri&&ri.total>0?`${ri.correct}/${ri.total}`:'';
               return (rank?`<span class="result-badge ${rank.includes('1등')?'rb-1':rank.includes('2등')?'rb-2':rank.includes('3등')?'rb-3':'rb-4'}">${rank}</span>`:'')
                 +(score?`<div class="result-score" style="font-size:12px;font-weight:600;color:#444;margin-bottom:3px">✔ ${score} 적중</div>`:'')
                 +renderPickWithResult(c.pickStr);
@@ -1846,8 +1843,13 @@ function getResultInfo(pickStr){
   return{correct,wrong,total,detail};
 }
 function getRankLabel(correct,total){
+  // total = 종료된 경기 수, correct = 맞은 수
   if(total===0) return null;
   const wrong=total-correct;
+  // 전체 14경기 기준 당첨 판정
+  const totalGames=GS.length;
+  const expectedWrong=totalGames-correct-(totalGames-total); // 아직 안끝난 경기 제외
+  if(total<totalGames) return null; // 전체 종료 전엔 등수 미표시
   if(wrong===0) return'🏆 1등 당첨!';
   if(wrong===1) return'🥈 2등 당첨';
   if(wrong===2) return'🥉 3등 당첨';
