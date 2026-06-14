@@ -634,12 +634,7 @@ body.dark .rmbar div div:first-child{color:#7a9bb5 !important}
 <script>
 /* ★★★ 매주 여기만 수정 ★★★ */
 let roundLabel = '로딩중...';
-const roundMeta = {
-  period: '26.04.23(목) 08:00 ~ 26.04.25(토) 22:30',
-  totalVotes: '606,668',
-  prize1st: '695,171,250'
-};
-const GS = [
+const GS = [];
 
 /* ── 팀 능력치: [공격, 수비, 점유, 종합] (0~100) ── */
 const TEAM_STATS = []; // 구글 시트에서 자동 로딩
@@ -649,11 +644,7 @@ const FORMATIONS = []; // 구글 시트에서 자동 로딩
 /* ★★★ 수정 끝 ★★★ */
 
 // roundInfo는 loadFromSheet에서 자동 설정됨
-if(typeof roundMeta !== 'undefined'){
-  document.getElementById('rmPeriod').textContent = roundMeta.period;
-  document.getElementById('rmVotes').textContent = roundMeta.totalVotes + '명';
-  document.getElementById('rmPrize').textContent = roundMeta.prize1st + '원';
-}
+
 const MAX=100000; let TV=606668;
 let combos0=[];
 let combos1=[];
