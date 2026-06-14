@@ -1636,12 +1636,13 @@ function calcExpectedSurv(){
     const survCount = totalVotes * survProb;
     
     // 당첨금 계산 - 실제 젠토토 방식
-    // 총투표금 × 72%(환급률) × 등수배분비율 / 생존자수
+    // 총투표금 × 72.4%(환급률) 중 등수별 배분
     const totalPrize = totalVotes * 1000;
-    const prizePool = totalPrize * 0.724; // 실제 환급률
-    const prizeRates = [0.724, 0.096, 0.048, 0.048]; // 1~4등 배분비율(실제)
-    const prizePot = prizePool * prizeRates[rank.wrong];
-    const prizePerPerson = survCount > 0.01 ? Math.round(prizePot / survCount) : 0;
+    const refundPool = totalPrize * 0.724;
+    // 1등:72.4%, 2등:9.6%, 3등:4.8%, 4등:4.8% (환급금 내 비율)
+    const prizeRates = [0.724, 0.096, 0.048, 0.048];
+    const prizePot = refundPool * prizeRates[rank.wrong];
+    const prizePerPerson = survCount > 0.1 ? Math.round(prizePot / Math.max(survCount, 1)) : 0;
     
     return {
       name: rank.name,
@@ -2294,7 +2295,7 @@ function loadFromSheet(){
         if(riEl2&&riEl2.textContent==='로딩중...') riEl2.textContent='데이터 오류';
       }
       hideLoading();
-      updateSurvArea();
+      setTimeout(function(){ updateSurvArea(); }, 200);
       // hideLoading 후에도 roundInfo 강제 업데이트
       setTimeout(function(){
         var riEl3=document.getElementById('roundInfo');
