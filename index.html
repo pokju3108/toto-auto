@@ -483,6 +483,8 @@ body.dark .rmbar div div:first-child{color:#7a9bb5 !important}
     <button class="stbtn" id="sb0L" onclick="togS('L')"><span class="chk">✓</span><span class="sl">낮은 투표율</span><span class="sd">도전형 · 높은 배당</span><span class="sr">예상 생존 3명↓</span></button>
   </div>
   <!-- 테이블 먼저 -->
+  <!-- 예상 생존/당첨금 -->
+  <div id="survTableArea" style="margin-bottom:8px"></div>
   <div class="gtbl-wrap"><table class="gtbl"><thead><tr>
     <th style="width:1%;white-space:nowrap;text-align:center">홈 vs 원정</th><th style="text-align:center;white-space:nowrap">리그</th>
     <th style="color:#97C459;padding-left:4px;padding-right:4px">▲ 승</th><th style="color:#85B7EB;padding-left:4px;padding-right:4px">● 무</th><th style="color:#F09595;padding-left:4px;padding-right:4px">▼ 패</th><th style="padding-left:3px;padding-right:3px">결과</th>
@@ -524,8 +526,6 @@ body.dark .rmbar div div:first-child{color:#7a9bb5 !important}
     </div>
     <div id="cp0b"></div>
   </div>
-  <!-- 예상 생존/당첨금 -->
-  <div id="survTableArea"></div>
 </div>
 </div>
 <div id="p1" class="panel">
@@ -1735,7 +1735,8 @@ function updPop(){
             ${(()=>{
               const ri=getResultInfo(c.pickStr);
               const rank=ri?getRankLabel(ri.correct,ri.total):'';
-              const score=ri&&ri.total>0?`${ri.correct}/${ri.total}`:'';
+              const finDone=GS.filter(g=>g.result).length;
+              const score=ri&&ri.total>0?`${ri.correct}/${finDone}`:'';
               return (rank?`<span class="result-badge ${rank.includes('1등')?'rb-1':rank.includes('2등')?'rb-2':rank.includes('3등')?'rb-3':'rb-4'}">${rank}</span>`:'')
                 +(score?`<div class="result-score" style="font-size:12px;font-weight:600;color:#444;margin-bottom:3px">✔ ${score} 적중</div>`:'')
                 +renderPickWithResult(c.pickStr);
