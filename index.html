@@ -524,6 +524,8 @@ body.dark .rmbar div div:first-child{color:#7a9bb5 !important}
     </div>
     <div id="cp0b"></div>
   </div>
+  <!-- 예상 생존/당첨금 -->
+  <div id="survTableArea"></div>
 </div>
 </div>
 <div id="p1" class="panel">
@@ -1633,14 +1635,13 @@ function calcExpectedSurv(){
     
     const survCount = totalVotes * survProb;
     
-    // 당첨금 계산
-    // prize1st(1등 당첨금)를 기준으로 역산
-    // 실제 방식: 총투표금 × 환급률(72%) × 등수별 배분비율 / 생존자수
+    // 당첨금 계산 - 실제 젠토토 방식
+    // 총투표금 × 72%(환급률) × 등수배분비율 / 생존자수
     const totalPrize = totalVotes * 1000;
-    const prizePool = totalPrize * 0.72; // 환급률 72%
-    const prizeRates = [0.75, 0.15, 0.05, 0.05]; // 1~4등 배분비율
+    const prizePool = totalPrize * 0.724; // 실제 환급률
+    const prizeRates = [0.724, 0.096, 0.048, 0.048]; // 1~4등 배분비율(실제)
     const prizePot = prizePool * prizeRates[rank.wrong];
-    const prizePerPerson = survCount > 0 ? Math.round(prizePot / survCount) : 0;
+    const prizePerPerson = survCount > 0.01 ? Math.round(prizePot / survCount) : 0;
     
     return {
       name: rank.name,
@@ -1677,14 +1678,14 @@ function renderSurvTable(){
   const totalCount = GS.length;
   const isComplete = finishedCount === totalCount;
   
-  // 전체 경기 종료 시에만 표시
-  if(!isComplete || finishedCount === 0) return '';
+  // 결과 있는 경기가 1개 이상이면 표시
+  if(finishedCount === 0) return '';
   
   const data = calcExpectedSurv();
   if(!data) return '';
   
   return `<div class="surv-section">
-    <div class="surv-title">📊 예상 생존/당첨금 (${finishedCount}/${totalCount}경기 종료)</div>
+    <div class="surv-title">📊 예상 생존/당첨금 <span style="font-size:10px;font-weight:400;color:#666">(${finishedCount}/${totalCount}경기 종료 기준)</span></div>
     <table class="surv-table">
       <thead><tr><th>등수</th><th>확률생존수</th><th>예상당첨금</th></tr></thead>
       <tbody>
@@ -1733,9 +1734,9 @@ function updPop(){
             ${(()=>{
               const ri=getResultInfo(c.pickStr);
               const rank=ri?getRankLabel(ri.correct,ri.total):'';
-              const score=ri&&ri.total>0?`결과: ${ri.correct}맞음/${ri.total}경기 (${ri.wrong}틀림)`:'';
+              const score=ri&&ri.total>0?`${ri.correct}/${ri.total}`:'';
               return (rank?`<span class="result-badge ${rank.includes('1등')?'rb-1':rank.includes('2등')?'rb-2':rank.includes('3등')?'rb-3':'rb-4'}">${rank}</span>`:'')
-                +(score?`<div class="result-score">${score}</div>`:'')
+                +(score?`<div class="result-score" style="font-size:12px;font-weight:600;color:#444;margin-bottom:3px">✔ ${score} 적중</div>`:'')
                 +renderPickWithResult(c.pickStr);
             })()}
             <div class="cm">
@@ -1749,8 +1750,7 @@ function updPop(){
     <div class="tbox">
       <span style="font-size:13px;color:#0C447C;font-weight:600">전체 ${tot}조합 합산</span>
       <span style="font-size:13px;color:#0C447C">총 예상 생존 <strong>${fmtSurv(ts2)}</strong> · ${total.toLocaleString()}원</span>
-    </div>
-    ${renderSurvTable()}`;
+    </div>`;
 }
 
 function fmt(n){return n.toLocaleString()+'원';}
@@ -2058,8 +2058,13 @@ function updateLiveUI(){
   });
 }
 
+function updateSurvArea(){
+  const el = document.getElementById('survTableArea');
+  if(el) el.innerHTML = renderSurvTable();
+}
+
 function startLive(){
-  fetchLiveScores();
+  fetchLiveScores();updateSurvArea();
   if(liveTimer) clearInterval(liveTimer);
   liveTimer = setInterval(fetchLiveScores, 60000); // 1분마다
 }
@@ -2289,6 +2294,7 @@ function loadFromSheet(){
         if(riEl2&&riEl2.textContent==='로딩중...') riEl2.textContent='데이터 오류';
       }
       hideLoading();
+      updateSurvArea();
       // hideLoading 후에도 roundInfo 강제 업데이트
       setTimeout(function(){
         var riEl3=document.getElementById('roundInfo');
