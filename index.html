@@ -1673,12 +1673,15 @@ function getCombinations(n, k) {
 }
 
 function renderSurvTable(){
-  const data = calcExpectedSurv();
-  if(!data) return '';
-  
   const finishedCount = GS.filter(g=>g.result).length;
   const totalCount = GS.length;
   const isComplete = finishedCount === totalCount;
+  
+  // 전체 경기 종료 시에만 표시
+  if(!isComplete || finishedCount === 0) return '';
+  
+  const data = calcExpectedSurv();
+  if(!data) return '';
   
   return `<div class="surv-section">
     <div class="surv-title">📊 예상 생존/당첨금 (${finishedCount}/${totalCount}경기 종료)</div>
@@ -1693,7 +1696,7 @@ function renderSurvTable(){
           </tr>`).join('')}
       </tbody>
     </table>
-    ${!isComplete?`<div style="font-size:10px;color:#888;margin-top:4px">※ 전체 경기 종료 후 정확한 수치 확인 가능</div>`:''}
+
   </div>`;
 }
 
@@ -1730,7 +1733,7 @@ function updPop(){
             ${(()=>{
               const ri=getResultInfo(c.pickStr);
               const rank=ri?getRankLabel(ri.correct,ri.total):'';
-              const score=ri&&ri.total>0?`결과: ${ri.correct}/${ri.wrong}`:'';
+              const score=ri&&ri.total>0?`결과: ${ri.correct}맞음/${ri.total}경기 (${ri.wrong}틀림)`:'';
               return (rank?`<span class="result-badge ${rank.includes('1등')?'rb-1':rank.includes('2등')?'rb-2':rank.includes('3등')?'rb-3':'rb-4'}">${rank}</span>`:'')
                 +(score?`<div class="result-score">${score}</div>`:'')
                 +renderPickWithResult(c.pickStr);
