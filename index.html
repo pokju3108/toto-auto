@@ -263,6 +263,15 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 
 
 
+/* ── 회차 선택 드롭다운 ── */
+.round-select-wrap{display:flex;align-items:center;gap:8px;margin-bottom:10px;padding:6px 10px;background:#f0f4f8;border-radius:8px}
+.round-select-wrap label{font-size:12px;color:#444;font-weight:600;white-space:nowrap}
+.round-select{flex:1;padding:5px 8px;border:1px solid #ccc;border-radius:6px;font-size:12px;background:#fff}
+.round-badge{font-size:11px;color:#888;white-space:nowrap}
+body.dark .round-select-wrap{background:#1e2f45}
+body.dark .round-select{background:#0a2540;color:#c8dce8;border-color:#2e3f55}
+body.dark .round-badge{color:#9FE1CB}
+
 /* ── 예상생존/당첨금 테이블 ── */
 .surv-table{width:100%;border-collapse:collapse;margin-top:8px;font-size:12px}
 .surv-table th{background:#063B5D;color:#9FE1CB;padding:5px 8px;text-align:center;font-size:11px}
@@ -454,6 +463,13 @@ body.dark .rmbar div div:first-child{color:#7a9bb5 !important}
     <button class="dark-toggle" id="darkBtn" onclick="toggleDark()">🌙 다크</button>
   </div>
 </div>
+<div id="roundSelectWrap" class="round-select-wrap" style="display:none">
+  <label>📅 회차</label>
+  <select id="roundSelect" class="round-select" onchange="onRoundChange(this.value)">
+    <option value="current">현재 회차</option>
+  </select>
+  <span class="round-badge" id="roundBadge"></span>
+</div>
 <div id="roundMetaBar" class="rmbar" style="display:flex;justify-content:space-around;background:#f0f4f8;border-radius:8px;padding:8px 10px;margin-bottom:8px;font-size:11px;color:#444;text-align:center">
   <div><div style="color:#888;font-size:10px">발매기간</div><div id="rmPeriod" style="font-weight:600">-</div></div>
   <div style="border-left:1px solid #ddd;padding-left:10px"><div style="color:#888;font-size:10px">총 투표수</div><div id="rmVotes" style="font-weight:600">-</div></div>
@@ -637,6 +653,8 @@ body.dark .rmbar div div:first-child{color:#7a9bb5 !important}
 /* ★★★ 매주 여기만 수정 ★★★ */
 let roundLabel = '로딩중...';
 const GS = [];
+let currentRound = 'current'; // 현재 선택된 회차
+let historyData = {}; // 이전 회차 데이터 캐시
 
 /* ── 팀 능력치: [공격, 수비, 점유, 종합] (0~100) ── */
 const TEAM_STATS = []; // 구글 시트에서 자동 로딩
@@ -1632,14 +1650,18 @@ function calcExpectedSurv(){
     
     const survCount = totalVotes * survProb;
     
-    // 당첨금 계산 - 실제 젠토토 방식
-    // 총투표금 × 72.4%(환급률) 중 등수별 배분
+    // 당첨금 계산
+    // prize1st(1등 예상 적중금)를 생존자수로 나눔
+    // 2~4등은 총투표금 기준 배분비율로 계산
+    const rmPrizeEl2 = document.getElementById('rmPrize');
+    const prize1stAmt = rmPrizeEl2 ? parseInt(rmPrizeEl2.textContent.replace(/[^0-9]/g,'')) : 0;
     const totalPrize = totalVotes * 1000;
-    const refundPool = totalPrize * 0.724;
-    // 1등:72.4%, 2등:9.6%, 3등:4.8%, 4등:4.8% (환급금 내 비율)
-    const prizeRates = [0.724, 0.096, 0.048, 0.048];
-    const prizePot = refundPool * prizeRates[rank.wrong];
-    const prizePerPerson = survCount > 0.1 ? Math.round(prizePot / Math.max(survCount, 1)) : 0;
+    const prizeRates2 = [0.724, 0.096, 0.048, 0.048];
+    // 1등: prize1st / 생존자수, 2~4등: 총투표금×배분율 / 생존자수
+    const prizePot2 = rank.wrong === 0
+      ? prize1stAmt
+      : totalPrize * 0.724 * prizeRates2[rank.wrong];
+    const prizePerPerson = survCount > 0.01 ? Math.round(prizePot2 / Math.max(survCount, 0.01)) : 0;
     
     return {
       name: rank.name,
@@ -1687,12 +1709,15 @@ function renderSurvTable(){
     <table class="surv-table">
       <thead><tr><th>등수</th><th>확률생존수</th><th>예상당첨금</th></tr></thead>
       <tbody>
-        ${data.map((d,i)=>`
-          <tr>
-            <td class="surv-rank${i+1}">${d.name}</td>
-            <td>${d.survCount>=1?Math.round(d.survCount).toLocaleString()+'명':d.survCount.toFixed(1)+'명'}</td>
-            <td>${d.prizePerPerson>=1?Math.round(d.prizePerPerson).toLocaleString()+'원':'계산중'}</td>
-          </tr>`).join('')}
+        ${(()=>{
+          const rmPrizeEl=document.getElementById('rmPrize');
+          const prize1st=rmPrizeEl?parseInt(rmPrizeEl.textContent.replace(/[^0-9]/g,'')):0;
+          return data.map((d,i)=>{
+            const survStr=d.survCount>=1?Math.round(d.survCount).toLocaleString()+'명':d.survCount.toFixed(1)+'명';
+            const prizeStr=d.prizePerPerson>=1?Math.round(d.prizePerPerson).toLocaleString()+'원':'-';
+            return'<tr><td class="surv-rank'+(i+1)+'">'+d.name+'</td><td>'+survStr+'</td><td>'+prizeStr+'</td></tr>';
+          }).join('');
+        })()}
       </tbody>
     </table>
 
@@ -1886,6 +1911,8 @@ function saveToLS(){
 
 function loadFromLS(){
   try {
+    // roundLabel이 로딩중이면 스킵 (구글 시트 로딩 전)
+    if(roundLabel === '로딩중...') return;
     // 회차가 변경되면 이전 저장 데이터 자동 리셋
     const savedRound = localStorage.getItem(LS_ROUND_KEY);
     if(savedRound && savedRound !== roundLabel){
@@ -1918,7 +1945,7 @@ function expandAndCalc1(){
 
 buildDD('asel0');buildDD('asel1');
 rdrTbl0();rdrTbl1();updStratUI();
-loadFromLS();
+// loadFromLS는 구글 시트 로딩 완료 후 실행
 renderTeams();
 renderFormations();
 
@@ -2060,6 +2087,106 @@ function updateLiveUI(){
       el.style.display = 'inline-flex';
     }
   });
+}
+
+// ── 이전 회차 데이터 로딩 ──
+function loadHistory(){
+  const SHEET_ID = '1_nLxcE_ZpAB0GZ5UXFFkQO9rZqD8_K4aQeOqCbihXcA';
+  const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=history`;
+  
+  fetch(url).then(r=>r.text()).then(t=>{
+    const s=t.indexOf('setResponse(')+12, e=t.lastIndexOf(')');
+    const d=JSON.parse(t.substring(s,e));
+    if(!d.table||!d.table.rows||d.table.rows.length<1) return;
+    
+    // 회차별로 데이터 정리
+    historyData = {};
+    d.table.rows.forEach(row=>{
+      if(!row.c||!row.c[0]||!row.c[0].v) return;
+      const round = String(row.c[0].v);
+      if(!historyData[round]) historyData[round] = {games:[], meta:{}};
+      
+      const no = row.c[1]&&row.c[1].v;
+      if(no===1||no==='1'||no===1.0) {
+        // 메타 정보 (1번 경기에서 추출)
+        historyData[round].meta = {
+          totalVotes: row.c[10]&&row.c[10].v||0,
+          prize1st: row.c[11]&&row.c[11].v||0,
+          salePeriod: row.c[14]&&row.c[14].v||''
+        };
+      }
+      
+      const rv = row.c[12]&&row.c[12].v||'';
+      historyData[round].games.push({
+        no: parseInt(no),
+        home: row.c[2]&&row.c[2].v||'',
+        away: row.c[3]&&row.c[3].v||'',
+        lge: row.c[4]&&row.c[4].v||'',
+        w: row.c[5]&&row.c[5].v||0,
+        d: row.c[6]&&row.c[6].v||0,
+        l: row.c[7]&&row.c[7].v||0,
+        st: row.c[8]&&row.c[8].v||'예정',
+        result: rv==='승'?'w':rv==='무'?'d':rv==='패'?'l':rv,
+        tip: row.c[13]&&row.c[13].v||''
+      });
+    });
+    
+    // 드롭다운 업데이트
+    const sel = document.getElementById('roundSelect');
+    const wrap = document.getElementById('roundSelectWrap');
+    const rounds = Object.keys(historyData).sort((a,b)=>parseInt(b)-parseInt(a));
+    
+    if(rounds.length > 0) {
+      sel.innerHTML = '<option value="current">현재 회차</option>';
+      rounds.forEach(r=>{
+        const opt = document.createElement('option');
+        opt.value = r;
+        opt.textContent = r + '회차';
+        sel.appendChild(opt);
+      });
+      wrap.style.display = 'flex';
+    }
+  }).catch(e=>console.log('history 로딩 오류:', e));
+}
+
+function onRoundChange(val){
+  currentRound = val;
+  if(val === 'current'){
+    // 현재 회차로 복원
+    document.getElementById('roundBadge').textContent = '';
+    loadFromSheet();
+    return;
+  }
+  
+  // 이전 회차 데이터 표시
+  const hd = historyData[val];
+  if(!hd) return;
+  
+  document.getElementById('roundBadge').textContent = val+'회차 결과';
+  
+  // GS 업데이트
+  GS.length = 0;
+  hd.games.sort((a,b)=>a.no-b.no).forEach(g=>GS.push(g));
+  
+  // TV 업데이트
+  TV = parseInt(String(hd.meta.totalVotes).replace(/,/g,''))||0;
+  
+  // 메타 정보 업데이트
+  const rmVotes = document.getElementById('rmVotes');
+  const rmPrize = document.getElementById('rmPrize');
+  const rmPeriod = document.getElementById('rmPeriod');
+  if(rmVotes) rmVotes.textContent = TV.toLocaleString()+'명';
+  if(rmPrize) rmPrize.textContent = parseInt(String(hd.meta.prize1st).replace(/,/g,'')).toLocaleString()+'원';
+  if(rmPeriod) rmPeriod.textContent = hd.meta.salePeriod;
+  
+  // 화면 업데이트
+  if(typeof rdrTbl0==='function') rdrTbl0();
+  if(typeof rdrTbl1==='function') rdrTbl1();
+  if(typeof renderTeams==='function') renderTeams();
+  updateSurvArea();
+  
+  const ri = document.getElementById('roundInfo');
+  if(ri) ri.textContent = val+'회차 · 이전 결과';
 }
 
 function updateSurvArea(){
@@ -2297,8 +2424,9 @@ function loadFromSheet(){
         var riEl2=document.getElementById('roundInfo');
         if(riEl2&&riEl2.textContent==='로딩중...') riEl2.textContent='데이터 오류';
       }
+      loadFromLS(); // 구글 시트 로딩 완료 후 저장 조합 복원
       hideLoading();
-      setTimeout(function(){ updateSurvArea(); }, 200);
+      setTimeout(function(){ updateSurvArea(); loadHistory(); }, 200);
       // hideLoading 후에도 roundInfo 강제 업데이트
       setTimeout(function(){
         var riEl3=document.getElementById('roundInfo');
