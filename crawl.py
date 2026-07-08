@@ -177,11 +177,11 @@ def update_sheet(sheet, games, meta):
             'range': f"E{row}:I{row}",
             'values': [[g["w"], g["d"], g["l"], g["st"], now_str]]
         })
-        if g["result"]:
-            batch.append({
-                'range': f"L{row}",
-                'values': [[g["result"]]]
-            })
+        # 결과 항상 업데이트 (없으면 빈값으로 초기화)
+        batch.append({
+            'range': f"L{row}",
+            'values': [[g["result"] if g["result"] else '']]
+        })
 
     # 메타 정보
     meta_batch = []
@@ -191,6 +191,12 @@ def update_sheet(sheet, games, meta):
         meta_batch.append({'range': 'K2', 'values': [[meta['prize']]]})
     if meta['salePeriod']:
         meta_batch.append({'range': 'N2', 'values': [[meta['salePeriod']]]})
+    
+    # 예정 경기의 result 초기화 (이전 회차 데이터 제거)
+    for g in games:
+        if g['st'] == '예정':
+            row = g['no'] + 1
+            meta_batch.append({'range': f'L{row}', 'values': [['']]})
 
     # 한 번에 업데이트 (API 호출 1~2회로 줄임)
     all_batch = batch + meta_batch
