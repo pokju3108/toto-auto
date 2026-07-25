@@ -4,6 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <title>승무패 조합 계산기</title>
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#063B5D">
+<link rel="icon" href="/icons/icon-192.png">
+<link rel="apple-touch-icon" href="/icons/icon-192.png">
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7806332340003120" crossorigin="anonymous"></script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
@@ -203,6 +207,60 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .clrb:hover{background:#C0180E;color:#fff}
 .cidx{background:#E6F1FB;color:#0C447C;font-size:10px;padding:2px 6px;border-radius:8px;font-weight:500}
 .tbox{background:#E6F1FB;border:1px solid #378ADD;border-radius:8px;padding:10px 14px;margin-top:8px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px;align-items:center}
+.detb{background:#E6F1FB;color:#0C447C;border:1px solid #378ADD;border-radius:6px;padding:4px 10px;font-size:11px;font-weight:600;cursor:pointer}
+.detb:hover{background:#378ADD;color:#fff}
+
+/* ── 조합 상세내역 모달 (마킹표/투표지) ── */
+.gdov{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.55);z-index:1100;align-items:flex-start;justify-content:center;padding:16px}
+.gdov.open{display:flex}
+.gdpop{background:#fff;border-radius:14px;width:100%;max-width:760px;max-height:90vh;display:flex;flex-direction:column;overflow:hidden;margin-top:16px}
+.gdh{background:#063B5D;color:#fff;padding:14px 18px;display:flex;justify-content:space-between;align-items:center;flex-shrink:0}
+.gdh h3{margin:0;font-size:15px;font-weight:700}
+.gdh h3 span{color:#9FE1CB;font-weight:500;font-size:12px;margin-left:4px}
+.gdc{background:none;border:none;color:#fff;font-size:22px;cursor:pointer;line-height:1;padding:0 4px}
+.gdb{overflow-y:auto;padding:14px 16px;flex:1}
+.gdf{padding:10px 16px;border-top:1px solid #eee;display:flex;justify-content:space-between;align-items:center;background:#f8f8f8;flex-shrink:0;flex-wrap:wrap;gap:8px}
+.gd-sub{font-size:13px;font-weight:700;color:#0C447C;margin:4px 0 8px;display:flex;align-items:center;gap:5px}
+.gd-sub::before{content:'';width:4px;height:14px;background:#0C447C;border-radius:2px;display:inline-block}
+.gd-mark-table{width:100%;border-collapse:collapse;font-size:12px;margin-bottom:16px}
+.gd-mark-table th{background:#063B5D;color:#9FE1CB;padding:6px 4px;font-size:11px;text-align:center}
+.gd-mark-table td{padding:6px 4px;text-align:center;border-bottom:1px solid #f0f0f0;font-size:12px}
+.gd-mark-table tr:nth-child(even) td{background:#fafafa}
+.gd-marks{display:flex;justify-content:center;gap:4px}
+.gd-box{width:20px;height:20px;border-radius:4px;background:#e6e6e6;display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:transparent}
+.gd-box.on{background:#0C447C;color:#fff}
+.gd-box.result{box-shadow:0 0 0 2px #1B7A1B inset}
+.gd-box.result.on{background:#1B7A1B}
+.gd-box.result:not(.on){background:#E8F5E9;color:#1B7A1B}
+.gd-boxclick{cursor:pointer;transition:transform .1s}
+.gd-boxclick:hover{transform:scale(1.15);box-shadow:0 0 0 2px #378ADD inset}
+.gd-vote-wrap{overflow-x:auto}
+.gd-vote-table{width:100%;border-collapse:collapse;font-size:11px;min-width:640px}
+.gd-vote-table th{background:#063B5D;color:#9FE1CB;padding:5px 3px;font-size:10px;text-align:center;white-space:nowrap}
+.gd-vote-table td{padding:5px 3px;text-align:center;border-bottom:1px solid #f0f0f0;white-space:nowrap}
+.gd-vote-table tr:nth-child(even) td{background:#fafafa}
+.gd-vote-table td.gd-w{color:#0C447C;font-weight:700}
+.gd-vote-table td.gd-d{color:#1B7A1B;font-weight:700}
+.gd-vote-table td.gd-l{color:#C0180E;font-weight:700}
+.gd-vote-table td.gd-surv{color:#028A8A;font-weight:700}
+.gd-vote-table td.gd-pick{cursor:pointer;user-select:none;border-radius:4px;transition:background .1s}
+.gd-vote-table td.gd-pick:hover{background:#E6F1FB !important}
+.gd-vote-table td.gd-hit{background:#E8F5E9 !important}
+.gd-vote-table td.gd-hit::after{content:'✔';font-size:8px;color:#1B7A1B;margin-left:2px;vertical-align:top}
+.gd-vote-table td.gd-miss{background:#FCEBEB !important;opacity:.75}
+.gd-vote-table td.gd-miss::after{content:'✘';font-size:8px;color:#C0180E;margin-left:2px;vertical-align:top}
+.gd-vote-table td.gd-delcell{cursor:pointer;color:#C0180E;font-weight:700}
+.gd-vote-table td.gd-delcell:hover{background:#FCEBEB !important}
+.gd-note{font-size:11px;color:#888;margin-bottom:14px}
+body.dark .gdpop{background:#243044}
+body.dark .gd-mark-table td,body.dark .gd-vote-table td{border-color:#2e3f55;color:#e8edf2}
+body.dark .gd-mark-table tr:nth-child(even) td,body.dark .gd-vote-table tr:nth-child(even) td{background:#1e2f45}
+body.dark .gd-box{background:#1e2f45}
+body.dark .gd-note{color:#7a9bb5}
+body.dark .gdf{background:#1e2f45;border-color:#2e3f55}
+body.dark .gd-vote-table td.gd-pick:hover{background:#2d4a6b !important}
+body.dark .gd-vote-table td.gd-hit{background:#1a3320 !important}
+body.dark .gd-vote-table td.gd-miss{background:#2a1010 !important}
 .warn-box{background:#FFF3E0;border:1px solid #FF8C00;border-radius:6px;padding:7px 12px;font-size:11px;color:#7A4400;margin-bottom:8px;display:none;line-height:1.7}
 @media(max-width:600px){
   body{padding:5px}
@@ -647,7 +705,20 @@ body.dark .rmbar div div:first-child{color:#7a9bb5 !important}
   </div>
 </div>
 
-
+<!-- 그룹 상세내역 모달 -->
+<div class="gdov" id="gdov" onclick="closeGdOut(event)">
+  <div class="gdpop">
+    <div class="gdh"><h3 id="gdTitle">내 조합 상세내역</h3><button class="gdc" onclick="closeGroupDetail()">×</button></div>
+    <div class="gdb" id="gdBody"></div>
+    <div class="gdf">
+      <div style="font-size:11px;color:#888">픽을 클릭하면 승/무/패가 바뀝니다</div>
+      <div style="display:flex;gap:8px">
+        <button class="viewbtn" onclick="closeGroupDetail()" style="padding:5px 14px;font-size:12px;background:#eee;color:#555">취소</button>
+        <button class="viewbtn" onclick="saveGroupDetail()" style="padding:5px 14px;font-size:12px">저장</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 <script>
 /* ★★★ 매주 여기만 수정 ★★★ */
@@ -1609,6 +1680,243 @@ function clearAll(){if(!savedGroups.length){alert('저장된 조합이 없습니
 function delGroup(id){savedGroups=savedGroups.filter(g=>g.id!==id);updPop();saveToLS();}
 function togGroup(id){const g=savedGroups.find(g=>g.id===id);if(g)g.open=!g.open;updPop();}
 
+/* ── 그룹 상세보기(마킹표/투표지) ── */
+/* ── 그룹 상세보기(마킹표/투표지) + 편집 ── */
+let gdDraft=null; // {gid, combos:[...]} 편집 중인 임시 사본 (저장 눌러야 반영됨)
+
+function openGroupDetail(gid){
+  const g=savedGroups.find(g=>g.id===gid);
+  if(!g) return;
+  // 원본을 건드리지 않도록 깊은 복사본으로 편집 시작
+  gdDraft={gid:gid, label:g.label, cls:g.cls, time:g.time, combos:JSON.parse(JSON.stringify(g.combos))};
+  gdMultiMode=false; gdMultiSets=null;
+  document.getElementById('gdTitle').innerHTML=`내 조합 상세내역 <span>(${g.label} / No.${String(gid).padStart(3,'0')})</span>`;
+  document.getElementById('gdBody').innerHTML=renderGroupDetail(gdDraft);
+  document.getElementById('gdov').classList.add('open');
+}
+function closeGroupDetail(){gdDraft=null;gdMultiMode=false;gdMultiSets=null;document.getElementById('gdov').classList.remove('open');}
+function closeGdOut(e){if(e.target===document.getElementById('gdov'))closeGroupDetail();}
+
+function recalcPickStats(pickStr){
+  const lm={'승':'w','무':'d','패':'l'};
+  let prod=1;
+  pickStr.split('-').forEach((p,i)=>{
+    const g=GS[i];
+    if(!g) return;
+    const val=parseFloat(g[lm[p]])||0;
+    prod*=val/100;
+  });
+  const votes=typeof TV==='number'?TV:0;
+  return {pct:prod*100, surv:votes*prod};
+}
+
+// 투표지에서 픽 셀 클릭 → 승→무→패→승 순환
+function editPick(comboIdx, gameIdx){
+  if(!gdDraft) return;
+  const c=gdDraft.combos[comboIdx];
+  if(!c) return;
+  const order=['승','무','패'];
+  const picks=c.pickStr.split('-');
+  const cur=picks[gameIdx];
+  const next=order[(order.indexOf(cur)+1)%order.length];
+  picks[gameIdx]=next;
+  c.pickStr=picks.join('-');
+  const stat=recalcPickStats(c.pickStr);
+  c.pct=stat.pct; c.surv=stat.surv;
+  document.getElementById('gdBody').innerHTML=renderGroupDetail(gdDraft);
+}
+// 조합 한 줄 삭제
+function deleteDraftCombo(comboIdx){
+  if(!gdDraft) return;
+  if(gdDraft.combos.length<=1){alert('최소 1개 조합은 남아있어야 합니다. 그룹 전체 삭제는 목록에서 "삭제" 버튼을 이용해주세요.');return;}
+  gdDraft.combos.splice(comboIdx,1);
+  gdDraft.combos.forEach((c,i)=>c.num=i+1);
+  document.getElementById('gdBody').innerHTML=renderGroupDetail(gdDraft);
+}
+// 변경사항 저장
+function saveGroupDetail(){
+  if(!gdDraft) return;
+  const g=savedGroups.find(g=>g.id===gdDraft.gid);
+  if(!g) return;
+  g.combos=gdDraft.combos;
+  updPop();
+  saveToLS();
+  closeGroupDetail();
+  alert('수정 내용이 저장되었습니다.');
+}
+
+// 조합내역에서 특정 경기의 결과를 클릭 → 그룹 내 모든 조합의 해당 경기 픽을 일괄 변경
+function editPickBulk(gameIdx, sym){
+  if(!gdDraft) return;
+  gdDraft.combos.forEach(c=>{
+    const picks=c.pickStr.split('-');
+    picks[gameIdx]=sym;
+    c.pickStr=picks.join('-');
+    const stat=recalcPickStats(c.pickStr);
+    c.pct=stat.pct; c.surv=stat.surv;
+  });
+  document.getElementById('gdBody').innerHTML=renderGroupDetail(gdDraft);
+}
+
+/* ── 복식 마킹 모드: 경기당 승/무/패 중복 선택 → 조합 자동 전개 ── */
+let gdMultiMode=false;
+let gdMultiSets=null; // Array<Set<'승'|'무'|'패'>> 게임별 선택
+
+function toggleMultiMode(){
+  if(!gdDraft) return;
+  if(!gdMultiMode){
+    // 진입 시: 현재 조합들의 픽 합집합으로 초기값 구성
+    gdMultiSets=GS.map((_,gi)=>{
+      const s=new Set();
+      gdDraft.combos.forEach(c=>{
+        const p=c.pickStr.split('-')[gi];
+        if(p) s.add(p);
+      });
+      return s;
+    });
+    gdMultiMode=true;
+  } else {
+    gdMultiMode=false;
+    gdMultiSets=null;
+  }
+  document.getElementById('gdBody').innerHTML=renderGroupDetail(gdDraft);
+}
+
+function toggleMultiPick(gi, sym){
+  if(!gdMultiSets) return;
+  const s=gdMultiSets[gi];
+  if(s.has(sym)) s.delete(sym); else s.add(sym);
+  document.getElementById('gdBody').innerHTML=renderGroupDetail(gdDraft);
+}
+
+function applyMultiMarks(){
+  if(!gdMultiSets||!gdDraft) return;
+  const emptyIdx=gdMultiSets.findIndex(s=>s.size===0);
+  if(emptyIdx>-1){ alert((emptyIdx+1)+'번 경기에 최소 1개 이상 선택해주세요.'); return; }
+
+  const lm={'승':'w','무':'d','패':'l'};
+  let rows=[{picks:[],prod:1}];
+  gdMultiSets.forEach((s,gi)=>{
+    const next=[];
+    rows.forEach(prev=>{
+      s.forEach(k=>{
+        const val=parseFloat(GS[gi]&&GS[gi][lm[k]])||0;
+        next.push({picks:[...prev.picks,k],prod:prev.prod*(val/100)});
+      });
+    });
+    rows=next;
+  });
+
+  if(!rows.length){ alert('조합을 생성할 수 없습니다.'); return; }
+  if(!confirm(rows.length+'개 조합으로 재생성합니다. 계속할까요?')) return;
+
+  const votes=typeof TV==='number'?TV:0;
+  gdDraft.combos=rows.map((r,i)=>({
+    num:i+1,
+    pickStr:r.picks.join('-'),
+    pct:r.prod*100,
+    surv:votes*r.prod,
+    label:gdDraft.label,
+    cls:gdDraft.cls
+  }));
+  gdMultiMode=false;
+  gdMultiSets=null;
+  document.getElementById('gdBody').innerHTML=renderGroupDetail(gdDraft);
+}
+
+function renderGroupDetail(g){
+  const rlm={'승':'w','무':'d','패':'l'};
+
+  // ── 복식 마킹 모드: 경기당 복수 선택 입력 화면 ──
+  if(gdMultiMode){
+    const previewCount=gdMultiSets.reduce((p,s)=>p*(s.size||1),1);
+    const rows=GS.map((game,gi)=>{
+      const set=gdMultiSets[gi]||new Set();
+      const box=(sym)=>{
+        const on=set.has(sym);
+        return `<span class="gd-box gd-boxclick${on?' on':''}" onclick="toggleMultiPick(${gi},'${sym}')" title="클릭해서 선택/해제">${on?'✔':''}</span>`;
+      };
+      return `<tr>
+        <td>${game.no||(gi+1)}</td>
+        <td>${game.home}</td>
+        <td style="color:#aaa;font-size:10px">vs</td>
+        <td>${game.away}</td>
+        <td><div class="gd-marks">${box('승')}${box('무')}${box('패')}</div></td>
+      </tr>`;
+    }).join('');
+    return `
+      <div class="gd-sub" style="display:flex;align-items:center;justify-content:space-between">
+        <span>복식 마킹 모드</span>
+        <button class="detb" onclick="toggleMultiMode()">일반 모드로 돌아가기</button>
+      </div>
+      <table class="gd-mark-table">
+        <thead><tr><th>No</th><th>홈</th><th></th><th>원정</th><th>마킹(중복선택)</th></tr></thead>
+        <tbody>${rows}</tbody>
+      </table>
+      <div class="gd-note">경기마다 승/무/패를 <strong>2개 이상 동시 선택</strong>할 수 있어요. 선택을 조합하면 <strong style="color:#0C447C">${previewCount.toLocaleString()}개 조합</strong>이 생성됩니다.</div>
+      <button class="viewbtn" onclick="applyMultiMarks()" style="width:100%;padding:10px;font-size:13px">이 마킹으로 조합 재생성 (${previewCount.toLocaleString()}개)</button>`;
+  }
+
+  // ── 일반 모드: 조합내역(합집합 표시/일괄변경) + 투표지(개별 편집) ──
+  const markRows=GS.map((game,gi)=>{
+    const picked=new Set();
+    g.combos.forEach(c=>{
+      const p=c.pickStr.split('-')[gi];
+      if(p) picked.add(p);
+    });
+    const finished=!!game.result;
+    const box=(sym)=>{
+      const isPicked=picked.has(sym);
+      const isResult=finished&&rlm[sym]===game.result;
+      let cls='gd-box gd-boxclick'+(isPicked?' on':'')+(isResult?' result':'');
+      return `<span class="${cls}" onclick="editPickBulk(${gi},'${sym}')" title="클릭 시 이 경기 전체 조합 픽을 '${sym}'으로 일괄 변경">${isPicked?'✔':''}</span>`;
+    };
+    return `<tr>
+      <td>${game.no||(gi+1)}</td>
+      <td>${game.home}</td>
+      <td style="color:#aaa;font-size:10px">vs</td>
+      <td>${game.away}</td>
+      <td><div class="gd-marks">${box('승')}${box('무')}${box('패')}</div></td>
+    </tr>`;
+  }).join('');
+
+  // 투표지: 조합별 승/무/패 픽(클릭해서 수정 가능) + 결과 색상 + 예상생존수 + 삭제
+  const voteHead=`<th>NO</th>${GS.map((_,i)=>`<th>${i+1}</th>`).join('')}<th>예상생존수</th><th></th>`;
+  const voteRows=g.combos.map((c,i)=>{
+    const picks=c.pickStr.split('-');
+    const cls={'승':'gd-w','무':'gd-d','패':'gd-l'};
+    const cells=picks.map((p,gi)=>{
+      const game=GS[gi];
+      let extra='';
+      if(game&&game.result){
+        extra = rlm[p]===game.result ? ' gd-hit' : ' gd-miss';
+      }
+      return `<td class="${cls[p]||''} gd-pick${extra}" onclick="editPick(${i},${gi})" title="클릭해서 변경">${p}</td>`;
+    }).join('');
+    return `<tr><td>${i+1}</td>${cells}<td class="gd-surv">${fmtSurv(c.surv)}</td><td class="gd-delcell" onclick="deleteDraftCombo(${i})" title="이 조합 삭제">✕</td></tr>`;
+  }).join('');
+
+  const voteTotal=typeof TV==='number'?TV:0;
+
+  return `
+    <div class="gd-sub" style="display:flex;align-items:center;justify-content:space-between">
+      <span>조합내역</span>
+      <button class="detb" onclick="toggleMultiMode()">복식 마킹 모드 (중복선택)</button>
+    </div>
+    <table class="gd-mark-table">
+      <thead><tr><th>No</th><th>홈</th><th></th><th>원정</th><th>마킹/결과</th></tr></thead>
+      <tbody>${markRows}</tbody>
+    </table>
+    <div class="gd-note">※ 마킹 클릭 시 해당 경기의 <strong>전체 조합 픽이 일괄 변경</strong>됩니다. 종료된 경기는 <span style="color:#1B7A1B;font-weight:700">초록 테두리</span>가 실제 결과입니다. (저장된 픽의 가상투표수: <strong>${voteTotal.toLocaleString()}</strong>표)</div>
+    <div class="gd-sub">투표지</div>
+    <div class="gd-vote-wrap">
+      <table class="gd-vote-table">
+        <thead><tr>${voteHead}</tr></thead>
+        <tbody>${voteRows}</tbody>
+      </table>
+    </div>`;
+}
+
 // ── 예상생존/당첨금 계산 ──
 function calcExpectedSurv(){
   // 전체 경기 결과가 있는지 확인
@@ -1743,6 +2051,7 @@ function updPop(){
           <div class="sgm">저장: ${g.time}</div>
         </div>
         <div class="sgr">
+          <button class="detb" onclick="event.stopPropagation();openGroupDetail(${g.id})">상세보기</button>
           <button class="delg" onclick="event.stopPropagation();delGroup(${g.id})">삭제</button>
           <span class="sgarr${g.open?' open':''}">▼</span>
         </div>
