@@ -1,0 +1,11 @@
+[{
+  "relation": ["delegate_permission/common.handle_all_urls"],
+  "target": {
+    "namespace": "android_app",
+    "package_name": "app.netlify.runtoto",
+    "sha256_cert_fingerprints": [
+      "98:39:37:38:0F:54:8C:0C:BF:EF:2A:D2:74:59:BE:9F:06:71:2D:96:EA:9B:FC:3F:E6:F2:13:31:5D:FA:54:A3",
+      "29:20:D0:DE:71:08:20:EE:AA:54:FB:C1:05:30:D7:2D:BE:AC:4E:3E:52:30:0B:CB:6F:B0:72:1C:B9:E1:EB:B0"
+    ]
+  }
+}]
