@@ -664,9 +664,11 @@ body.dark .rmbar div div:first-child{color:#7a9bb5 !important}
 <div class="nav-tabs">
   <button class="nav-tab on" id="navTeam" onclick="showInfo('team')">⚽ 팀 정보</button>
   <button class="nav-tab" id="navForm" onclick="showInfo('form')">📋 포메이션</button>
+  <button class="nav-tab" id="navRank" onclick="showInfo('rank')">🏆 순위표</button>
 </div>
 <div id="infoTeam"></div>
 <div id="infoForm" style="display:none"></div>
+<div id="infoRank" style="display:none"></div>
 </div>
 </div>
 </div>
@@ -682,9 +684,11 @@ body.dark .rmbar div div:first-child{color:#7a9bb5 !important}
 <div class="nav-tabs">
   <button class="nav-tab on" id="navTeam" onclick="showInfo('team')">⚽ 팀 정보</button>
   <button class="nav-tab" id="navForm" onclick="showInfo('form')">📋 포메이션</button>
+  <button class="nav-tab" id="navRank2" onclick="showInfo('rank')">🏆 순위표</button>
 </div>
 <div id="infoTeam"></div>
 <div id="infoForm" style="display:none"></div>
+<div id="infoRank2" style="display:none"></div>
 </div>
 </div>
 <!-- 팝업 -->
@@ -1481,8 +1485,110 @@ function renderPrev1(){
 function showInfo(tab){
   document.getElementById('navTeam').className='nav-tab'+(tab==='team'?' on':'');
   document.getElementById('navForm').className='nav-tab'+(tab==='form'?' on':'');
+  const nr=document.getElementById('navRank');
+  if(nr) nr.className='nav-tab'+(tab==='rank'?' on':'');
   document.getElementById('infoTeam').style.display=tab==='team'?'block':'none';
   document.getElementById('infoForm').style.display=tab==='form'?'block':'none';
+  const ir=document.getElementById('infoRank');
+  if(ir){ ir.style.display=tab==='rank'?'block':'none'; if(tab==='rank') renderStandings(); }
+}
+
+/* ── 리그 순위표 ── */
+let STANDINGS=null; // [{league,rank,team,team_en,played,win,draw,lose,gd,points}]
+let standingsLoading=false;
+
+function loadStandings(cb){
+  if(STANDINGS){ if(cb)cb(); return; }
+  if(standingsLoading) return;
+  standingsLoading=true;
+  const url='https://docs.google.com/spreadsheets/d/1_nLxcE_ZpAB0GZ5UXFFkQO9rZqD8_K4aQeOqCbihXcA/gviz/tq?tqx=out:json&sheet=standings';
+  fetch(url).then(r=>r.text()).then(t=>{
+    const j=JSON.parse(t.substring(t.indexOf('(')+1,t.lastIndexOf(')')));
+    const rows=j.table.rows||[];
+    STANDINGS=rows.map(r=>{
+      const c=r.c;
+      return {
+        league:c[0]&&c[0].v||'', rank:c[1]&&c[1].v||0,
+        team:c[2]&&c[2].v||'', team_en:c[3]&&c[3].v||'',
+        played:c[4]&&c[4].v||0, win:c[5]&&c[5].v||0,
+        draw:c[6]&&c[6].v||0, lose:c[7]&&c[7].v||0,
+        gd:c[8]&&c[8].v!=null?c[8].v:0, points:c[9]&&c[9].v||0
+      };
+    }).filter(s=>s.team&&s.league!=='league');
+    standingsLoading=false;
+    if(cb)cb();
+  }).catch(e=>{
+    standingsLoading=false;
+    STANDINGS=[];
+    if(cb)cb();
+  });
+}
+
+function renderStandings(){
+  const el=document.getElementById('infoRank');
+  if(!el) return;
+  if(!STANDINGS){
+    el.innerHTML='<div style="text-align:center;padding:30px;color:#888;font-size:13px">순위표 불러오는 중...</div>';
+    loadStandings(renderStandings);
+    return;
+  }
+  if(STANDINGS.length===0){
+    el.innerHTML='<div style="text-align:center;padding:30px;color:#888;font-size:13px">순위표 데이터가 없습니다.<br>구글 시트에서 updateStandings 실행 후 다시 확인해주세요.</div>';
+    return;
+  }
+  // 현재 회차에 등장하는 팀들 하이라이트용
+  const activeTeams=new Set();
+  GS.forEach(g=>{ if(g.home)activeTeams.add(String(g.home).replace(/\s/g,'')); if(g.away)activeTeams.add(String(g.away).replace(/\s/g,'')); });
+
+  // 리그별 그룹화 (시트 순서 유지)
+  const leagues=[];
+  const byLeague={};
+  STANDINGS.forEach(s=>{
+    if(!byLeague[s.league]){ byLeague[s.league]=[]; leagues.push(s.league); }
+    byLeague[s.league].push(s);
+  });
+
+  const dark=document.body.classList.contains('dark');
+  let html='';
+  leagues.forEach(lg=>{
+    const rows=byLeague[lg].sort((a,b)=>a.rank-b.rank).map(s=>{
+      const tn=String(s.team).replace(/\s/g,'');
+      const isActive=[...activeTeams].some(a=>a&&(tn.indexOf(a)>-1||a.indexOf(tn)>-1));
+      const hlStyle=isActive?`background:${dark?'#1a3a5c':'#E6F1FB'};font-weight:700;`:'';
+      return `<tr style="${hlStyle}">
+        <td style="text-align:center">${s.rank}</td>
+        <td>${s.team}</td>
+        <td style="text-align:center">${s.played}</td>
+        <td style="text-align:center">${s.win}</td>
+        <td style="text-align:center">${s.draw}</td>
+        <td style="text-align:center">${s.lose}</td>
+        <td style="text-align:center">${s.gd>0?'+':''}${s.gd}</td>
+        <td style="text-align:center;font-weight:700;color:#0C447C">${s.points}</td>
+      </tr>`;
+    }).join('');
+    html+=`
+    <div style="margin-bottom:18px">
+      <div style="font-size:14px;font-weight:700;color:${dark?'#9FE1CB':'#063B5D'};margin:10px 4px 6px;display:flex;align-items:center;gap:6px">
+        <span style="width:4px;height:15px;background:#063B5D;border-radius:2px;display:inline-block"></span>${lg}
+      </div>
+      <div style="overflow-x:auto">
+      <table style="width:100%;border-collapse:collapse;font-size:12px;min-width:340px">
+        <thead><tr style="background:#063B5D;color:#9FE1CB">
+          <th style="padding:6px 4px">순위</th><th style="padding:6px 4px;text-align:left">팀</th>
+          <th style="padding:6px 4px">경기</th><th style="padding:6px 4px">승</th>
+          <th style="padding:6px 4px">무</th><th style="padding:6px 4px">패</th>
+          <th style="padding:6px 4px">득실</th><th style="padding:6px 4px">승점</th>
+        </tr></thead>
+        <tbody style="${dark?'color:#e8edf2':''}">${rows}</tbody>
+      </table>
+      </div>
+    </div>`;
+  });
+  html+=`<div style="font-size:11px;color:#999;text-align:center;margin:8px 0 14px">리그별 상위 5팀 순위입니다 · 이번 회차 출전 팀은 강조 표시됩니다</div>`;
+  el.innerHTML=html;
+
+  // 표 행 구분선
+  el.querySelectorAll('tbody td').forEach(td=>{td.style.borderBottom=dark?'1px solid #2e3f55':'1px solid #f0f0f0';td.style.padding='6px 4px';});
 }
 
 function renderBar(val,cls){
