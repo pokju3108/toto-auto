@@ -2075,7 +2075,9 @@ function calcExpectedSurv(){
     const prizePot2 = rank.wrong === 0
       ? prize1stAmt
       : totalPrize * 0.724 * prizeRates2[rank.wrong];
-    const prizePerPerson = survCount > 0.01 ? Math.round(prizePot2 / Math.max(survCount, 0.01)) : 0;
+    // ★ 수정: 예상 생존수가 1 미만이어도 실제 당첨자는 최소 1명이 상금을 받으므로
+    // 1인당 당첨금은 상금 총액(prizePot2)을 초과할 수 없음 → 나누는 수 최소 1로 고정
+    const prizePerPerson = Math.round(prizePot2 / Math.max(survCount, 1));
     
     return {
       name: rank.name,
